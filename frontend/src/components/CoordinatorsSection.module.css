@@ -1,0 +1,139 @@
+.section {
+  background: var(--surface);
+  border-top: 2px solid var(--border);
+}
+
+.header {
+  max-width: 580px;
+  margin-bottom: 56px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--accent, var(--accent-lime));
+  box-shadow: 4px 4px 0px var(--accent, var(--accent-lime));
+}
+
+/* Colored left accent bar */
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent, var(--accent-lime));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.avatarWrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.card:hover .avatarWrapper {
+  border-color: var(--accent, var(--accent-lime));
+}
+
+.avatarBg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  transition: opacity 0.2s;
+}
+
+.card:hover .avatarBg {
+  opacity: 0.3;
+}
+
+.avatar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.role {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* Social icons — hidden until hover */
+.socials {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover .socials {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.socialBtn:hover {
+  color: var(--accent, var(--accent-lime));
+  border-color: var(--accent, var(--accent-lime));
+  background: rgba(200, 241, 53, 0.08);
+}
