@@ -92,11 +92,19 @@ video {
   padding: 100px 24px;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .section-full {
   padding: 100px 24px;
   width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .section-label {

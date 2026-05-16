@@ -25,6 +25,16 @@ export default function Home() {
     }
   }, [showSplash]);
 
+  useEffect(() => {
+    // Ensure we start at the top on reload
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   return (
     <>
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}

@@ -119,17 +119,6 @@ export default function HeroSection() {
           <span className={styles.badgeText}>AUG 15–17, 2026 &nbsp;·&nbsp; 36 HOURS &nbsp;·&nbsp; INDIA</span>
         </div>
 
-        {/* Headline */}
-        <h1 className={styles.headline}>
-          <span className={styles.h1White}>PUSHED BY </span>
-          <span className={styles.h1Lime}>STUDENTS.</span>
-          <br />
-          <span className={styles.h1White}>PULLED BY </span>
-          <span className={styles.h1Amber}>AMBITION.</span>
-          <br />
-          <span className={styles.h1White}>MERGED INTO </span>
-          <span className={styles.h1Pink}>EXCELLENCE.</span>
-        </h1>
 
         <p className={styles.sub}>
           Singularity Hack is a 36-hour national inter-college hackathon where the

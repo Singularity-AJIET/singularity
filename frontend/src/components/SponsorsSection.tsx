@@ -93,17 +93,7 @@ export default function SponsorsSection() {
           </div>
         </div>
 
-        <div className={styles.becomeSponsor}>
-          <div className={styles.bsLeft}>
-            <h3 className={styles.bsTitle}>Interested in sponsoring?</h3>
-            <p className={styles.bsDesc}>
-              Reach 500+ talented students from 50+ colleges. Get your brand in front of the next generation of developers.
-            </p>
-          </div>
-          <a href="mailto:sponsors@singularityhack.in" className="btn btn-primary">
-            BECOME A SPONSOR
-          </a>
-        </div>
+
       </div>
     </section>
   );
