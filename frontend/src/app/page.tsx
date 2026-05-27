@@ -1,18 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-import TracksSection from "@/components/TracksSection";
-import PrizesSection from "@/components/PrizesSection";
-import ScheduleSection from "@/components/ScheduleSection";
-import CoordinatorsSection from "@/components/CoordinatorsSection";
-import TeamsSection from "@/components/TeamsSection";
-import FAQSection from "@/components/FAQSection";
-import SponsorsSection from "@/components/SponsorsSection";
-import Footer from "@/components/Footer";
-import SplashScreen from "@/components/SplashScreen";
+import Navbar from "@/components/Navbar/Navbar";
+import HeroSection from "@/components/HeroSection/HeroSection";
+import AboutSection from "@/components/AboutSection/AboutSection";
+import TracksSection from "@/components/TracksSection/TracksSection";
+import PrizesSection from "@/components/PrizesSection/PrizesSection";
+import ScheduleSection from "@/components/ScheduleSection/ScheduleSection";
+import CoordinatorsSection from "@/components/CoordinatorsSection/CoordinatorsSection";
+import TeamsSection from "@/components/TeamsSection/TeamsSection";
+import FAQSection from "@/components/FAQSection/FAQSection";
+import SponsorsSection from "@/components/SponsorsSection/SponsorsSection";
+import Footer from "@/components/Footer/Footer";
+import SplashScreen from "@/components/SplashScreen/SplashScreen";
+import TickerTape from "@/components/TickerTape/TickerTape";
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -47,6 +48,7 @@ export default function Home() {
         <Navbar hideLogo={showSplash} />
         <main>
           <HeroSection />
+          <TickerTape />
           <AboutSection />
           <TracksSection />
           <PrizesSection />

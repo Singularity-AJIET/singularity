@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { submitRegistration } from "@/lib/api";
 import styles from "./page.module.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar/Navbar";
 
 const TRACKS = ["AI/ML", "Web3", "Social Impact", "FinTech"];
 const YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year", "Postgraduate"];

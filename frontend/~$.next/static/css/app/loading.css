@@ -1,0 +1,70 @@
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./src/app/loading.module.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+.loading_loaderContainer__gcg9m {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg);
+  position: relative;
+  z-index: 50;
+}
+
+.loading_loaderInner__k6M0V {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.loading_loaderText__Syzir {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--accent-lime);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.loading_cursor__PDhlS {
+  display: inline-block;
+  width: 12px;
+  height: 20px;
+  background-color: var(--accent-lime);
+  margin-left: 8px;
+  animation: loading_blink__47B9S 1s step-end infinite;
+}
+
+@keyframes loading_blink__47B9S {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.loading_progressBar__2gq3B {
+  width: 200px;
+  height: 4px;
+  background: rgba(200, 241, 53, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loading_progressFill__y0iN1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent-lime);
+  width: 30%;
+  animation: loading_progressAnim__iWSR2 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes loading_progressAnim__iWSR2 {
+  0% { width: 10%; transform: translateX(0); }
+  100% { width: 50%; transform: translateX(150px); }
+}
+
