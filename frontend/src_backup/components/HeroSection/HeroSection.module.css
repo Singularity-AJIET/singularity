@@ -37,72 +37,26 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  background: transparent;
-  border: 1px solid rgba(200, 241, 53, 0.2);
-  border-radius: 0;
-  padding: 10px 24px;
+  gap: 10px;
+  background: rgba(200, 241, 53, 0.12);
+  border: 2px solid var(--accent-lime);
+  border-radius: 100px;
+  padding: 8px 20px;
   margin-bottom: 32px;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.1em;
   color: var(--accent-lime);
-  position: relative;
-  transition: background 0.3s ease;
-}
-
-.badge::before,
-.badge::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border: 2px solid var(--accent-lime);
-  transition: all 0.2s ease;
-}
-
-.badge::before {
-  top: -2px; left: -2px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.badge::after {
-  bottom: -2px; right: -2px;
-  border-left: none;
-  border-top: none;
-}
-
-.badge:hover {
-  background: rgba(200, 241, 53, 0.05);
-  box-shadow: 0 0 20px rgba(200, 241, 53, 0.1);
-}
-
-.badge:hover::before {
-  top: -4px; left: -4px;
-}
-
-.badge:hover::after {
-  bottom: -4px; right: -4px;
-}
-
-.badgeText {
-  color: var(--accent-lime);
+  box-shadow: 2px 2px 0px var(--accent-lime);
 }
 
 .dot {
   width: 6px;
   height: 6px;
-  border-radius: 0;
-  background: var(--accent-lime);
-  box-shadow: 0 0 8px var(--accent-lime);
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  border-radius: 50%;
+  background: var(--text);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
