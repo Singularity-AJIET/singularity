@@ -24,3 +24,8 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+~$*
+
+# Backups
+src_backup/
+*_backup/
