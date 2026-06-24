@@ -4,7 +4,7 @@ router = APIRouter(prefix="/api", tags=["event"])
 
 EVENT_INFO = {
     "name": "SINGULARITY HACK",
-    "tagline": "Pushed by Students. Pulled by Ambition. Merged into Excellence.",
+    "tagline": "",
     "edition": "2026",
     "dates": {
         "start": "2026-08-15",

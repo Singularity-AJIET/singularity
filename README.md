@@ -4,13 +4,13 @@ A full-stack hackathon website built for inter-college participation and registr
 
 ## Tech Stack
 - **Frontend**: Next.js 14 (App Router), Vanilla CSS Modules, Space Grotesk + JetBrains Mono
-- **Backend**: Python 3.12, FastAPI, SQLAlchemy, SQLite
+- **Backend**: Python 3.12, FastAPI
 
 ## Project Structure
 ```
 singularity/
 ├── frontend/     ← Next.js 14
-└── backend/      ← FastAPI + SQLite
+└── backend/      ← FastAPI
 ```
 
 ## Running Locally
