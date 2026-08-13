@@ -55,91 +55,6 @@
   margin-bottom: 40px;
 }
 
-.registrationCard {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  background: rgba(17, 16, 16, 0.5);
-  padding: 24px;
-}
-
-.registrationIntro {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.statusBadge {
-  display: inline-flex;
-  width: fit-content;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: var(--accent-lime);
-  color: #111010;
-  padding: 8px 12px;
-  border-radius: 999px;
-}
-
-.registrationIntro h3 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  margin: 0;
-  text-transform: uppercase;
-}
-
-.registrationIntro p {
-  max-width: 760px;
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.ctaRow {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.registrationGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.infoCard {
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 20px;
-}
-
-.infoCard h4 {
-  margin: 0 0 12px;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-}
-
-.infoCard ul {
-  margin: 0;
-  padding-left: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-
 /* Tabs */
 .tabs {
   display: flex;
@@ -277,10 +192,6 @@
 }
 
 @media (max-width: 900px) {
-  .registrationGrid {
-    grid-template-columns: 1fr;
-  }
-
   .tabs {
     display: grid;
     grid-template-columns: 1fr;
@@ -300,46 +211,6 @@
 
   .header {
     margin-bottom: 24px;
-  }
-
-  .registrationCard {
-    padding: 18px 16px;
-  }
-
-  .statusBadge {
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    padding: 7px 10px;
-  }
-
-  .registrationIntro h3 {
-    font-size: clamp(1.6rem, 9vw, 2.2rem);
-    line-height: 1.05;
-  }
-
-  .registrationIntro p {
-    font-size: 0.95rem;
-  }
-
-  .ctaRow {
-    width: 100%;
-  }
-
-  .ctaRow a {
-    width: 100%;
-  }
-
-  .infoCard {
-    padding: 16px;
-  }
-
-  .infoCard h4 {
-    font-size: 1.2rem;
-  }
-
-  .infoCard ul {
-    gap: 8px;
-    font-size: 0.92rem;
   }
 
   .teamCard {
@@ -379,10 +250,6 @@
 
   .header {
     margin-bottom: 20px;
-  }
-
-  .registrationCard {
-    padding: 16px 14px;
   }
 
   .tabBtn {

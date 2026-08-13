@@ -146,6 +146,13 @@
   padding: 0;
 }
 
+.copyrightSymbol {
+  display: inline-block;
+  font-size: 1.35em;
+  line-height: 1;
+  vertical-align: -0.18em;
+}
+
 .bottomInner {
   display: grid;
   grid-template-columns: 2fr 1fr 1.2fr;
@@ -204,14 +211,16 @@
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.04em;
-  color: var(--text-muted);
+  color: var(--accent-lime);
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 1.5px;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, transform 0.15s ease, text-decoration-thickness 0.15s ease;
 }
 .emailLink:hover {
-  color: var(--accent-lime);
+  color: #e2ff72;
+  text-decoration-thickness: 2px;
+  transform: translateX(3px);
 }
 
 .socialBtn {

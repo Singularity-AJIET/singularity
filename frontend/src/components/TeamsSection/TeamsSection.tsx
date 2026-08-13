@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import styles from "./TeamsSection.module.css";
 import { motion, AnimatePresence } from "framer-motion";
-import RegistrationInfoSection from "./RegistrationInfoSection";
 
 type TeamPhase = "registration" | "selected";
 
@@ -65,8 +64,6 @@ export default function TeamsSection() {
 
   return (
     <section id="teams" className={styles.section}>
-      <RegistrationInfoSection />
-
       <div className="section">
         <div className={styles.header}>
           <div className="section-label">// finalists</div>

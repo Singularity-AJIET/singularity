@@ -1,0 +1,158 @@
+.section {
+  background: var(--bg);
+  border-top: 2px solid var(--border);
+  padding-bottom: 80px;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.header :global(.section-sub) {
+  max-width: none;
+}
+
+.registrationCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(17, 16, 16, 0.5);
+  padding: 24px;
+}
+
+.registrationIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.registrationIntro h3 {
+  max-width: calc(100% - 340px);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.registrationIntro p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.ctaRow {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.registrationButton {
+  padding: 16px 36px;
+  font-size: 0.95rem;
+}
+
+.registrationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.infoCard {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+}
+
+.infoCard h4 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.infoCard ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .registrationGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding-bottom: 64px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .registrationCard {
+    padding: 18px 16px;
+  }
+
+  .registrationIntro h3 {
+    max-width: none;
+    font-size: clamp(1.6rem, 9vw, 2.2rem);
+    line-height: 1.05;
+  }
+
+  .registrationIntro p {
+    font-size: 1rem;
+  }
+
+  .ctaRow,
+  .ctaRow a {
+    width: 100%;
+  }
+
+  .ctaRow {
+    position: static;
+    order: 1;
+    margin-top: 0;
+  }
+
+  .infoCard {
+    padding: 16px;
+  }
+
+  .infoCard h4 {
+    font-size: 1.2rem;
+  }
+
+  .infoCard ul {
+    gap: 8px;
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding-bottom: 52px;
+  }
+
+  .header {
+    margin-bottom: 20px;
+  }
+
+  .registrationCard {
+    padding: 16px 14px;
+  }
+}

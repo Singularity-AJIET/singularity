@@ -9,6 +9,7 @@ import PrizesSection from "@/components/PrizesSection/PrizesSection";
 import ScheduleSection from "@/components/ScheduleSection/ScheduleSection";
 import CoordinatorsSection from "@/components/CoordinatorsSection/CoordinatorsSection";
 import TeamsSection from "@/components/TeamsSection/TeamsSection";
+import RegistrationInfoSection from "@/components/RegistrationInfoSection/RegistrationInfoSection";
 import FAQSection from "@/components/FAQSection/FAQSection";
 import SponsorsSection from "@/components/SponsorsSection/SponsorsSection";
 import Footer from "@/components/Footer/Footer";
@@ -52,10 +53,11 @@ export default function Home() {
           <AboutSection />
           <TracksSection />
           <PrizesSection />
-          <TeamsSection />
+          <RegistrationInfoSection />
           <SponsorsSection />
           <CoordinatorsSection />
           <ScheduleSection />         
+          <TeamsSection />
           <FAQSection />         
         </main>
         <Footer />
