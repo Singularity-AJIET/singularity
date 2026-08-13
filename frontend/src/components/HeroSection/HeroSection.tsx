@@ -266,11 +266,8 @@ export default function HeroSection() {
               <div className={styles.panelDivider} />
               <div className={styles.countdownRow}>
                 <BigUnit v={mounted ? days : 0} label="DAYS" />
-                <span className={styles.bigColon}>:</span>
                 <BigUnit v={mounted ? hours : 0} label="HRS" />
-                <span className={styles.bigColon}>:</span>
                 <BigUnit v={mounted ? minutes : 0} label="MIN" />
-                <span className={styles.bigColon}>:</span>
                 <BigUnit v={mounted ? seconds : 0} label="SEC" />
               </div>
             </div>
