@@ -28,7 +28,7 @@ const REGISTRATION_ITEMS = [
   {
     title: "Selection & Commencement",
     points: [
-      "Final team selection will be announced on 15th September 2026.",
+      "Shortlisted teams will be notified after the review process.",
       "The hack and program kickoff begins on 17th September 2026.",
       "The process focuses on resume-based review and team fit."
     ]
