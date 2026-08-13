@@ -15,7 +15,7 @@ const NAV_LINKS = [
 // TODO: replace with your actual Unstop event registration URL
 const UNSTOP_URL = "https://unstop.com/";
 
-const STATS = ["24HRS", "HACKATHON", "AJIET", "MANGALORE"];
+const STATS = ["24HRS", "HACKATHON", "AJIET", "MANGALORE","INNOVATE","BUILD"];
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
 
 export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {

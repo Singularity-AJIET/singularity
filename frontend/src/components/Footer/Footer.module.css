@@ -21,6 +21,28 @@
   pointer-events: none;
 }
 
+.ctaInner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ctaLabel {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(17, 16, 16, 0.7);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
 .ctaTitle {
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900;
@@ -38,23 +60,28 @@
   justify-content: center;
   gap: 8px;
   margin-bottom: 32px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .unit {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background: #111010;
   border: 2px solid rgba(0,0,0,0.4);
   border-radius: var(--radius);
-  padding: 16px 20px;
-  min-width: 90px;
+  padding: 16px 18px;
+  min-width: 80px;
+  flex: 1;
   box-shadow: 4px 4px 0px rgba(0,0,0,0.35);
+  transition: transform 0.2s ease;
 }
 
 .num {
   font-family: var(--font-mono);
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
   font-weight: 800;
   color: var(--accent-lime);
   line-height: 1;
@@ -70,15 +97,13 @@
 
 .colon {
   font-family: var(--font-mono);
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: rgba(17,16,16,0.4);
   line-height: 1;
   align-self: flex-start;
-  margin-top: 24px;
+  margin-top: 22px;
 }
-
-/* Countdown old styles — removed, now using .unit/.num/.colon above */
 
 .ctaSub {
   font-size: 1.1rem;
@@ -99,46 +124,6 @@
   background: #222 !important;
   box-shadow: 2px 2px 0px rgba(0,0,0,0.5) !important;
   transform: translate(2px, 2px);
-}
-
-/* Countdown */
-.countdown {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 4px;
-  color: #111010;
-  font-variant-numeric: tabular-nums;
-}
-
-.countUnit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.countNum {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: #111010;
-}
-
-.countLabel {
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  color: rgba(17,16,16,0.55);
-}
-
-.countSep {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900;
-  line-height: 1;
-  color: rgba(17,16,16,0.5);
-  padding-bottom: 14px;
 }
 
 /* Bottom */
@@ -476,7 +461,80 @@
   .logoCol { grid-column: 1 / -1; }
   .artCol { display: none; }
 }
+
 @media (max-width: 600px) {
+  .cta {
+    padding: 60px 0;
+  }
+
+  .ctaInner {
+    padding: 0 16px;
+  }
+
+  .ctaTitle {
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    margin-bottom: 24px;
+  }
+
+  .countdown {
+    gap: 4px;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .unit {
+    min-width: 0;
+    padding: 10px 4px;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.35);
+  }
+
+  .num {
+    font-size: clamp(1.35rem, 5.5vw, 1.65rem);
+  }
+
+  .unitLabel {
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  .colon {
+    font-size: 1.25rem;
+    margin-top: 12px;
+  }
+
+  .ctaSub {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+    padding: 0 8px;
+  }
+
   .bottomInner { grid-template-columns: 1fr; }
   .bar { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .ctaInner {
+    padding: 0 10px;
+  }
+
+  .countdown {
+    gap: 2px;
+  }
+
+  .unit {
+    padding: 8px 2px;
+  }
+
+  .num {
+    font-size: 1.2rem;
+  }
+
+  .colon {
+    font-size: 1rem;
+    margin-top: 10px;
+  }
 }

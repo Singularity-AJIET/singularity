@@ -74,8 +74,8 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.cta}>
-        <div className="section" style={{ textAlign: "center", alignItems: "center" }}>
-          <div className="section-label" style={{ marginBottom: 16 }}>{"//"} ready to build?</div>
+        <div className={styles.ctaInner}>
+          <div className={styles.ctaLabel}>{"//"} ready to build?</div>
           <h2 className={styles.ctaTitle}>THE CLOCK IS</h2>
           <div className={styles.countdown}>
             <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.d)}</span><span className={styles.unitLabel}>DAYS</span></div>
@@ -100,7 +100,7 @@ export default function Footer() {
           {/* Logo */}
           <div className={styles.logoCol}>
             <div className={styles.logo}>
-              <Image src="/logo.webp" alt="Singularity" width={40} height={40} draggable={false} />
+              <Image src="/logo.webp" alt="Singularity" width={40} height={40} />
               <span>SINGULARITY</span>
             </div>
             <p className={styles.logoSub}>
