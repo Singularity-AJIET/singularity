@@ -120,7 +120,7 @@
     transparent
   );
   transform: skewX(-20deg);
-  transition: left 0.65s ease;
+  transition: left 1.3s ease;
   pointer-events: none;
 }
 
@@ -155,7 +155,7 @@
   align-items: center;
   gap: 4px;
   margin-left: 8px;
-  vertical-align: middle;
+  transform: translateY(6px);
 }
 
 .dot {
@@ -247,19 +247,22 @@
   bottom: -5px;
   right: -5px;
 }
-
 .panelLabel {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 800;
+  font-size: 0.6rem;
+  font-weight: 700;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
 .panelLabelAccent {
+  display: block;
   color: var(--accent-lime);
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-top: 4px;
 }
 
 .panelDivider {
@@ -712,20 +715,72 @@
 }
 
 @media (max-width: 600px) {
-  .content {
-    padding: 110px 18px 50px;
+  /* --- Hero shell: size to its own content on mobile instead of being
+     forced to fill 100vh — that stretch was what pushed SCROLL way
+     down and left a dead gap after the event timeline --- */
+  .hero {
+    min-height: 0;
+    height: auto;
+    display: block;
+    padding-bottom: 0;
   }
 
+  .content {
+    padding: 110px 18px 0;
+  }
+
+  .layout {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+
+  /* --- Scroll hint: normal flow, a short fixed gap below the
+     timeline instead of pinned to the viewport bottom --- */
+  .scrollHint {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin: 20px 0 28px;
+  }
+
+  /* --- CTAs: guaranteed side-by-side, no clipping on 320px --- */
+  .ctas {
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .ctaBtn {
+    flex: 1;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 14px 8px;
+    font-size: 0.7rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .loadingDots {
+    margin-left: 4px;
+    transform: translateY(3px);
+  }
+
+  /* --- Countdown panel: full width, safe margins, nothing clipped --- */
   .countdownPanel {
-    padding: 28px 20px 24px;
+    width: 100%;
+    padding: 26px 18px 22px;
   }
 
   .bigUnit {
-    padding: 14px 6px 12px;
+    padding: 14px 4px 12px;
   }
 
   .bigNum {
-    font-size: 1.6rem;
+    font-size: 1.55rem;
   }
 
   .bigColon {
@@ -733,8 +788,14 @@
     padding-bottom: 14px;
   }
 
+  .bigLabel {
+    font-size: 0.5rem;
+  }
+
+  /* --- Event timeline: tighter so it doesn't leave a dead gap
+     before the next section --- */
   .dataRail {
-    padding: 24px 20px 20px;
+    padding: 22px 20px 18px;
   }
 
   .railLine,
@@ -746,7 +807,7 @@
   .railNodes {
     flex-direction: column;
     align-items: flex-start;
-    gap: 22px;
+    gap: 16px;
     margin-top: 0;
   }
 
@@ -769,7 +830,7 @@
     left: 5px;
     top: 22px;
     width: 1px;
-    height: 26px;
+    height: 20px;
     background: rgba(200, 241, 53, 0.2);
   }
 
