@@ -49,8 +49,8 @@ export default function ScheduleSection() {
         <div className={styles.header}>
           <div className="section-label">// event timeline</div>
           <h2 className="section-title">THE <span className="text-lime">SCHEDULE</span></h2>
-          <p className="section-sub">
-            36 hours structured for maximum output — workshops, mentors, and milestones keeping you on track.
+          <p className={`section-sub ${styles.scheduleDesc}`}>
+            Prepare for an intense 24-hour sprint of continuous building, learning, and collaborating. Our meticulously crafted schedule is designed to maximize your potential—from intense coding sprints and live evaluations to crucial development milestones. Stay focused, stay energized, and let the timeline guide your team to success.
           </p>
         </div>
 
