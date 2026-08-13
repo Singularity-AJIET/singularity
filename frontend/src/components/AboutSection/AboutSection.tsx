@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Zap, Target, Users, Trophy } from "lucide-react";
 import styles from "./AboutSection.module.css";
+import { Rocket, Lightbulb, Handshake, Trophy } from "lucide-react";
+
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [val, setVal] = useState(0);
@@ -30,10 +31,26 @@ function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
 }
 
 const PILLARS = [
-  { icon: <Zap size={28} color="#c8f135" />, title: "Build Fast", desc: "36 hours of non-stop hacking, fuelled by caffeine, code, and community." },
-  { icon: <Target size={28} color="#c8f135" />, title: "Real Problems", desc: "Pick a track that matters and build something the world actually needs." },
-  { icon: <Users size={28} color="#c8f135" />, title: "Connect", desc: "Network with peers from 50+ colleges, mentors, and industry professionals." },
-  { icon: <Trophy size={28} color="#c8f135" />, title: "Win Big", desc: "Over ₹1,00,000 in prizes across multiple categories and tracks." },
+  {
+    icon: <Rocket size={28} color="#c8f135" />,
+    title: "Build Fast",
+    desc: "24 hours of non-stop hacking, fuelled by caffeine, code, and community.",
+  },
+  {
+    icon: <Lightbulb size={28} color="#c8f135" />,
+    title: "Real Problems",
+    desc: "Pick a track that matters and build something the world actually needs.",
+  },
+  {
+    icon: <Handshake size={28} color="#c8f135" />,
+    title: "Connect",
+    desc: "Network with peers from 100+ colleges, mentors, and industry professionals.",
+  },
+  {
+    icon: <Trophy size={28} color="#c8f135" />,
+    title: "Win Big",
+    desc: "Over ₹60k+ in prizes across multiple tracks.",
+  },
 ];
 
 export default function AboutSection() {
@@ -43,32 +60,33 @@ export default function AboutSection() {
         <div className={styles.header}>
           <div className="section-label">// about the event</div>
           <h2 className="section-title">
-            WHAT IS<br />
-            <span className="text-lime">SINGULARITY HACK?</span>
+            WHAT IS <br />
+            <span className="text-lime">SINGULARITY?</span>
           </h2>
-          <p className="section-sub">
-            Singularity Hack is a national inter-college hackathon where students
-            from across India converge to solve real-world problems in 36 hours.
-            It&apos;s not just a competition — it&apos;s a movement.
-          </p>
+            <p className={`section-sub ${styles.description}`}>
+              <b>Singularity</b> is a 24-hour national-level hackathon, a student
+              initiative by the <b>CSE</b> at <b>AJIET</b>, organised in collaboration with <b>IEEE</b> and the <b>Placement Cell</b>.
+              Build, break, experiment, and turn your ideas into something real.
+              <b> 24 hours. One campus. Endless possibilities.</b>
+            </p>
         </div>
 
         {/* Stats */}
         <div className={styles.statsGrid}>
           <div className={styles.statCard}>
-            <span className={styles.statNum}><CountUp target={500} suffix="+" /></span>
+            <span className={styles.statNum}><CountUp target={150} suffix="+" /></span>
             <span className={styles.statLabel}>Participants</span>
           </div>
           <div className={styles.statCard}>
-            <span className={styles.statNum}><CountUp target={50} suffix="+" /></span>
+            <span className={styles.statNum}><CountUp target={100} suffix="+" /></span>
             <span className={styles.statLabel}>Colleges</span>
           </div>
           <div className={styles.statCard}>
-            <span className={styles.statNum}><CountUp target={36} /></span>
+            <span className={styles.statNum}><CountUp target={24} /></span>
             <span className={styles.statLabel}>Hours of Hacking</span>
           </div>
           <div className={styles.statCard}>
-            <span className={styles.statNum}>₹<CountUp target={100000} />+</span>
+            <span className={styles.statNum}>₹<CountUp target={60} />k+</span>
             <span className={styles.statLabel}>Prize Pool</span>
           </div>
         </div>
