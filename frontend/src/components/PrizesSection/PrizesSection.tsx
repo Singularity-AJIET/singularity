@@ -21,10 +21,15 @@ type Prize = {
 const PRIZES: Prize[] = [
   {
     rank: "Grand Prize",
-    amount: "₹60k+",
+    amount: "₹60,000+",
     color: "#c8f135",
     Icon: Trophy,
-    perks: ["Industry Mentorship", "Media Coverage"],
+    perks: [
+      "Industry Mentorship",
+      "Fast-Track Interview Opportunities",
+      "Media & Project Exposure",
+      "Certificate of Excellence",
+    ],  
   },
   {
     rank: "Track Winner",
@@ -70,10 +75,12 @@ export default function PrizesSection() {
             <br />
             <span className="text-lime">GET GLORY.</span>
           </h2>
-
-          <p className={styles.sectionSub}>
+         <p className={styles.sectionSub}>
           Over <b>₹60K+</b> in cash prizes, along with custom domains, track-wise rewards,
-          internship opportunities, networking opportunities, and exciting goodies.
+          internship opportunities, industry networking, exclusive goodies, and recognition.
+          Compete across diverse tracks, showcase your skills, connect with mentors and
+          industry professionals, and turn your ideas into solutions that go beyond the
+          hackathon.
         </p>
         </div>
 
@@ -91,9 +98,7 @@ export default function PrizesSection() {
 
               <div className={styles.grandAmount}>{grandPrize.amount}</div>
 
-              <p className={styles.grandNote}>
-                + Trophy + {grandPrize.perks.join(" + ")}
-              </p>
+              <p className={styles.grandNote}>+ Trophy + Exciting Swags + 1-1 Mentorship</p>
             </div>
           </div>
 
