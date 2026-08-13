@@ -15,7 +15,7 @@ const NAV_LINKS = [
 // TODO: replace with your actual Unstop event registration URL
 const UNSTOP_URL = "https://unstop.com/";
 
-const STATS = ["24HRS", "HACKATHON", "AJIET", "MANGALORE"];
+const STATS = ["24HRS", "HACKATHON", "AJIET", "MANGALORE","INNOVATE","BUILD"];
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
 
 export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
@@ -126,8 +126,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
             >
               <span className={styles.registerCornerTR} aria-hidden="true" />
               <span className={styles.registerSweep} aria-hidden="true" />
-              <span className={styles.registerLabel}>REGISTER</span>
-              <span className={styles.registerArrow} aria-hidden="true">→</span>
+              <span className={styles.registerLabel}>REGISTER</span>       
               <span className={styles.registerCornerBL} aria-hidden="true" />
             </a>
           </div>

@@ -360,14 +360,15 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 104px 28px 32px;
+  padding: 76px 24px 28px;
 }
 
 .mobileCenterGroup {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 10px;
 }
 
 .mobileNavList {
