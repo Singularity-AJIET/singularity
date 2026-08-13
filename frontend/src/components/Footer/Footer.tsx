@@ -59,10 +59,10 @@ export default function Footer() {
             <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.s)}</span><span className={styles.unitLabel}>SEC</span></div>
           </div>
           <p className={styles.ctaSub}>
-            36 hours. 4 tracks. ₹1,00,000+ in prizes. No excuses.
+            24 hours. 3 tracks. ₹60,000+ in prizes. No excuses.
           </p>
           <Link href="/register" className={`btn btn-primary ${styles.ctaBtn}`}>
-            INIT_REGISTER →
+            INIT_REGISTER
           </Link>
         </div>
       </div>
