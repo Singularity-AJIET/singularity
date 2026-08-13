@@ -68,7 +68,7 @@ export default function AboutSection() {
             bringing students together to solve real-world problems, build innovative solutions,
             and turn ideas into working prototypes, organised by the
             <b> Computer Science and Engineering Dept.</b> in collaboration with
-            <b> IEEE Computer Society</b>, <b>IEEE Mangalore Subsection</b>, and the
+            <b> IEEE Computer Society</b>, <b>IEEE Mangalore Subsection</b> and the
             <b> Placement Cell</b> at
             <b> A.J. Institute of Engineering and Technology, Mangalore</b>.
             {/* <b> 24 Hours. One campus. Endless possibilities.</b> */}
