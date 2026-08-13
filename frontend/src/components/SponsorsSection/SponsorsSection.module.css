@@ -4,8 +4,12 @@
 }
 
 .header {
-  max-width: 580px;
+  max-width: 100%;
   margin-bottom: 56px;
+}
+
+.header p {
+  max-width: 100%;
 }
 
 .tier {
@@ -49,10 +53,12 @@
   height: 100%;
 }
 
-/* Logo area — white box so any logo (transparent/dark/light) stays visible */
+/* Logo area — square white box so any logo (transparent/dark/light) stays clearly visible */
 .logoWrap {
   width: 100%;
-  height: 88px;
+  max-width: 172px;
+  aspect-ratio: 1 / 1;
+  height: auto;
   background: #ffffff;
   border-radius: 8px;
   display: flex;

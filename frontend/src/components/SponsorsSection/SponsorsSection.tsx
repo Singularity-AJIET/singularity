@@ -18,37 +18,37 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
   sponsors: [
     {
       name: "Gears of Excel",
-      desc: "Leading cloud infrastructure and AI solutions provider powering the next generation of scalable tech.",
+      desc: "Gears of Excel is an edtech training and tech consultancy company focused on industry-oriented, AI-integrated learning. They bridge the gap between academic knowledge and industry demands through project-based training and expert guidance. They support innovation, mentorship, and real-world opportunities for aspiring technologists.  ",
       link: "techcorp.in",
       buttonText: "Visit Website",
       logo: "/GOE.webp",
     },
     {
-      name: "NovaSystems",
-      desc: "Enterprise cybersecurity and data protection platform. Building secure systems for modern enterprises.",
+      name: "IEEE Computer Society",
+      desc: "IEEE Computer Society is a global community advancing computer science, engineering, and technology through innovation and education. It supports students and professionals through research, technical resources, conferences, and industry opportunities.",
       link: "novasystems.io",
       buttonText: "Visit Website",
-      logo: "/novasystems.webp",
+      logo: "/ICS.webp",
     },
     {
-      name: "BuildFast",
-      desc: "The ultimate CI/CD deployment platform.",
+      name: "IEEE Mangalore Subsection",
+      desc: "IEEE Mangalore Subsection is a regional IEEE community connecting students, professionals, and technology enthusiasts. It promotes technical learning, collaboration, innovation, and professional development through various activities.  ",
       link: "buildfast.dev",
       buttonText: "Visit Website",
-      logo: "/buildfast.webp",
+      logo: "/IMS.webp",
     },
   ],
   inKind: [
     {
       name: "Unstop",
-      desc: "Unstop is a career and hiring platform that connects students and freshers with opportunities such as jobs, internships, hackathons, competitions, courses, and mentorships.",
+      desc: "Unstop is a leading platform connecting students and professionals with opportunities to learn, compete, and grow. It provides access to internships, jobs, competitions, and industry-driven opportunities for career development.  ",
       link: "https://unstop.com/",
       buttonText: "Visit Website",
       logo: "/Unstop.webp",
     },
     {
       name: ".xyz",
-      desc: "XYZ (.xyz) is a technology company that provides domain name extensions, with .xyz being its flagship and widely used domain.",
+      desc: "XYZ is a domain registry company that operates the .xyz domain and other domain extensions. It helps creators, startups, developers, and businesses build flexible digital identities and establish an online presence. XYZ focuses on making domain names accessible, innovative, and suitable for the next generation of internet users.   ",
       link: "https://gen.xyz/",
       buttonText: "Visit Website",
       logo: "/xyzLogo.webp",
@@ -81,14 +81,6 @@ function SponsorCard({ sponsor, variant }: { sponsor: Sponsor; variant: "sponsor
       <SponsorLogo name={sponsor.name} logo={sponsor.logo} />
       <span className={styles.sName}>{sponsor.name}</span>
       <p className={styles.sDesc}>{sponsor.desc}</p>
-      <a
-        href={getHref(sponsor.link)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.sLink}
-      >
-        {sponsor.buttonText} ↗
-      </a>
     </div>
   );
 }
@@ -103,8 +95,7 @@ export default function SponsorsSection() {
             OUR <span className="text-lime">SPONSORS</span>
           </h2>
           <p className="section-sub">
-            Singularity is proudly supported by industry leaders who believe
-            in the next generation of builders.
+            Singularity is proudly supported by industry leaders who share our commitment to fostering innovation and developing future-ready talent. Their support enables us to create meaningful opportunities for aspiring builders and technologists. Together, we aim to empower the next generation to transform ideas into impactful solutions.  
           </p>
         </div>
 
