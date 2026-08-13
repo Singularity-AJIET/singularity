@@ -4,11 +4,63 @@
 }
 
 .header {
-  max-width: 580px;
+  max-width: 100%;
   margin-bottom: 48px;
 }
 
+.scheduleDesc {
+  max-width: 100% !important;
+}
+
 /* Schedule Wrapper & Day Headers */
+.tabs {
+  display: none; /* Hidden on desktop by default */
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.tabGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.tabDate {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tabBtn {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tabBtn:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.tabBtnActive,
+.tabBtnActive:hover {
+  background: var(--accent-lime);
+  border-color: var(--accent-lime);
+  color: #08090c;
+  box-shadow: 4px 4px 0px var(--border);
+}
+
 .scheduleWrapper {
   display: flex;
   flex-direction: column;
@@ -150,4 +202,12 @@
   .eventGrid { grid-template-columns: 1fr; }
   .scheduleWrapper { gap: 48px; }
   .dayName { font-size: 1.8rem; }
+  
+  /* Enable tab UI on mobile */
+  .tabs { display: flex; }
+  .dayGroup { display: none; }
+  .dayGroup.dayActive { display: flex; }
+  
+  /* Hide redundant heading since tabs show the day */
+  .dayHeading { display: none; }
 }

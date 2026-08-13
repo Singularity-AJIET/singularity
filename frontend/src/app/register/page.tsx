@@ -78,10 +78,11 @@ export default function RegisterPage() {
         year_of_study: form.year_of_study,
         team_lead_email: form.team_lead_email || undefined,
         team_name: form.team_name || undefined,
-      } as any);
+      } as Parameters<typeof submitRegistration>[0]);
       setSuccess(true);
-    } catch (e: any) {
-      setError(e?.response?.data?.detail || "Something went wrong. Please try again.");
+    } catch (e: unknown) {
+      const err = e as { response?: { data?: { detail?: string } } };
+      setError(err?.response?.data?.detail || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -121,7 +122,7 @@ export default function RegisterPage() {
         {/* ── Left Panel ── */}
         <div className={styles.left}>
           <div className={styles.leftContent}>
-            <div className="section-label">// registration portal</div>
+            <div className="section-label">{"//"} registration portal</div>
             <h1 className={styles.leftTitle}>
               JOIN<br />
               THE <span className="text-lime">HACK.</span>

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
+import Image from "next/image";
 
 const NAV_LINKS = [
   { href: "/#about", label: "About" },
@@ -11,7 +12,10 @@ const NAV_LINKS = [
   { href: "/#faq", label: "FAQ" },
 ];
 
-const STATS = ["36 HRS", "₹1L+ PRIZES", "4 TRACKS", "AUG 15", "HACK_ON"];
+// TODO: replace with your actual Unstop event registration URL
+const UNSTOP_URL = "https://unstop.com/";
+
+const STATS = ["24HRS", "HACKATHON", "AJIET", "MANGALORE","INNOVATE","BUILD"];
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
 
 export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
@@ -19,6 +23,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [statIdx, setStatIdx] = useState(0);
   const [display, setDisplay] = useState(STATS[0]);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -26,16 +31,18 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Cycle stats
+  // Cycle stats — paused while hovered
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => {
       setStatIdx((i) => (i + 1) % STATS.length);
     }, 2400);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
 
-  // Scramble text on stat change
+  // Scramble text on stat change — skipped while paused
   useEffect(() => {
+    if (paused) return;
     const target = STATS[statIdx];
     let frame = 0;
     const total = 10;
@@ -60,64 +67,141 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
       frame++;
     }, 32);
     return () => clearInterval(id);
-  }, [statIdx]);
+  }, [statIdx, paused]);
+
+  // Lock body scroll while the mobile overlay is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
-    <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
-      <div className={styles.inner}>
-        {/* Logo */}
-        <a
-          href="#"
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-          className={styles.logo}
-          style={hideLogo ? { opacity: 0 } : { transition: "opacity 0.5s ease" }}
-        >
-          <span className={styles.logoIcon}>&gt;_</span>
-          <span>SINGULARITY</span>
-        </a>
+    <>
+      <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
+        <div className={styles.inner}>
+          {/* Logo */}
+          <a
+            href="#"
+            draggable={false}
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setMenuOpen(false);
+            }}
+            className={styles.logo}
+            style={hideLogo ? { opacity: 0 } : { transition: "opacity 0.5s ease" }}
+          >
+            <Image src="/logo.webp" alt="Singularity" width={40} height={40} className={styles.logoIcon} draggable={false} />
+            <span>SINGULARITY</span>
+          </a>
 
-        {/* Desktop links */}
-        <ul className={styles.links}>
-          {NAV_LINKS.map((l) => (
-            <li key={l.href}>
-              <a href={l.href} className={styles.link}>{l.label}</a>
-            </li>
-          ))}
-        </ul>
+          {/* Desktop links */}
+          <ul className={styles.links}>
+            {NAV_LINKS.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} className={styles.link}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
 
-        {/* Scramble display — no container, pure terminal text */}
-        <div className={styles.termDisplay}>
-          <span className={styles.termPrefix}>&gt;_&nbsp;</span>
-          <span className={styles.termText}>{display}</span>
-        </div>
-
-        {/* Hamburger */}
-        <button
-          className={styles.hamburger}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span className={menuOpen ? styles.barOpen : styles.bar} />
-          <span className={menuOpen ? styles.barOpen2 : styles.bar} />
-          <span className={menuOpen ? styles.barOpen3 : styles.bar} />
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className={styles.mobileMenu}>
-          {NAV_LINKS.map((l) => (
+          {/* Right side: system identity + system command (desktop only) */}
+          <div className={styles.navActions}>
+            <div
+              className={styles.termDisplay}
+              onMouseEnter={() => {
+                setDisplay(STATS[statIdx]);
+                setPaused(true);
+              }}
+              onMouseLeave={() => setPaused(false)}
+            >
+              <span className={styles.termPrefix}>&gt;__&nbsp;</span>
+              <span className={styles.termText}>{display}</span>
+            </div>
             <a
-              key={l.href}
-              href={l.href}
-              className={styles.mobileLink}
+              href={UNSTOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.registerBtn}
+            >
+              <span className={styles.registerCornerTR} aria-hidden="true" />
+              <span className={styles.registerSweep} aria-hidden="true" />
+              <span className={styles.registerLabel}>REGISTER</span>
+              <span className={styles.registerArrow} aria-hidden="true">→</span>
+              <span className={styles.registerCornerBL} aria-hidden="true" />
+            </a>
+          </div>
+
+          {/* Mobile menu trigger — [☰] morphs into [×] */}
+          <button
+            className={`${styles.menuTrigger} ${menuOpen ? styles.menuTriggerOpen : ""}`}
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+          >
+            <span className={styles.triggerIconWrap}>
+              <span className={`${styles.triggerLine} ${styles.triggerLineTop}`} />
+              <span className={`${styles.triggerLine} ${styles.triggerLineMid}`} />
+              <span className={`${styles.triggerLine} ${styles.triggerLineBottom}`} />
+            </span>
+          </button>
+        </div>
+      </nav>
+
+      {/*
+        Mobile full-screen navigation console.
+        IMPORTANT: this is a SIBLING of <nav>, not a child.
+        .nav has backdrop-filter, which creates a new containing block
+        for any position:fixed descendant. If this overlay stayed nested
+        inside <nav>, its "inset: 0" would resolve against .nav's own
+        (tiny, ~70px) box instead of the viewport — which is why it was
+        invisible. Keeping it outside <nav> lets position:fixed work
+        against the real viewport again.
+      */}
+      <div className={`${styles.mobileOverlay} ${menuOpen ? styles.mobileOverlayOpen : ""}`}>
+        <div className={styles.mobileOverlayInner}>
+          <div className={styles.mobileCenterGroup}>
+            <ul className={styles.mobileNavList}>
+              {NAV_LINKS.map((l, i) => (
+                <li
+                  key={l.href}
+                  className={styles.mobileNavItem}
+                  style={{ transitionDelay: menuOpen ? `${80 + i * 55}ms` : "0ms" }}
+                >
+                  <a
+                    href={l.href}
+                    className={styles.mobileNavLink}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <span className={styles.mobileNavIndex}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className={styles.mobileNavLabel}>{l.label}</span>
+                    <span className={styles.mobileNavArrow} aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href={UNSTOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.mobileRegisterCmd}
+              style={{ transitionDelay: menuOpen ? `${140 + NAV_LINKS.length * 55}ms` : "0ms" }}
               onClick={() => setMenuOpen(false)}
             >
-              {l.label}
+              <span className={styles.mobileRegisterCornerTR} aria-hidden="true" />
+              <span className={styles.mobileRegisterLabel}>INIT_REGISTER</span>
+              <span className={styles.mobileRegisterArrow} aria-hidden="true">→</span>
+              <span className={styles.mobileRegisterCornerBL} aria-hidden="true" />
             </a>
-          ))}
+          </div>
+
+          <div className={styles.mobileFooter}>SYSTEM&nbsp;//&nbsp;NAVIGATION</div>
         </div>
-      )}
-    </nav>
+      </div>
+    </>
   );
 }

@@ -1,44 +1,39 @@
 "use client";
-import Link from "next/link";
-import { Bot, Link as LinkIcon, Globe, Banknote } from "lucide-react";
+import { Bot, Link as LinkIcon, Globe } from "lucide-react";
 import styles from "./TracksSection.module.css";
+
+const THEME = {
+  name: "COMPETITION TRACKS",
+  description: "Dive deep into the realm of Artificial Intelligence and explore its frontiers across three core tracks. Participants will be challenged to build innovative solutions that push the boundaries of modern technology. The exact problem statements for each track will be exclusively revealed on the day of the hackathon."
+};
 
 const TRACKS = [
   {
-    id: "aiml",
-    name: "AI / ML",
+    id: "ps1",
+    name: "Generative AI Solutions",
     icon: <Bot size={32} />,
     color: "#c8f135",
     description:
-      "Build intelligent systems — from LLM-powered apps to computer vision, NLP, and predictive analytics that reshape industries.",
-    tags: ["Machine Learning", "LLMs", "Computer Vision", "NLP"],
+      "Build applications leveraging Large Language Models (LLMs) or multimodal GenAI.",
+    tags: ["GenAI", "LLMs", "Multimodal"],
   },
   {
-    id: "web3",
-    name: "Web3",
-    icon: <LinkIcon size={32} />,
+    id: "ps2",
+    name: "Computer Vision",
+    icon: <Globe size={32} />,
     color: "#ff2d6f",
     description:
-      "Decentralized apps, smart contracts, DAOs, DeFi, and the future of trustless, permissionless systems on blockchain.",
-    tags: ["Smart Contracts", "DeFi", "NFTs", "DAOs"],
+      "Develop models that interpret and process visual data from the real world.",
+    tags: ["Computer Vision", "Image Processing", "Object Detection"],
   },
   {
-    id: "social",
-    name: "Social Impact",
-    icon: <Globe size={32} />,
-    color: "#ffb830",
-    description:
-      "Tech for good — solutions tackling climate change, healthcare access, education equity, and civic accessibility.",
-    tags: ["Climate Tech", "EdTech", "HealthTech", "GovTech"],
-  },
-  {
-    id: "fintech",
-    name: "FinTech",
-    icon: <Banknote size={32} />,
+    id: "ps3",
+    name: "Predictive Analytics",
+    icon: <LinkIcon size={32} />,
     color: "#a78bfa",
     description:
-      "Reimagine finance — payments, lending, wealth management, insurance, and financial inclusion for the next billion.",
-    tags: ["Payments", "Lending", "InsurTech", "WealthTech"],
+      "Create data-driven AI solutions for forecasting trends and optimization.",
+    tags: ["Machine Learning", "Forecasting", "Data Models"],
   },
 ];
 
@@ -47,13 +42,13 @@ export default function TracksSection() {
     <section id="tracks" className={styles.section}>
       <div className={styles.sectionInner}>
         <div className={styles.header}>
-          <div className="section-label">// choose your battlefield</div>
+          <div className="section-label">{"//"} {THEME.name}</div>
           <h2 className="section-title">
-            HACKATHON <span className="text-lime">TRACKS</span>
+            HACKATHON <br />
+            <span className="text-lime">TRACKS</span>
           </h2>
-          <p className="section-sub">
-            Four tracks. One mission: build something that matters in 36 hours.
-            Pick your domain and go all in.
+          <p className={`section-sub ${styles.trackDesc}`}>
+            {THEME.description}
           </p>
         </div>
 
@@ -76,9 +71,6 @@ export default function TracksSection() {
                   <span key={t} className={styles.tag}>{t}</span>
                 ))}
               </div>
-              <Link href="/register" className={styles.cardCta}>
-                PICK THIS TRACK →
-              </Link>
             </div>
           ))}
         </div>

@@ -28,210 +28,605 @@
 .content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  max-width: 900px;
-  padding: 120px 24px 80px;
+  max-width: 1320px;
+  width: 100%;
+  padding: 140px 40px 60px;
 }
 
-/* Badge */
-.badge {
-  display: inline-flex;
+/* ============ TWO-COLUMN LAYOUT ============ */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(320px, 420px);
   align-items: center;
-  gap: 12px;
-  background: transparent;
-  border: 1px solid rgba(200, 241, 53, 0.2);
-  border-radius: 0;
-  padding: 10px 24px;
-  margin-bottom: 32px;
+  gap: 56px;
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 72px;
+}
+
+.left {
+  text-align: left;
+  max-width: 620px;
+}
+
+.title {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.25em;
-  color: var(--accent-lime);
-  position: relative;
-  transition: background 0.3s ease;
-}
-
-.badge::before,
-.badge::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border: 2px solid var(--accent-lime);
-  transition: all 0.2s ease;
-}
-
-.badge::before {
-  top: -2px; left: -2px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.badge::after {
-  bottom: -2px; right: -2px;
-  border-left: none;
-  border-top: none;
-}
-
-.badge:hover {
-  background: rgba(200, 241, 53, 0.05);
-  box-shadow: 0 0 20px rgba(200, 241, 53, 0.1);
-}
-
-.badge:hover::before {
-  top: -4px; left: -4px;
-}
-
-.badge:hover::after {
-  bottom: -4px; right: -4px;
-}
-
-.badgeText {
-  color: var(--accent-lime);
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 0;
-  background: var(--accent-lime);
-  box-shadow: 0 0 8px var(--accent-lime);
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.7); }
-}
-
-.badgeText { letter-spacing: 0.12em; }
-
-/* Headline */
-.headline {
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-size: clamp(3.05rem, 7.6vw, 7.6rem);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 24px;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: var(--text);
+  margin: 0 0 20px;
+  text-shadow: 0 0 50px rgba(200, 241, 53, 0.1);
 }
 
-.h1White  { color: var(--text); }
-.h1Lime   { color: var(--accent-lime); }
-.h1Amber  { color: var(--accent-amber); }
-.h1Pink   { color: var(--accent-pink); }
+.titleLine {
+  width: 110px;
+  height: 3px;
+  background: var(--accent-lime);
+  box-shadow: 0 0 14px var(--accent-lime);
+  margin-bottom: 32px;
+  animation: lineGrow 1.2s ease-out;
+}
+
+@keyframes lineGrow {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+
+  to {
+    width: 110px;
+    opacity: 1;
+  }
+}
 
 .sub {
   font-size: 1.05rem;
   color: var(--text-muted);
   max-width: 560px;
-  margin: 0 auto 48px;
+  margin: 0 0 44px;
   line-height: 1.8;
-}
-
-/* Countdown */
-.countdown {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 48px;
-}
-
-.unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  min-width: 90px;
-  box-shadow: 4px 4px 0px var(--accent-lime);
-}
-
-.num {
-  font-family: var(--font-mono);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1;
-}
-
-.label {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  color: var(--text-muted);
-  margin-top: 6px;
-}
-
-.colon {
-  font-family: var(--font-mono);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--border);
-  line-height: 1;
-  margin-bottom: 20px;
+  text-align: left;
 }
 
 /* CTAs */
 .ctas {
   display: flex;
-  gap: 16px;
-  justify-content: center;
+  gap: 60px;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  margin-bottom: 64px;
 }
 
-/* Stats strip */
-.stats {
-  display: flex;
+/* button wave sweep + click ripple — applied via the local .ctaBtn class
+   added alongside the global "btn btn-primary" / "btn btn-outline" classes */
+.ctaBtn {
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 1.3s ease;
+  pointer-events: none;
+}
+
+.ctaBtn:hover::before {
+  left: 125%;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  transform: scale(0);
+  animation: rippleExpand 0.6s ease-out;
+  pointer-events: none;
+}
+
+/* lime ripple specifically on the outline button — compound selector is
+   "pure" because .ctaBtn (local) is present alongside :global(.btn-outline) */
+.ctaBtn:global(.btn-outline) .ripple {
+  background: rgba(200, 241, 53, 0.3);
+}
+
+@keyframes rippleExpand {
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.loadingDots {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 32px;
-  flex-wrap: wrap;
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px 40px;
-  background: var(--surface-2);
-  box-shadow: 6px 6px 0px var(--accent-lime);
+  gap: 4px;
+  margin-left: 8px;
+  transform: translateY(6px);
 }
 
-.stat {
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #000;
+  opacity: 0.25;
+  animation: dotBlink 1.2s ease-in-out infinite;
+}
+
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotBlink {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.85); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* ============ COUNTDOWN PANEL (right column) ============ */
+.right {
+  justify-self: end;
+  width: 100%;
+  margin-top: -22px;
+}
+
+.countdownPanel {
+  position: relative;
+  width: 100%;
+  min-width: 460px;
+  border: 1px solid rgba(200, 241, 53, 0.25);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 44px 40px 38px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+  animation: panelGlow 4s ease-in-out infinite;
+}
+
+@keyframes panelGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0px rgba(200, 241, 53, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 28px rgba(200, 241, 53, 0.08);
+  }
+}
+
+.countdownPanel::before,
+.countdownPanel::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--accent-lime);
+  transition: all 0.2s ease;
+}
+
+.countdownPanel::before {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.countdownPanel::after {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+.countdownPanel:hover {
+  border-color: var(--accent-lime);
+  transform: translateY(-2px);
+  box-shadow: 0 0 36px rgba(200, 241, 53, 0.15);
+}
+
+.countdownPanel:hover::before {
+  top: -5px;
+  left: -5px;
+}
+
+.countdownPanel:hover::after {
+  bottom: -5px;
+  right: -5px;
+}
+.panelLabel {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.panelLabelAccent {
+  display: block;
+  color: var(--accent-lime);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.panelDivider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 16px 0 24px;
+}
+
+.countdownRow {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bigUnit {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  flex: 1;
+  padding: 20px 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 3px solid var(--accent-lime);
+  border-bottom: 3px solid var(--accent-lime);
+  background: rgba(255, 255, 255, 0.015);
+  cursor: default;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.25s ease, background 0.3s ease;
 }
 
-.statNum {
+.bigUnit:hover {
+  border-color: var(--accent-lime);
+  box-shadow: 0 0 26px rgba(200, 241, 53, 0.25);
+  transform: translateY(-4px);
+  background: rgba(200, 241, 53, 0.04);
+}
+
+.bigNum {
   font-family: var(--font-mono);
-  font-size: 1.6rem;
+  font-size: clamp(2.1rem, 3.8vw, 3rem);
   font-weight: 800;
   color: var(--text);
+  line-height: 1;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
-.statLabel {
-  font-size: 0.72rem;
+.bigUnit:hover .bigNum {
+  color: var(--accent-lime);
+  text-shadow: 0 0 18px rgba(200, 241, 53, 0.6);
+}
+
+.bigColon {
+  font-family: var(--font-mono);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  color: var(--accent-lime);
+  align-self: flex-start;
+  margin-top: 28px;
+}
+
+.bigLabel {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
   color: var(--text-muted);
-  letter-spacing: 0.08em;
   text-transform: uppercase;
+  margin-top: 8px;
 }
 
-.statDivider {
+/* ============ EVENT DATA RAIL ============ */
+.dataRail {
+  position: relative;
+  width: 100%;
+  padding: 34px 24px 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.railLine {
+  position: relative;
+  height: 1px;
+  background: rgba(200, 241, 53, 0.18);
+  overflow: visible;
+}
+
+.railPulse {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-lime);
+  box-shadow: 0 0 10px var(--accent-lime), 0 0 20px rgba(200, 241, 53, 0.4);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease;
+}
+
+.railParticle {
+  position: absolute;
+  top: 50%;
   width: 2px;
-  height: 40px;
-  background: var(--text);
+  height: 2px;
+  border-radius: 50%;
+  background: var(--accent-lime);
+  opacity: 0;
+  transform: translateY(-50%);
+  animation: railParticleTravel 6s linear infinite;
 }
 
-/* Scroll hint */
+@keyframes railParticleTravel {
+  0% {
+    left: 14.667%;
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 0.55;
+  }
+
+  92% {
+    opacity: 0.55;
+  }
+
+  100% {
+    left: 85.333%;
+    opacity: 0;
+  }
+}
+
+.railLine::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -4%;
+  width: 5%;
+  height: 25px;
+  background: linear-gradient(90deg, transparent, rgba(200, 241, 53, 0.5), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dataRail.scanned .railLine::after {
+  animation: railScanOnce 1.3s ease-out 1;
+}
+
+@keyframes railScanOnce {
+  0% {
+    left: -4%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.railNodes {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: -16px;
+}
+
+.railNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  padding: 10px 8px 0;
+  cursor: default;
+  transition: transform 0.25s ease;
+}
+
+.railNodeText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.railNode:hover {
+  transform: translateY(-4px) scale(1.04);
+}
+
+.nodeDot {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--surface, #111);
+  border: 2px solid var(--accent-lime);
+  box-shadow: 0 0 6px rgba(200, 241, 53, 0.35);
+  transition: box-shadow 0.45s ease, transform 0.45s ease, background 0.45s ease;
+}
+
+.railNode:hover .nodeDot {
+  background: var(--accent-lime);
+  box-shadow: 0 0 16px rgba(200, 241, 53, 0.7);
+  transform: scale(1.15);
+}
+
+.railNodeCenter .nodeDot {
+  width: 13px;
+  height: 13px;
+  animation: nodeBreathe 3.2s ease-in-out infinite;
+}
+
+@keyframes nodeBreathe {
+
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(200, 241, 53, 0.35);
+  }
+
+  50% {
+    box-shadow: 0 0 14px rgba(200, 241, 53, 0.55);
+  }
+}
+
+.nodeLabel {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.45s ease;
+}
+
+.railNode:hover .nodeLabel {
+  color: var(--accent-lime);
+}
+
+.nodeValue {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-align: center;
+  white-space: nowrap;
+  transition: text-shadow 0.45s ease;
+}
+
+.railNodeCenter .nodeValue {
+  font-size: 0.95rem;
+}
+
+.railNode:hover .nodeValue {
+  text-shadow: 0 0 10px rgba(200, 241, 53, 0.4);
+}
+
+/* ============ JS-SYNCED PULSE ACTIVATION ============ */
+.railNode.active .nodeDot {
+  background: var(--accent-lime);
+  box-shadow: 0 0 22px rgba(200, 241, 53, 0.9), 0 0 44px rgba(200, 241, 53, 0.35);
+  transform: scale(1.3);
+}
+
+.railNode.active .nodeLabel {
+  color: var(--accent-lime);
+}
+
+.railNode.active .nodeValue {
+  text-shadow: 0 0 12px rgba(200, 241, 53, 0.45);
+}
+
+.railNode.active .nodeDot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-lime);
+  opacity: 0.6;
+  animation: nodeRipple 0.6s ease-out;
+}
+
+@keyframes nodeRipple {
+  from {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.dataRail.scanned .railNode {
+  animation: nodeScanIn 0.6s ease both;
+}
+
+.dataRail.scanned .railNode:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.dataRail.scanned .railNode:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.dataRail.scanned .railNode:nth-child(3) {
+  animation-delay: 0.65s;
+}
+
+@keyframes nodeScanIn {
+  0% {
+    opacity: 0.4;
+    transform: translateY(4px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .dataRail,
+  .dataRail * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .railNode.active .nodeDot::after {
+    animation: none !important;
+  }
+
+  .ctaBtn::before {
+    display: none;
+  }
+
+  .ripple {
+    display: none;
+  }
+
+  .dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+/* ============ SCROLL HINT ============ */
 .scrollHint {
   position: absolute;
   bottom: 32px;
@@ -246,14 +641,23 @@
 
 .scrollLine {
   width: 1px;
-  height: 40px;
+  height: 36px;
   background: linear-gradient(to bottom, transparent, var(--accent-lime));
   animation: scrollAnim 1.5s ease-in-out infinite;
 }
 
 @keyframes scrollAnim {
-  0%, 100% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
+
+  0%,
+  100% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
 }
 
 .scrollText {
@@ -263,8 +667,181 @@
   color: var(--text-muted);
 }
 
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1024px) {
+  .content {
+    padding: 120px 24px 60px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 48px;
+    margin-top: 24px;
+    margin-bottom: 56px;
+  }
+
+  .left {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: clamp(2.6rem, 12vw, 5rem);
+  }
+
+  .titleLine {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sub {
+    margin: 0 auto 36px;
+    text-align: center;
+  }
+
+  .ctas {
+    justify-content: center;
+  }
+
+  .right {
+    justify-self: center;
+    max-width: 440px;
+  }
+
+  .countdownPanel {
+    min-width: 0;
+  }
+}
+
 @media (max-width: 600px) {
-  .unit { min-width: 68px; padding: 12px 14px; }
-  .stats { gap: 16px; padding: 16px 20px; }
-  .statDivider { display: none; }
+  /* --- Hero shell: size to its own content on mobile instead of being
+     forced to fill 100vh — that stretch was what pushed SCROLL way
+     down and left a dead gap after the event timeline --- */
+  .hero {
+    min-height: 0;
+    height: auto;
+    display: block;
+    padding-bottom: 0;
+  }
+
+  .content {
+    padding: 110px 18px 0;
+  }
+
+  .layout {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+
+  /* --- Scroll hint: normal flow, a short fixed gap below the
+     timeline instead of pinned to the viewport bottom --- */
+  .scrollHint {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin: 20px 0 28px;
+  }
+
+  /* --- CTAs: guaranteed side-by-side, no clipping on 320px --- */
+  .ctas {
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .ctaBtn {
+    flex: 1;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 14px 8px;
+    font-size: 0.7rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .loadingDots {
+    margin-left: 4px;
+    transform: translateY(3px);
+  }
+
+  /* --- Countdown panel: full width, safe margins, nothing clipped --- */
+  .countdownPanel {
+    width: 100%;
+    padding: 26px 18px 22px;
+  }
+
+  .bigUnit {
+    padding: 14px 4px 12px;
+  }
+
+  .bigNum {
+    font-size: 1.55rem;
+  }
+
+  .bigColon {
+    font-size: 1.2rem;
+    padding-bottom: 14px;
+  }
+
+  .bigLabel {
+    font-size: 0.5rem;
+  }
+
+  /* --- Event timeline: tighter so it doesn't leave a dead gap
+     before the next section --- */
+  .dataRail {
+    padding: 22px 20px 18px;
+  }
+
+  .railLine,
+  .railPulse,
+  .railParticle {
+    display: none;
+  }
+
+  .railNodes {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 0;
+  }
+
+  .railNode {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .railNode:hover {
+    transform: translateX(4px) scale(1);
+  }
+
+  .railNode:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 22px;
+    width: 1px;
+    height: 20px;
+    background: rgba(200, 241, 53, 0.2);
+  }
+
+  .nodeDot {
+    flex-shrink: 0;
+  }
+
+  .railNodeText {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
 }

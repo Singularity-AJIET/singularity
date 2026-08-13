@@ -3,10 +3,10 @@ import styles from "./TickerTape.module.css";
 
 const PHRASES = [
   "BUILD THE FUTURE",
+  "CODE THE UNKNOWN",
   "DEFY LIMITS",
+  "CODE OR CONQUER",
   "SINGULARITY 2026",
-  "HACK THE PLANET",
-  "INNOVATE OR DIE",
   "CODE IS LAW",
   "NO BOUNDARIES",
 ];
@@ -17,7 +17,7 @@ export default function TickerTape() {
       {PHRASES.map((phrase, i) => (
         <div key={i} className={styles.tickerItem}>
           <span>{phrase}</span>
-          <span className={styles.separator}>//</span>
+          <span className={styles.separator}>{"//"}</span>
         </div>
       ))}
     </>

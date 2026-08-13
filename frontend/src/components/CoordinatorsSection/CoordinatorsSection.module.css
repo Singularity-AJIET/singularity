@@ -3,7 +3,7 @@
   border-top: 2px solid var(--border);
   position: relative;
   overflow: hidden;
-  padding: 80px 0;
+  padding: 20px 0;
 }
 
 .header {
@@ -385,6 +385,12 @@
   position: absolute;
   inset: 32px;
   pointer-events: none;
+  /* Back to the original low z-index — this layer is meant to sit BEHIND
+     the sliding cards (that's the intended HUD-in-the-background look).
+     Only the interactive filter (.filterHud, rendered separately) needs
+     to sit above the slides; raising this whole layer previously made the
+     passive labels (V 1.0.4 / LNK_ESTABLISHED / REC) paint over the
+     polaroid mid-animation, which was the desktop animation bug. */
   z-index: 5;
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -392,7 +398,28 @@
   letter-spacing: 0.2em;
 }
 
-.uiTopLeft { position: absolute; top: 0; left: 0; }
+/* Filter HUD — deliberately a sibling of .uiOverlay, not a child of it, so
+   it can carry its own z-index above the slide stack (max z-index 100)
+   without dragging the rest of the passive overlay along with it. */
+.filterHud {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.2em;
+  pointer-events: all;
+}
+
+.uiTopLeftLabel {
+  white-space: nowrap;
+}
+
 .uiTopRight { position: absolute; top: 0; right: 0; }
 .uiBottomLeft { position: absolute; bottom: 0; left: 0; }
 .uiBottomRight { 
@@ -402,6 +429,112 @@
   display: flex; 
   align-items: center; 
   gap: 8px; 
+}
+
+/* Role filter — sits right after "SYS.ADMIN //", now interactive.
+   No boxed/bordered container in the closed state — it reads as part of
+   the terminal-style label line and only reveals structure on hover/open. */
+.filterDropdown {
+  position: relative;
+  pointer-events: all;
+}
+
+.filterTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 2px 0 4px 0;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.filterTrigger:hover,
+.filterTrigger[aria-expanded="true"] {
+  color: var(--accent-lime);
+  border-bottom-color: rgba(200, 241, 53, 0.4);
+}
+
+.filterChevron {
+  display: inline-flex;
+  opacity: 0.6;
+  transition: transform 0.25s ease, opacity 0.2s;
+}
+
+.filterTrigger:hover .filterChevron,
+.filterTrigger[aria-expanded="true"] .filterChevron {
+  opacity: 1;
+}
+
+.filterChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Dropdown panel — dark, blends into the same surface language as the
+   rest of the UI instead of the browser's default white/blue list.
+   Rows are flat with a hairline divider and a left accent bar on
+   hover/active, rather than a rounded "button" per row. */
+.filterMenu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  min-width: 240px;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: rgba(12, 12, 12, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid var(--accent-lime);
+  border-radius: 8px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
+  z-index: 300;
+}
+
+.filterOption {
+  padding: 10px 14px 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  white-space: nowrap;
+  border-left: 2px solid transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filterMenu li.filterOption:last-child {
+  border-bottom: none;
+}
+
+.filterOption:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.filterOptionActive {
+  color: var(--accent-lime);
+  background: rgba(200, 241, 53, 0.06);
+  border-left-color: var(--accent-lime);
+}
+
+.filterOptionActive:hover {
+  background: rgba(200, 241, 53, 0.1);
+  border-left-color: var(--accent-lime);
 }
 
 .blinker {
@@ -465,9 +598,87 @@
 }
 
 @media (max-width: 1024px) {
-  .slideInner { flex-direction: column; text-align: left; gap: 32px; align-items: flex-start; }
-  .role { align-self: flex-start; }
-  .avatarWrapper { flex: 0 0 200px; height: 200px; align-self: flex-start; }
-  .controls { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .slideInner {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 32px;
+    top: 48%;
+  }
+  .role { align-self: center; }
+  .avatarWrapper { flex: 0 0 200px; height: 200px; align-self: center; }
+  .info { align-items: center; }
+  .socials { justify-content: center; }
+  .controls { flex-direction: column; align-items: center; gap: 16px; }
   .screen { min-height: 650px; }
+}
+
+/* === MOBILE === */
+@media (max-width: 640px) {
+  .section { padding: 20px 0; }
+  .carouselContainer { padding: 0 12px; gap: 16px; }
+  .header { padding: 0 12px; margin-bottom: 24px; }
+
+  .screen { min-height: 500px; border-width: 3px; box-shadow: 5px 5px 0px var(--border); }
+  .screen::after { inset: 14px; }
+
+  /* Push neighboring (peeking) slides fully clear of the viewport instead of
+     letting their names/images bleed in at the edges on narrow screens.
+     top is pushed further down so the floating polaroid/platform clears
+     the filter row with a visible gap rather than crowding it. */
+  .slideInner {
+    top: 52%;
+    width: 88%;
+    gap: 14px;
+    transform: translate(-50%, -50%) translateX(calc(var(--offset) * 130%)) scale(var(--scale));
+  }
+
+  .avatarWrapper { flex: 0 0 210px; height: 210px; padding-bottom: 28px; }
+  .polaroid { width: 160px; padding: 8px 8px 36px 8px; }
+  .polaroid .avatar { height: 140px; }
+  .polaroid::after { height: 36px; line-height: 36px; font-size: 0.55rem; }
+  .platform { width: 150px; }
+  .groundGlow { width: 180px; }
+
+  .name { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .role {
+    font-size: 0.75rem;
+    padding: 8px 16px;
+    box-shadow: 3px 3px 0px var(--accent, var(--accent-lime));
+  }
+
+  .socials { gap: 10px; margin-top: 12px; }
+  .socialBtn { width: 46px; height: 46px; box-shadow: 3px 3px 0px var(--border); }
+
+  /* HUD overlay: shrink and give each readout a dark chip so it stays legible
+     over busy/light avatar artwork instead of disappearing against it */
+  .uiOverlay { inset: 14px; font-size: 0.55rem; letter-spacing: 0.14em; }
+  .filterHud { top: 14px; left: 14px; font-size: 0.55rem; letter-spacing: 0.14em; }
+
+  .filterHud,
+  .uiTopRight,
+  .uiBottomLeft,
+  .uiBottomRight {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 4px 7px;
+    border-radius: 4px;
+  }
+
+  .filterHud { gap: 6px; max-width: calc(100% - 20px); }
+  .uiTopLeftLabel { font-size: 0.55rem; }
+
+  .filterTrigger { font-size: 0.6rem; gap: 5px; }
+  .filterMenu {
+    min-width: 0;
+    width: calc(100vw - 56px);
+    max-width: 280px;
+    top: calc(100% + 8px);
+  }
+  .filterOption { white-space: normal; font-size: 0.62rem; padding: 8px 10px; }
+
+  .crosshair { display: none; }
+
+  .pagination { bottom: 14px; gap: 6px; max-width: 85%; }
 }

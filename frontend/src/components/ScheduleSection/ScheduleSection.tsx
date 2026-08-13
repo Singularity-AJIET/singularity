@@ -1,50 +1,81 @@
+"use client";
+import { useState } from "react";
 import styles from "./ScheduleSection.module.css";
 
 const SCHEDULE = [
   {
     day: "Day 1",
-    date: "Aug 15",
+    date: "Sep 17",
     events: [
-      { time: "8:30 AM onwards", title: "Registration & Check-in", color: "#00d2ff", label: "LOGISTICS", desc: ["Participant registration & verification", "ID card distribution", "Hackathon kit distribution", "Team check-in & onboarding", "Venue guidance"] },
-      { time: "9:00 AM - 10:00 AM", title: "Breakfast Session", color: "#ffb830", label: "SOCIAL", desc: ["Networking breakfast for all participants"] },
-      { time: "10:00 AM - 11:30 AM", title: "Inauguration Ceremony", color: "#ff2a6d", label: "KEYNOTE", desc: ["Welcome address & speeches", "Briefing & rules announcement", "Track & problem statement intro"] },
-      { time: "12:00 PM", title: "Official Hackathon Kickoff", color: "#c8f135", label: "HACK", desc: ["Development officially begins", "Team workspace allocation", "Mentor interaction starts"] },
-      { time: "1:00 PM - 2:00 PM", title: "Lunch Break", color: "#ff7b00", label: "SOCIAL", desc: ["Lunch and informal networking"] },
-      { time: "4:00 PM", title: "Round 1 Evaluation", color: "#a78bfa", label: "MENTOR", desc: ["Initial idea validation", "Progress & implementation review", "Mentor feedback session"] },
-      { time: "5:00 PM", title: "Coffee & Snacks Break", color: "#38bdf8", label: "SOCIAL", desc: ["Evening refreshments & networking", "Coffee and snacks served"] },
-      { time: "8:00 PM - 9:30 PM", title: "Dinner Break", color: "#888580", label: "SOCIAL", desc: ["Dinner and refreshment session"] },
-      { time: "8:30 PM", title: "Round 2 Evaluation", color: "#05d550", label: "MENTOR", desc: ["Intermediate prototype review", "Technical mentorship feedback", "Debugging & optimization guidance"] },
+      { time: "8:30 AM – 9:30 AM", title: "Registration & Check-in", color: "#00d2ff", label: "LOGISTICS", desc: ["Participant registration & verification", "Hackathon kit distribution"] },
+      { time: "8:30 AM – 9:30 AM", title: "Breakfast", color: "#ffb830", label: "SOCIAL", desc: ["Networking breakfast for all participants"] },
+      { time: "9:30 AM", title: "Official Hackathon Kickoff", color: "#c8f135", label: "HACK", desc: ["Coding officially begins", "Team workspace setup"] },
+      { time: "10:30 AM – 11:00 AM", title: "Inauguration Ceremony", color: "#ff2a6d", label: "CEREMONY", desc: ["Welcome Address & Chief Guest Address", "Hackathon Brief & Rules"] },
+      { time: "11:00 AM – 1:00 PM", title: "Development Continues", color: "#c8f135", label: "HACK", desc: ["Focus on core functionalities"] },
+      { time: "1:00 PM – 2:00 PM", title: "Lunch Break", color: "#ff7b00", label: "SOCIAL", desc: ["Lunch and informal networking"] },
+      { time: "2:00 PM – 4:00 PM", title: "Development & Mentor Interactions", color: "#a78bfa", label: "MENTOR", desc: ["Technical mentorship & guidance"] },
+      { time: "4:00 PM – 5:00 PM", title: "Phase 1 Evaluation", color: "#05d550", label: "JUDGING", desc: ["Progress Check by Judges & Mentors", "Initial idea validation"] },
+      { time: "5:00 PM – 5:30 PM", title: "Coffee & Snacks Break", color: "#38bdf8", label: "SOCIAL", desc: ["Evening refreshments"] },
+      { time: "5:30 PM – 8:00 PM", title: "Development Continues", color: "#c8f135", label: "HACK", desc: ["Working on implementation feedback"] },
+      { time: "8:00 PM – 9:00 PM", title: "Dinner Break", color: "#888580", label: "SOCIAL", desc: ["Dinner and refreshment session"] },
+      { time: "9:00 PM – 10:00 PM", title: "Phase 2 Evaluation", color: "#ff2a6d", label: "JUDGING", desc: ["Prototype Review & Feedback"] },
+      { time: "10:00 PM – 12:00 AM", title: "Development & Mentor Support", color: "#a78bfa", label: "MENTOR", desc: ["Late night hacking & support"] },
     ],
   },
   {
     day: "Day 2",
-    date: "Aug 16",
+    date: "Sep 18",
     events: [
-      { time: "12:00 AM", title: "Midnight Coffee Break", color: "#a78bfa", label: "SOCIAL", desc: ["Midnight refreshment session", "Coffee and snacks served"] },
-      { time: "8:00 AM - 9:00 AM", title: "Breakfast (Day 2)", color: "#ffb830", label: "SOCIAL", desc: ["Morning refreshment & networking"] },
-      { time: "12:00 PM", title: "Final Evaluation & Demo", color: "#ff2a6d", label: "KEYNOTE", desc: ["Final product demonstration", "Jury technical assessment", "Innovation & scalability review"] },
-      { time: "1:00 PM - 2:00 PM", title: "Lunch Break", color: "#c8f135", label: "SOCIAL", desc: ["Lunch for participants, mentors, judges"] },
-      { time: "2:00 PM onwards", title: "Results & Prize Distribution", color: "#00d2ff", label: "KEYNOTE", desc: ["Winner announcement & prizes", "Closing remarks & networking"] },
+      { time: "12:00 AM – 12:30 AM", title: "Midnight Coffee Break", color: "#ffb830", label: "SOCIAL", desc: ["Midnight refreshment session"] },
+      { time: "12:30 AM – 7:30 AM", title: "Overnight Development", color: "#c8f135", label: "HACK", desc: ["Uninterrupted coding sprint"] },
+      { time: "7:30 AM – 8:30 AM", title: "Breakfast", color: "#ff7b00", label: "SOCIAL", desc: ["Morning refreshment & networking"] },
+      { time: "8:30 AM – 10:00 AM", title: "Final Development", color: "#c8f135", label: "HACK", desc: ["Final testing & Project submission"] },
+      { time: "10:00 AM", title: "Hackathon Ends", color: "#ff2a6d", label: "DEADLINE", desc: ["Code Freeze & Final Submission"] },
+      { time: "10:00 AM – 11:00 AM", title: "Final Evaluation – Round 1", color: "#00d2ff", label: "JUDGING", desc: ["All teams demonstrate completed projects to judges"] },
+      { time: "11:00 AM – 11:15 AM", title: "Judges' Deliberation", color: "#a78bfa", label: "LOGISTICS", desc: ["Announcement of Top 10 Finalists"] },
+      { time: "11:15 AM – 12:00 PM", title: "Final Evaluation – Round 2", color: "#05d550", label: "JUDGING", desc: ["Top 10 Stage Presentations", "Live Demo & Q&A"] },
+      { time: "12:00 PM – 1:00 PM", title: "Valedictory Function", color: "#ffb830", label: "CEREMONY", desc: ["Winner Announcement & Prize Distribution"] },
+      { time: "1:00 PM – 2:00 PM", title: "Lunch", color: "#ff7b00", label: "SOCIAL", desc: ["Lunch for participants, mentors, judges"] },
     ],
   }
 ];
 
 export default function ScheduleSection() {
+  const [activeDay, setActiveDay] = useState(0);
+
   return (
     <section id="schedule" className={styles.section}>
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// event timeline</div>
+          <div className="section-label">{"//"} event timeline</div>
           <h2 className="section-title">THE <span className="text-lime">SCHEDULE</span></h2>
-          <p className="section-sub">
-            36 hours structured for maximum output — workshops, mentors, and milestones keeping you on track.
+          <p className={`section-sub ${styles.scheduleDesc}`}>
+            Prepare for an intense 24-hour sprint of continuous building, learning, and collaborating. Our meticulously crafted schedule is designed to maximize your potential—from intense coding sprints and live evaluations to crucial development milestones. Stay focused, stay energized, and let the timeline guide your team to success.
           </p>
         </div>
 
-        {/* Event cards grid for all days */}
+        <div className={styles.tabs}>
+          <div className={styles.tabGroup}>
+            {SCHEDULE.map((dayData, index) => (
+              <button
+                key={index}
+                className={`${styles.tabBtn} ${activeDay === index ? styles.tabBtnActive : ""}`}
+                onClick={() => setActiveDay(index)}
+              >
+                {dayData.day}
+              </button>
+            ))}
+          </div>
+          <span className={styles.tabDate}>{"//"} {SCHEDULE[activeDay].date}</span>
+        </div>
+
+        {/* Event cards grid */}
         <div className={styles.scheduleWrapper}>
           {SCHEDULE.map((dayData, dayIndex) => (
-            <div key={dayIndex} className={styles.dayGroup}>
+            <div 
+              key={dayIndex} 
+              className={`${styles.dayGroup} ${activeDay === dayIndex ? styles.dayActive : ""}`}
+            >
               <h3 className={styles.dayHeading}>
                 <span className={styles.dayName}>{dayData.day}</span>
                 <span className={styles.dayDate}>{"//"} {dayData.date}</span>

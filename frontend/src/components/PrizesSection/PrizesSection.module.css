@@ -4,7 +4,7 @@
 }
 
 .header {
-  max-width: 580px;
+  max-width: none;
   margin-bottom: 48px;
 }
 
@@ -71,7 +71,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 14px;
 }
 
 .card {
@@ -81,7 +81,7 @@
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   transition: transform 0.1s, box-shadow 0.1s;
   box-shadow: 4px 4px 0px var(--accent-lime);
 }
@@ -106,12 +106,14 @@
 
 .cardAmount {
   font-family: var(--font-mono);
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 900;
   color: var(--text);
 }
 
 .perks {
+  color: var(--text-muted);
+  font-size: 0.85rem;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -120,17 +122,22 @@
 
 .perk {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
-  font-size: 0.82rem;
-  color: var(--text-muted);
 }
 
 .perkDot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
   border-radius: 50%;
-  flex-shrink: 0;
+}
+
+.sectionSub {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 16px;
 }
 
 @media (max-width: 900px) {
