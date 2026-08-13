@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  const [admin, setAdmin] = useState<any>(null);
+  const [admin, setAdmin] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
     const profile = localStorage.getItem("admin_profile");
@@ -40,7 +40,7 @@ export default function Navbar() {
               </svg>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-lg sm:text-xl font-bold tracking-tight">Singularity<span className="text-yellow-400 drop-shadow-[0_0_5px_rgba(234,179,8,0.3)]"> '26</span></span>
+              <span className="text-lg sm:text-xl font-bold tracking-tight">Singularity<span className="text-yellow-400 drop-shadow-[0_0_5px_rgba(234,179,8,0.3)]"> &apos;26</span></span>
             </div>
           </div>
 

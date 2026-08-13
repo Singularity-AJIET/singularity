@@ -10,10 +10,6 @@ interface Sponsor {
   logo: string; // e.g. "/sponsors/techcorp.png" — leave "" to show upload placeholder
 }
 
-function getHref(link: string) {
-  return /^https?:\/\//i.test(link) ? link : `https://${link}`;
-}
-
 const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
   sponsors: [
     {
@@ -90,7 +86,7 @@ export default function SponsorsSection() {
     <section id="sponsors" className={styles.section}>
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// made possible by</div>
+          <div className="section-label">{"//"} made possible by</div>
           <h2 className="section-title">
             OUR <span className="text-lime">SPONSORS</span>
           </h2>

@@ -40,7 +40,7 @@ export default function RegistrationInfoSection() {
     <section id="registration" className={styles.section}>
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// registration</div>
+          <div className="section-label">{"//"} registration</div>
           <h2 className="section-title">
             TEAM <span className="text-lime">REGISTRATION</span>
           </h2>

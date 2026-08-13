@@ -57,11 +57,11 @@ function roleColor(role: string) {
 /* ─────────────────────────── Page ─────────────────────────── */
 export default function ClaimsReportPage() {
   const router = useRouter();
-  const [admin, setAdmin] = useState<any>(null);
+
   const [claims, setClaims] = useState<ClaimRecord[]>([]);
   const [counters, setCounters] = useState<CounterSession[]>([]);
-  const [allParticipants, setAllParticipants] = useState<any[]>([]);
-  const [allStaff, setAllStaff] = useState<any[]>([]);
+  const [allParticipants, setAllParticipants] = useState<Record<string, unknown>[]>([]);
+  const [allStaff, setAllStaff] = useState<Record<string, unknown>[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -87,8 +87,9 @@ export default function ClaimsReportPage() {
     const token = localStorage.getItem("admin_token");
     const profile = localStorage.getItem("admin_profile");
     if (!token || !profile) { router.push("/nexus/login"); return; }
-    setAdmin(JSON.parse(profile));
+    JSON.parse(profile); // Just validate it parses
     fetchData(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const fetchData = async (token: string) => {
@@ -119,17 +120,14 @@ export default function ClaimsReportPage() {
       }
       if (partsRes.ok) setAllParticipants(await partsRes.json());
       if (staffRes.ok) setAllStaff(await staffRes.json());
-    } catch (e: any) {
-      setError(e.message || "Failed to load data.");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Failed to load data.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const refetch = () => {
-    const token = localStorage.getItem("admin_token");
-    if (token) fetchData(token);
-  };
+
 
   /* ── Derived data ── */
   const summaryByItemType = useMemo(() => {
@@ -142,8 +140,7 @@ export default function ClaimsReportPage() {
     return map;
   }, [claims]);
 
-  const totalParticipantClaimed = claims.filter(c => !c.isStaff).length;
-  const totalStaffClaimed = claims.filter(c => c.isStaff).length;
+
 
   const filteredClaims = useMemo(() => {
     if (!selectedItemType) return [];

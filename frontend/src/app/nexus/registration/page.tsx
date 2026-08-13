@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getApiBaseUrl, getAdminRole } from "@/lib/api";
+import { getApiBaseUrl } from "@/lib/api";
 
 interface Participant {
   id: string;
@@ -20,7 +20,7 @@ interface Participant {
 
 export default function RegistrationPage() {
   const router = useRouter();
-  const [admin, setAdmin] = useState<any>(null);
+  const [admin, setAdmin] = useState<Record<string, unknown> | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [staff, setStaff] = useState<Participant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,6 +53,7 @@ export default function RegistrationPage() {
     const parsedProfile = JSON.parse(profile);
     setAdmin(parsedProfile);
     fetchRosters(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // Toast Auto-dismissal
@@ -86,8 +87,8 @@ export default function RegistrationPage() {
       if (!staffRes.ok) throw new Error("Failed to load staff list.");
       const staffData = await staffRes.json();
       setStaff(staffData);
-    } catch (err: any) {
-      setError(err.message || "An error occurred while loading lists.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred while loading lists.");
     } finally {
       setIsLoading(false);
     }
@@ -124,9 +125,9 @@ export default function RegistrationPage() {
 
       // Refresh rosters to sync local state
       await fetchRosters(token);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setToast({
-        message: err.message || `Failed to check in ${name}.`,
+        message: err instanceof Error ? err.message : `Failed to check in ${name}.`,
         type: "error"
       });
     } finally {
@@ -164,9 +165,9 @@ export default function RegistrationPage() {
 
       // Refresh rosters to sync local state
       await fetchRosters(token);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setToast({
-        message: err.message || `Failed to perform bulk check-in.`,
+        message: err instanceof Error ? err.message : `Failed to perform bulk check-in.`,
         type: "error"
       });
     } finally {

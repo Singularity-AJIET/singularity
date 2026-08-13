@@ -1,5 +1,5 @@
 "use client";
-import { Bot, Link as LinkIcon, Globe, Banknote } from "lucide-react";
+import { Bot, Link as LinkIcon, Globe } from "lucide-react";
 import styles from "./TracksSection.module.css";
 
 const THEME = {
@@ -42,7 +42,7 @@ export default function TracksSection() {
     <section id="tracks" className={styles.section}>
       <div className={styles.sectionInner}>
         <div className={styles.header}>
-          <div className="section-label">// {THEME.name}</div>
+          <div className="section-label">{"//"} {THEME.name}</div>
           <h2 className="section-title">
             HACKATHON <br />
             <span className="text-lime">TRACKS</span>

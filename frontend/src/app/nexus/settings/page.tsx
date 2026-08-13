@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { getApiBaseUrl, getAdminRole } from "@/lib/api";
+import { getApiBaseUrl } from "@/lib/api";
 
 interface ImportedParticipant {
   id: string;
@@ -24,7 +24,7 @@ interface AdminUser {
 export default function SettingsPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [admin, setAdmin] = useState<any>(null);
+  const [admin, setAdmin] = useState<Record<string, unknown> | null>(null);
   
   // Navigation tabs: 'feed' | 'admins'
   const [activeTab, setActiveTab] = useState<"feed" | "admins">("admins");
@@ -81,6 +81,7 @@ export default function SettingsPage() {
     if (activeTab === "admins") {
       fetchAdmins();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   // Toast Auto-dismissal
@@ -113,8 +114,8 @@ export default function SettingsPage() {
       if (!res.ok) throw new Error("Failed to load administrator accounts.");
       const data = await res.json();
       setAdminsList(data);
-    } catch (err: any) {
-      setError(err.message || "An error occurred while loading admins.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setAdminsLoading(false);
     }
@@ -196,8 +197,8 @@ export default function SettingsPage() {
 
       // Clear selected file after successful upload
       setFile(null);
-    } catch (err: any) {
-      setError(err.message || "An error occurred during file import.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred during file import.");
     } finally {
       setIsLoading(false);
     }
@@ -236,8 +237,8 @@ export default function SettingsPage() {
 
       setToast({ message: "All database tables successfully wiped!", type: "success" });
       setSuccessList(null);
-    } catch (err: any) {
-      setError(err.message || "An error occurred while clearing data.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred while clearing data.");
     } finally {
       setIsClearing(false);
     }
@@ -285,8 +286,8 @@ export default function SettingsPage() {
       
       // Reload administrator accounts list
       await fetchAdmins();
-    } catch (err: any) {
-      setError(err.message || "Registration request failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Registration request failed.");
     } finally {
       setCreateLoading(false);
     }
@@ -321,8 +322,8 @@ export default function SettingsPage() {
       setToast({ message: `Successfully updated password for "${username}"!`, type: "success" });
       setEditingAdminId(null);
       setUpdatePasswordValue("");
-    } catch (err: any) {
-      setError(err.message || "Password update failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Password update failed.");
     } finally {
       setUpdateLoading(false);
     }
@@ -351,8 +352,8 @@ export default function SettingsPage() {
 
       setToast({ message: `Successfully deleted admin account "${username}"!`, type: "success" });
       await fetchAdmins();
-    } catch (err: any) {
-      setError(err.message || "Deletion failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Deletion failed.");
     }
   };
 

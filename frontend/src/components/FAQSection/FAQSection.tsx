@@ -21,7 +21,7 @@ export default function FAQSection() {
       <div className="section">
         <div className={styles.layout}>
           <div className={styles.left}>
-            <div className="section-label">// got questions?</div>
+            <div className="section-label">{"//"} got questions?</div>
             <h2 className="section-title">
               FREQUENTLY<br />
               <span className="text-lime">ASKED</span>

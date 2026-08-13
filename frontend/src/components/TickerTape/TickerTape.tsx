@@ -17,7 +17,7 @@ export default function TickerTape() {
       {PHRASES.map((phrase, i) => (
         <div key={i} className={styles.tickerItem}>
           <span>{phrase}</span>
-          <span className={styles.separator}>//</span>
+          <span className={styles.separator}>{"//"}</span>
         </div>
       ))}
     </>

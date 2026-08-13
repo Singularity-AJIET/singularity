@@ -201,13 +201,14 @@ export default function CoordinatorsSection() {
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleList.length]);
 
   return (
     <section className={styles.section} id="coordinators">
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// the team</div>
+          <div className="section-label">{"//"} the team</div>
           <h2 className="section-title">MEET THE <span className="text-lime">CREW</span></h2>
           <p className="section-sub" style={{ textTransform: "lowercase", opacity: 0.7 }}>interact to explore the roster.</p>
         </div>
@@ -306,6 +307,7 @@ export default function CoordinatorsSection() {
                       onPointerUp={offset === 0 ? handlePointerUp : undefined}
                       onPointerCancel={offset === 0 ? handlePointerUp : undefined}
                     >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={`https://api.dicebear.com/8.x/micah/svg?seed=${coord.seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc`}
                         alt={coord.name}

@@ -31,13 +31,13 @@ interface CameraDevice {
 
 export default function ScannerPage() {
   const router = useRouter();
-  const [admin, setAdmin] = useState<any>(null);
+  // Admin state not strictly needed for this page render
   
   // State variables
   const [counters, setCounters] = useState<CounterSession[]>([]);
   const [selectedCounter, setSelectedCounter] = useState<string>("");
   const [isLoadingCounters, setIsLoadingCounters] = useState(true);
-  const [error, setError] = useState("");
+  const [error] = useState("");
   
   // Scan result state
   const [scanStatus, setScanStatus] = useState<"idle" | "scanning" | "processing" | "success" | "warning" | "error" | "closed">("idle");
@@ -64,7 +64,7 @@ export default function ScannerPage() {
   const isScanningActive = useRef(false);
   const scanInProgress = useRef(false);
   const lastScannedToken = useRef<string>("");
-  const lastScannedTime = useRef<number>(0);
+  
 
   // Haptic Vibration feedback for mobile scanning (No audio, vibration only)
   const vibrate = (type: "success" | "warning" | "error") => {
@@ -77,7 +77,7 @@ export default function ScannerPage() {
         } else {
           navigator.vibrate([200, 80, 200]); // Heavy double buzz for error
         }
-      } catch (e) {
+      } catch {
         // Ignore if vibration isn't supported/allowed on client
       }
     }
@@ -92,7 +92,7 @@ export default function ScannerPage() {
       router.push("/nexus/login");
       return;
     }
-    setAdmin(JSON.parse(profile));
+    // Just validating token exists
   }, [router]);
 
   // Real-time counter updates via SSE — scanner unlocks/locks instantly when admin toggles a counter
@@ -104,7 +104,7 @@ export default function ScannerPage() {
       try {
         const rawData = JSON.parse(event.data);
         // Map snake_case API response to camelCase interface
-        const data: CounterSession[] = rawData.map((c: any) => ({
+        const data: CounterSession[] = rawData.map((c: Record<string, unknown>) => ({
           id: c.id,
           name: c.name,
           isOpen: c.is_open,
@@ -184,6 +184,7 @@ export default function ScannerPage() {
     return () => {
       stopScanner();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCameraId, selectedCounter, isSelectedCounterOpen]);
 
   const startScanner = async () => {
@@ -223,8 +224,8 @@ export default function ScannerPage() {
 
       isScanningActive.current = true;
       setScanStatus("scanning");
-    } catch (err: any) {
-      const isBusyErr = err?.name === "NotReadableError" || String(err).includes("NotReadableError");
+    } catch (err: unknown) {
+      const isBusyErr = (err && typeof err === "object" && "name" in err && err.name === "NotReadableError") || String(err).includes("NotReadableError");
       
       // Auto-retry silently if camera hardware was momentarily busy
       if (isBusyErr) {
@@ -237,7 +238,7 @@ export default function ScannerPage() {
         return;
       }
 
-      console.error("Scanner start error:", err?.message || err);
+      console.error("Scanner start error:", err instanceof Error ? err.message : err);
       setScanStatus("error");
     } finally {
       isInitializing.current = false;
@@ -252,11 +253,11 @@ export default function ScannerPage() {
     isScanningActive.current = false;
 
     try {
-      const state = (scanner as any).getState ? (scanner as any).getState() : null;
+      const state = (scanner as unknown as { getState?: () => number }).getState?.() ?? null;
       if (state === 2 || state === 3) {
         await scanner.stop();
       }
-    } catch (err) {
+    } catch {
       // Ignored
     }
   };
@@ -367,7 +368,7 @@ export default function ScannerPage() {
           scanInProgress.current = false;
         }
       }
-    } catch (err: any) {
+    } catch {
       vibrate("error");
       triggerFlash("error");
       setScanStatus("error");
@@ -379,7 +380,7 @@ export default function ScannerPage() {
     // The volunteer MUST click "Next Scan ➔" to clear the message and unlock scanning!
   };
 
-  const onScanError = (errorMessage: string) => {
+  const onScanError = () => {
     // Silent errors are normal since camera streams constantly fail to parse non-QR frames
   };
 

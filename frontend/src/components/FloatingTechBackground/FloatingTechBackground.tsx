@@ -15,8 +15,8 @@ export default function FloatingTechBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let particles: any[] = [];
-    let mouse = { x: -1000, y: -1000 };
+    let particles: {x: number, y: number, symbol: string, size: number, speedX: number, speedY: number, opacity: number}[] = [];
+    const mouse = { x: -1000, y: -1000 };
 
     const resize = () => {
       canvas.width = window.innerWidth;

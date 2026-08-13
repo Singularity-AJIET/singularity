@@ -68,7 +68,7 @@ export default function PrizesSection() {
     <section id="prizes" className={styles.section}>
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// why compete</div>
+          <div className="section-label">{"//"} why compete</div>
 
           <h2 className="section-title">
             WIN CASH.

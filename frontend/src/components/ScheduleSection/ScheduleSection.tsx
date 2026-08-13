@@ -47,7 +47,7 @@ export default function ScheduleSection() {
     <section id="schedule" className={styles.section}>
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// event timeline</div>
+          <div className="section-label">{"//"} event timeline</div>
           <h2 className="section-title">THE <span className="text-lime">SCHEDULE</span></h2>
           <p className={`section-sub ${styles.scheduleDesc}`}>
             Prepare for an intense 24-hour sprint of continuous building, learning, and collaborating. Our meticulously crafted schedule is designed to maximize your potential—from intense coding sprints and live evaluations to crucial development milestones. Stay focused, stay energized, and let the timeline guide your team to success.

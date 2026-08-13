@@ -58,7 +58,7 @@ export default function AboutSection() {
     <section id="about" className={styles.about}>
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// about the event</div>
+          <div className="section-label">{"//"} about the event</div>
           <h2 className="section-title">
             WHAT IS <br />
             <span className="text-lime">SINGULARITY?</span>

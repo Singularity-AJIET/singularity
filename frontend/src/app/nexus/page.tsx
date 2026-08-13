@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getApiBaseUrl, getAdminRole } from "@/lib/api";
+import { getApiBaseUrl } from "@/lib/api";
 
 interface CounterSession {
   id: string;
@@ -23,7 +23,7 @@ interface Participant {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [admin, setAdmin] = useState<any>(null);
+  const [admin, setAdmin] = useState<Record<string, unknown> | null>(null);
 
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
@@ -32,7 +32,7 @@ export default function DashboardPage() {
   };
   const [counters, setCounters] = useState<CounterSession[]>([]);
   const [participants, setParticipants] = useState<Participant[]>([]);
-  const [staff, setStaff] = useState<any[]>([]);
+  const [staff, setStaff] = useState<Record<string, unknown>[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -61,6 +61,7 @@ export default function DashboardPage() {
 
     setAdmin(parsedProfile);
     fetchDashboardData(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const fetchDashboardData = async (token: string) => {
@@ -95,8 +96,8 @@ export default function DashboardPage() {
       if (!staffRes.ok) throw new Error("Failed to load staff.");
       const staffData = await staffRes.json();
       setStaff(staffData);
-    } catch (err: any) {
-      setError(err.message || "An error occurred while fetching data.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred while fetching data.");
     } finally {
       setIsLoading(false);
     }
@@ -145,8 +146,8 @@ export default function DashboardPage() {
           prev.map(c => c.id === sessionId ? updatedSession : c)
         );
       }
-    } catch (err: any) {
-      alert(err.message || "Could not toggle counter door.");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Could not toggle counter door.");
     } finally {
       setActionLoading(null);
     }
@@ -386,9 +387,9 @@ export default function DashboardPage() {
             
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
               {isTargetSessionOpen ? (
-                <>Are you sure you want to lock and close <span className="font-bold text-yellow-400">"{confirmSessionName}"</span>? Scanners will no longer be able to verify claims for this counter.</>
+                <>Are you sure you want to lock and close <span className="font-bold text-yellow-400">&quot;{confirmSessionName}&quot;</span>? Scanners will no longer be able to verify claims for this counter.</>
               ) : (
-                <>Do you want to close any other active counter sessions and open <span className="font-bold text-yellow-400">"{confirmSessionName}"</span>?</>
+                <>Do you want to close any other active counter sessions and open <span className="font-bold text-yellow-400">&quot;{confirmSessionName}&quot;</span>?</>
               )}
             </p>
 

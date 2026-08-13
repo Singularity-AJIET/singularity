@@ -51,8 +51,8 @@ export default function LoginPage() {
       setTimeout(() => {
         router.push(role === 'volunteer' ? "/nexus/scanner" : "/nexus");
       }, 1000);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -88,7 +88,7 @@ export default function LoginPage() {
             </svg>
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            Singularity<span className="text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]"> '26</span>
+            Singularity<span className="text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]"> &apos;26</span>
           </h1>
           <p className="mt-2 text-sm text-slate-400">
             Event food claim control terminal

@@ -1,9 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./TeamsSection.module.css";
 import { motion, AnimatePresence } from "framer-motion";
-
-type TeamPhase = "registration" | "selected";
 
 const TRACKS = [
   {
@@ -66,7 +64,7 @@ export default function TeamsSection() {
     <section id="teams" className={styles.section}>
       <div className="section">
         <div className={styles.header}>
-          <div className="section-label">// finalists</div>
+          <div className="section-label">{"//"} finalists</div>
           <h2 className="section-title">SELECTED <span className="text-lime">TEAMS</span></h2>
           <p className="section-sub">
             Out of 5,000+ applications, these 30 teams have been selected to compete at Singularity 2026.
