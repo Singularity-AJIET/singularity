@@ -3,8 +3,8 @@ import { Bot, Link as LinkIcon, Globe, Banknote } from "lucide-react";
 import styles from "./TracksSection.module.css";
 
 const THEME = {
-  name: "Artificial Intelligence",
-  description: "Explore the frontiers of AI across three core domains. The exact problem statements for each domain will be revealed on the day of the hackathon."
+  name: "COMPETITION TRACKS",
+  description: "Dive deep into the realm of Artificial Intelligence and explore its frontiers across three core tracks. Participants will be challenged to build innovative solutions that push the boundaries of modern technology. The exact problem statements for each track will be exclusively revealed on the day of the hackathon."
 };
 
 const TRACKS = [
@@ -44,9 +44,10 @@ export default function TracksSection() {
         <div className={styles.header}>
           <div className="section-label">// {THEME.name}</div>
           <h2 className="section-title">
-            HACKATHON <span className="text-lime">DOMAINS</span>
+            HACKATHON <br />
+            <span className="text-lime">TRACKS</span>
           </h2>
-          <p className="section-sub">
+          <p className={`section-sub ${styles.trackDesc}`}>
             {THEME.description}
           </p>
         </div>

@@ -11,7 +11,12 @@
 
 .header {
   margin-bottom: 24px;
-  max-width: 600px;
+  max-width: 100%;
+}
+
+.trackDesc {
+  max-width: 100% !important;
+  margin-bottom: 32px !important;
 }
 
 .grid {
