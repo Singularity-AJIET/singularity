@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  const [admin, setAdmin] = useState<Record<string, unknown> | null>(null);
+  const [admin, setAdmin] = useState<{ name?: string; username?: string; role?: string } | null>(null);
 
   useEffect(() => {
     const profile = localStorage.getItem("admin_profile");

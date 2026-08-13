@@ -55,35 +55,7 @@
   margin-bottom: 40px;
 }
 
-/* Tabs */
-.tabs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-}
 
-.tabBtn {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 12px 24px;
-  border: 2px solid;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tabBtn:hover:not(.tabActive) {
-  border-color: var(--text-muted) !important;
-  color: var(--text) !important;
-}
-
-.tabActive {
-  box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.1);
-}
 
 /* Tab Content */
 .tabContent {
@@ -91,8 +63,10 @@
 }
 
 .teamGrid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 32px;
+  row-gap: 0;
 }
 
 .teamCard {
@@ -107,9 +81,7 @@
   overflow: hidden;
 }
 
-.teamCard:first-child {
-  border-top: 2px solid var(--border);
-}
+
 
 .teamCard::before {
   content: "";
@@ -191,16 +163,10 @@
   white-space: nowrap;
 }
 
-@media (max-width: 900px) {
-  .tabs {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
 
-  .tabBtn {
-    width: 100%;
-    justify-content: center;
+@media (max-width: 900px) {
+  .teamGrid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -274,4 +240,23 @@
     text-align: center;
     justify-content: center;
   }
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.pageInfo {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
