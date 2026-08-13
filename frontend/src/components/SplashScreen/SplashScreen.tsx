@@ -141,7 +141,7 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
               }}
               initial={{ y: "115%", opacity: 0 }}
             >
-              HACKATHON_2026 &nbsp;/&nbsp; 36HRS &nbsp;/&nbsp; ₹1L+ PRIZES
+              HACKATHON_2026 &nbsp;/&nbsp; 24HRS &nbsp;/&nbsp; EXCITING_PRIZES
             </motion.div>
           </div>
 
