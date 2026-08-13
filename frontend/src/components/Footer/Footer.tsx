@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { MessageCircle, Camera, Briefcase, Gamepad2, Mail } from "lucide-react";
+import { MessageCircle, Camera, Briefcase, Gamepad2 } from "lucide-react";
 import styles from "./Footer.module.css";
 
 const LINKS = [
@@ -17,7 +17,6 @@ const SOCIAL = [
   { label: "Twitter / X", href: "https://x.com", icon: <MessageCircle size={20} />, tooltip: "Twitter / X" },
   { label: "Instagram", href: "https://instagram.com", icon: <Camera size={20} />, tooltip: "Instagram" },
   { label: "LinkedIn", href: "https://linkedin.com", icon: <Briefcase size={20} />, tooltip: "LinkedIn" },
-  { label: "Email", href: "mailto:singularity@ajiet.edu.in", icon: <Mail size={20} />, tooltip: "Email" },
   { label: "Discord", href: "https://discord.com", icon: <Gamepad2 size={20} />, tooltip: "Discord" },
 ];
 
@@ -80,6 +79,9 @@ export default function Footer() {
               [sys.log]: Building tomorrow&apos;s solutions<br />
               today — one hack at a time.
             </p>
+            <a href="mailto:singularity@ajiet.edu.in" className={styles.emailLink}>
+              singularity@ajiet.edu.in
+            </a>
             <div className={styles.social}>
               {SOCIAL.map((s) => {
                 const isMailLink = s.href.startsWith("mailto:");

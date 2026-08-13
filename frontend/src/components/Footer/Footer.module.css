@@ -197,6 +197,22 @@
   margin-top: 4px;
 }
 
+.emailLink {
+  display: inline-block;
+  width: fit-content;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+  transition: color 0.15s ease;
+}
+.emailLink:hover {
+  color: var(--accent-lime);
+}
+
 .socialBtn {
   position: relative;
   width: 36px;
