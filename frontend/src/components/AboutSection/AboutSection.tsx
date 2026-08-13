@@ -64,13 +64,12 @@ export default function AboutSection() {
             <span className="text-lime">SINGULARITY?</span>
           </h2>
           <p className={`section-sub ${styles.description}`}>
-            <b>Singularity</b> — A <span className="font-family-serif">24-hour</span> national-level hackathon
+            <b>Singularity</b> is a <span className="font-family-serif">24-hour</span> national-level hackathon
             bringing students together to solve real-world problems, build innovative solutions,
             and turn ideas into working prototypes, organised by the
-            <b> Computer Science and Engineering Dept.</b> in collaboration with
-            <b> IEEE Computer Society</b>, <b>IEEE Mangalore Subsection</b> and the
-            <b> Placement Cell</b> at
-            <b> A.J. Institute of Engineering and Technology, Mangalore</b>.
+            <b> Computer Science and Engineering Dept.</b> along with Placement Cell at
+            <b> A J Institute of Engineering and Technology, Mangalore</b> in collaboration with
+            <b> IEEE Computer Society</b>, <b>IEEE Mangalore Subsection.</b>
             {/* <b> 24 Hours. One campus. Endless possibilities.</b> */}
           </p>
         </div>
