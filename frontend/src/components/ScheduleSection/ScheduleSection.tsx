@@ -3,7 +3,7 @@ import styles from "./ScheduleSection.module.css";
 const SCHEDULE = [
   {
     day: "Day 1",
-    date: "Aug 15",
+    date: "Sep 17",
     events: [
       { time: "8:30 AM onwards", title: "Registration & Check-in", color: "#00d2ff", label: "LOGISTICS", desc: ["Participant registration & verification", "ID card distribution", "Hackathon kit distribution", "Team check-in & onboarding", "Venue guidance"] },
       { time: "9:00 AM - 10:00 AM", title: "Breakfast Session", color: "#ffb830", label: "SOCIAL", desc: ["Networking breakfast for all participants"] },
@@ -18,13 +18,13 @@ const SCHEDULE = [
   },
   {
     day: "Day 2",
-    date: "Aug 16",
+    date: "Sep 18",
     events: [
       { time: "12:00 AM", title: "Midnight Coffee Break", color: "#a78bfa", label: "SOCIAL", desc: ["Midnight refreshment session", "Coffee and snacks served"] },
       { time: "8:00 AM - 9:00 AM", title: "Breakfast (Day 2)", color: "#ffb830", label: "SOCIAL", desc: ["Morning refreshment & networking"] },
-      { time: "12:00 PM", title: "Final Evaluation & Demo", color: "#ff2a6d", label: "KEYNOTE", desc: ["Final product demonstration", "Jury technical assessment", "Innovation & scalability review"] },
+      { time: "12:00 PM", title: "Final Evaluation & Demo", color: "#ff2a6d", label: "JUDGING", desc: ["Final product demonstration", "Jury technical assessment", "Innovation & scalability review"] },
       { time: "1:00 PM - 2:00 PM", title: "Lunch Break", color: "#c8f135", label: "SOCIAL", desc: ["Lunch for participants, mentors, judges"] },
-      { time: "2:00 PM onwards", title: "Results & Prize Distribution", color: "#00d2ff", label: "KEYNOTE", desc: ["Winner announcement & prizes", "Closing remarks & networking"] },
+      { time: "2:00 PM onwards", title: "Results & Prize Distribution", color: "#00d2ff", label: "CEREMONY", desc: ["Winner announcement & prizes", "Closing remarks & networking"] },
     ],
   }
 ];

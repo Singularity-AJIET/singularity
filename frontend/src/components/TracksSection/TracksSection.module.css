@@ -4,30 +4,30 @@
 }
 
 .sectionInner {
-  padding: 64px 24px 72px;
+  padding: 48px 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .header {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   max-width: 600px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 .card {
   background: var(--bg);
   border: 2px solid var(--border);
   border-radius: var(--radius);
-  padding: 36px;
+  padding: 24px 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   cursor: pointer;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   position: relative;
@@ -39,6 +39,7 @@
   transform: translate(2px, 2px);
   box-shadow: 2px 2px 0px var(--accent-lime);
 }
+
 
 .card:hover .colorBar {
   width: 100%;
@@ -55,13 +56,13 @@
 }
 
 .cardIcon {
-  font-size: 2.4rem;
+  font-size: 2rem;
   line-height: 1;
 }
 
 .cardNum {
   font-family: var(--font-mono);
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--border);
   line-height: 1;
@@ -72,7 +73,7 @@
   width: 40px;
   background: var(--track-color, var(--accent-lime));
   border-radius: 2px;
-  transition: width 0.4s ease;
+  transition: width 0.8s ease-out;
 }
 
 .cardName {
@@ -117,6 +118,12 @@
   align-self: flex-start;
 }
 
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .card:nth-child(3) { grid-column: 1 / -1; }
+}
+
 @media (max-width: 768px) {
   .grid { grid-template-columns: 1fr; }
+  .card:nth-child(3) { grid-column: auto; }
 }
