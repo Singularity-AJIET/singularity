@@ -1,7 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./TeamsSection.module.css";
 import { motion, AnimatePresence } from "framer-motion";
+import RegistrationInfoSection from "./RegistrationInfoSection";
+
+type TeamPhase = "registration" | "selected";
 
 const TRACKS = [
   {
@@ -62,6 +65,8 @@ export default function TeamsSection() {
 
   return (
     <section id="teams" className={styles.section}>
+      <RegistrationInfoSection />
+
       <div className="section">
         <div className={styles.header}>
           <div className="section-label">// finalists</div>
@@ -71,7 +76,6 @@ export default function TeamsSection() {
           </p>
         </div>
 
-        {/* Tab Buttons */}
         <div className={styles.tabs}>
           {TRACKS.map((track, i) => (
             <button
@@ -89,7 +93,6 @@ export default function TeamsSection() {
           ))}
         </div>
 
-        {/* Tab Content */}
         <div className={styles.tabContent}>
           <AnimatePresence mode="wait">
             <motion.div
