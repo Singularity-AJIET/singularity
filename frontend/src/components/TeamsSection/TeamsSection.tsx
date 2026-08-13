@@ -1,7 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./TeamsSection.module.css";
 import { motion, AnimatePresence } from "framer-motion";
+import RegistrationInfoSection from "./RegistrationInfoSection";
+
+type TeamPhase = "registration" | "selected";
 
 const TRACKS = [
   {
@@ -54,23 +57,6 @@ const TRACKS = [
       { name: "Kindred Spirits", college: "Nirma University" },
       { name: "Impact Engine", college: "Amrita Vishwa Vidyapeetham" }
     ]
-  },
-  {
-    id: "fintech",
-    name: "FinTech",
-    color: "#ffb830",
-    teams: [
-      { name: "Cash Flow", college: "IIT Kanpur" },
-      { name: "Ledger Lines", college: "IIT Roorkee" },
-      { name: "Quant Quants", college: "NIT Rourkela" },
-      { name: "Algo Traders", college: "IIIT Bangalore" },
-      { name: "Pay Pioneers", college: "DA-IICT Gandhinagar" },
-      { name: "Defi Dragons", college: "Symbiosis Institute of Tech" },
-      { name: "Capital Coders", college: "NMIMS Mumbai" },
-      { name: "Wealth Wizards", college: "Delhi University" },
-      { name: "Fiscal Force", college: "Christ University" },
-      { name: "Mint Masters", college: "St. Xavier's College" }
-    ]
   }
 ];
 
@@ -79,16 +65,17 @@ export default function TeamsSection() {
 
   return (
     <section id="teams" className={styles.section}>
+      <RegistrationInfoSection />
+
       <div className="section">
         <div className={styles.header}>
           <div className="section-label">// finalists</div>
           <h2 className="section-title">SELECTED <span className="text-lime">TEAMS</span></h2>
           <p className="section-sub">
-            Out of 5,000+ applications, these 40 teams have been selected to compete at Singularity Hack 2026.
+            Out of 5,000+ applications, these 30 teams have been selected to compete at Singularity Hack 2026.
           </p>
         </div>
 
-        {/* Tab Buttons */}
         <div className={styles.tabs}>
           {TRACKS.map((track, i) => (
             <button
@@ -106,7 +93,6 @@ export default function TeamsSection() {
           ))}
         </div>
 
-        {/* Tab Content */}
         <div className={styles.tabContent}>
           <AnimatePresence mode="wait">
             <motion.div

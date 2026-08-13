@@ -14,10 +14,10 @@ const LINKS = [
 ];
 
 const SOCIAL = [
-  { label: "Twitter / X", href: "https://x.com", icon: <MessageCircle size={20} /> },
-  { label: "Instagram", href: "https://instagram.com", icon: <Camera size={20} /> },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: <Briefcase size={20} /> },
-  { label: "Discord", href: "https://discord.com", icon: <Gamepad2 size={20} /> },
+  { label: "Twitter / X", href: "https://x.com", icon: <MessageCircle size={20} />, tooltip: "Twitter / X" },
+  { label: "Instagram", href: "https://instagram.com", icon: <Camera size={20} />, tooltip: "Instagram" },
+  { label: "LinkedIn", href: "https://linkedin.com", icon: <Briefcase size={20} />, tooltip: "LinkedIn" },
+  { label: "Discord", href: "https://discord.com", icon: <Gamepad2 size={20} />, tooltip: "Discord" },
 ];
 
 const TARGET = new Date("2026-08-15T09:00:00").getTime();
@@ -59,10 +59,10 @@ export default function Footer() {
             <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.s)}</span><span className={styles.unitLabel}>SEC</span></div>
           </div>
           <p className={styles.ctaSub}>
-            36 hours. 4 tracks. ₹1,00,000+ in prizes. No excuses.
+            24 hours. 3 tracks. ₹60,000+ in prizes. No excuses.
           </p>
           <Link href="/register" className={`btn btn-primary ${styles.ctaBtn}`}>
-            INIT_REGISTER →
+            INIT_REGISTER
           </Link>
         </div>
       </div>
@@ -79,13 +79,27 @@ export default function Footer() {
               [sys.log]: Building tomorrow&apos;s solutions<br />
               today — one hack at a time.
             </p>
+            <a href="mailto:singularity@ajiet.edu.in" className={styles.emailLink}>
+              singularity@ajiet.edu.in
+            </a>
             <div className={styles.social}>
-              {SOCIAL.map((s) => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                  className={styles.socialBtn} aria-label={s.label}>
-                  {s.icon}
-                </a>
-              ))}
+              {SOCIAL.map((s) => {
+                const isMailLink = s.href.startsWith("mailto:");
+
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target={isMailLink ? undefined : "_blank"}
+                    rel={isMailLink ? undefined : "noopener noreferrer"}
+                    className={styles.socialBtn}
+                    aria-label={s.label}
+                    data-label={s.tooltip ?? s.label}
+                  >
+                    {s.icon}
+                  </a>
+                );
+              })}
             </div>
           </div>
 
