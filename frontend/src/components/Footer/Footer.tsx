@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { MessageCircle, Camera, Briefcase, Gamepad2 } from "lucide-react";
+import { MessageCircle, Camera, Briefcase, Gamepad2, Mail } from "lucide-react";
 import styles from "./Footer.module.css";
 
 const LINKS = [
@@ -14,10 +14,11 @@ const LINKS = [
 ];
 
 const SOCIAL = [
-  { label: "Twitter / X", href: "https://x.com", icon: <MessageCircle size={20} /> },
-  { label: "Instagram", href: "https://instagram.com", icon: <Camera size={20} /> },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: <Briefcase size={20} /> },
-  { label: "Discord", href: "https://discord.com", icon: <Gamepad2 size={20} /> },
+  { label: "Twitter / X", href: "https://x.com", icon: <MessageCircle size={20} />, tooltip: "Twitter / X" },
+  { label: "Instagram", href: "https://instagram.com", icon: <Camera size={20} />, tooltip: "Instagram" },
+  { label: "LinkedIn", href: "https://linkedin.com", icon: <Briefcase size={20} />, tooltip: "LinkedIn" },
+  { label: "Email", href: "mailto:singularity@ajiet.edu.in", icon: <Mail size={20} />, tooltip: "Email" },
+  { label: "Discord", href: "https://discord.com", icon: <Gamepad2 size={20} />, tooltip: "Discord" },
 ];
 
 const TARGET = new Date("2026-08-15T09:00:00").getTime();
@@ -80,12 +81,23 @@ export default function Footer() {
               today — one hack at a time.
             </p>
             <div className={styles.social}>
-              {SOCIAL.map((s) => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                  className={styles.socialBtn} aria-label={s.label}>
-                  {s.icon}
-                </a>
-              ))}
+              {SOCIAL.map((s) => {
+                const isMailLink = s.href.startsWith("mailto:");
+
+                return (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target={isMailLink ? undefined : "_blank"}
+                    rel={isMailLink ? undefined : "noopener noreferrer"}
+                    className={styles.socialBtn}
+                    aria-label={s.label}
+                    data-label={s.tooltip ?? s.label}
+                  >
+                    {s.icon}
+                  </a>
+                );
+              })}
             </div>
           </div>
 

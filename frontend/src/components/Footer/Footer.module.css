@@ -198,6 +198,7 @@
 }
 
 .socialBtn {
+  position: relative;
   width: 36px;
   height: 36px;
   border: 2px solid var(--border);
@@ -212,9 +213,35 @@
   transition: all 0.1s;
   box-shadow: 2px 2px 0px var(--accent-lime);
 }
+.socialBtn::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  white-space: nowrap;
+  padding: 6px 8px;
+  border: 1px solid var(--accent-lime);
+  border-radius: 6px;
+  background: rgba(17, 16, 16, 0.96);
+  color: var(--accent-lime);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+  box-shadow: 0 0 12px rgba(200, 241, 53, 0.25);
+}
 .socialBtn:hover {
   background: var(--surface-2);
   color: var(--accent-lime);
+}
+.socialBtn:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Polaroid Art Column */
