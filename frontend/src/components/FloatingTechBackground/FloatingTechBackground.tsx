@@ -6,6 +6,16 @@ const TECH_SYMBOLS = [
   "func", "await", "yield", "var", "const", "0x00", "ERR", "OK"
 ];
 
+interface Particle {
+  x: number;
+  y: number;
+  symbol: string;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+}
+
 export default function FloatingTechBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -15,8 +25,8 @@ export default function FloatingTechBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let particles: any[] = [];
-    let mouse = { x: -1000, y: -1000 };
+    let particles: Particle[] = [];
+    const mouse = { x: -1000, y: -1000 };
 
     const resize = () => {
       canvas.width = window.innerWidth;

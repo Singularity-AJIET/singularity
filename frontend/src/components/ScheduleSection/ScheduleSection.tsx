@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import styles from "./ScheduleSection.module.css";
 
 const SCHEDULE = [
@@ -30,6 +32,8 @@ const SCHEDULE = [
 ];
 
 export default function ScheduleSection() {
+  const [activeDay, setActiveDay] = useState(0);
+
   return (
     <section id="schedule" className={styles.section}>
       <div className="section">
@@ -41,10 +45,28 @@ export default function ScheduleSection() {
           </p>
         </div>
 
-        {/* Event cards grid for all days */}
+        <div className={styles.tabs}>
+          <div className={styles.tabGroup}>
+            {SCHEDULE.map((dayData, index) => (
+              <button
+                key={index}
+                className={`${styles.tabBtn} ${activeDay === index ? styles.tabBtnActive : ""}`}
+                onClick={() => setActiveDay(index)}
+              >
+                {dayData.day}
+              </button>
+            ))}
+          </div>
+          <span className={styles.tabDate}>{"//"} {SCHEDULE[activeDay].date}</span>
+        </div>
+
+        {/* Event cards grid */}
         <div className={styles.scheduleWrapper}>
           {SCHEDULE.map((dayData, dayIndex) => (
-            <div key={dayIndex} className={styles.dayGroup}>
+            <div 
+              key={dayIndex} 
+              className={`${styles.dayGroup} ${activeDay === dayIndex ? styles.dayActive : ""}`}
+            >
               <h3 className={styles.dayHeading}>
                 <span className={styles.dayName}>{dayData.day}</span>
                 <span className={styles.dayDate}>{"//"} {dayData.date}</span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bot, Link as LinkIcon, Globe, Banknote } from "lucide-react";
+import { Bot, Link as LinkIcon, Globe } from "lucide-react";
 import styles from "./TracksSection.module.css";
 
 const THEME = {
