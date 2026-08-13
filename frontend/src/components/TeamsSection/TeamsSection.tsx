@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./TeamsSection.module.css";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -38,10 +38,18 @@ const TEAMS = [
 
 export default function TeamsSection() {
   const [page, setPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(TEAMS.length / itemsPerPage);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 900);
+    handleResize(); // Check immediately on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   
-  const currentTeams = TEAMS.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const currentTeams = isMobile ? TEAMS.slice((page - 1) * itemsPerPage, page * itemsPerPage) : TEAMS;
 
   return (
     <section id="teams" className={styles.section}>
@@ -50,7 +58,7 @@ export default function TeamsSection() {
           <div className="section-label">{"//"} finalists</div>
           <h2 className="section-title">SELECTED <span className="text-lime">TEAMS</span></h2>
           <p className="section-sub">
-            Out of 5,000+ applications, these 30 teams have been selected to compete at Singularity 2026.
+            Out of 500+ applications, these 30 teams have been selected to compete at Singularity 2026.
           </p>
         </div>
 
@@ -65,7 +73,7 @@ export default function TeamsSection() {
               className={styles.teamGrid}
             >
               {currentTeams.map((team, i) => {
-                const actualRank = (page - 1) * itemsPerPage + i + 1;
+                const actualRank = isMobile ? (page - 1) * itemsPerPage + i + 1 : i + 1;
                 return (
                   <div key={team.name} className={styles.teamCard}>
                     <div className={styles.teamRankWrapper}>
@@ -81,7 +89,7 @@ export default function TeamsSection() {
             </motion.div>
           </AnimatePresence>
 
-          {totalPages > 1 && (
+          {isMobile && totalPages > 1 && (
             <div className={styles.pagination}>
               <button 
                 onClick={() => setPage(p => Math.max(1, p - 1))}

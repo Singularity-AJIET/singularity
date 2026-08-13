@@ -84,6 +84,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
           {/* Logo */}
           <a
             href="#"
+            draggable={false}
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -92,7 +93,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
             className={styles.logo}
             style={hideLogo ? { opacity: 0 } : { transition: "opacity 0.5s ease" }}
           >
-            <Image src="/logo.webp" alt="Singularity" width={40} height={40} className={styles.logoIcon} />
+            <Image src="/logo.webp" alt="Singularity" width={40} height={40} className={styles.logoIcon} draggable={false} />
             <span>SINGULARITY</span>
           </a>
 

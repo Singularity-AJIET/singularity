@@ -100,7 +100,7 @@ export default function Footer() {
           {/* Logo */}
           <div className={styles.logoCol}>
             <div className={styles.logo}>
-              <Image src="/logo.webp" alt="Singularity" width={40} height={40} />
+              <Image src="/logo.webp" alt="Singularity" width={40} height={40} draggable={false} />
               <span>SINGULARITY</span>
             </div>
             <p className={styles.logoSub}>
