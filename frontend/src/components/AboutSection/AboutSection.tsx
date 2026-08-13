@@ -60,8 +60,8 @@ export default function AboutSection() {
         <div className={styles.header}>
           <div className="section-label">// about the event</div>
           <h2 className="section-title">
-            WHAT IS 
-            <span className="text-lime"> SINGULARITY?</span>
+            WHAT IS <br />
+            <span className="text-lime">SINGULARITY?</span>
           </h2>
             <p className={`section-sub ${styles.description}`}>
               <b>Singularity</b> is a 24-hour national-level hackathon, a student
