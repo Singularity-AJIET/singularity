@@ -4,8 +4,13 @@
 }
 
 .header {
-  max-width: 600px;
+  max-width: none;
   margin-bottom: 64px;
+}
+
+.description {
+  max-width: none;
+  width: 100%;
 }
 
 .statsGrid {
