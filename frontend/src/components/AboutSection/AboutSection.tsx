@@ -67,7 +67,7 @@ export default function AboutSection() {
             <b>Singularity</b> is a <span className="font-family-serif">24-hour</span> national-level hackathon
             bringing students together to solve real-world problems, build innovative solutions,
             and turn ideas into working prototypes, organised by the
-            <b> Computer Science and Engineering Dept.</b> along with <b>Placement Cell</b> at
+            <b> Dept. of Computer Science & Engineering</b> along with <b>Placement Cell</b> at
             <b> A J Institute of Engineering and Technology, Mangalore</b> in collaboration with
             <b> IEEE Computer Society</b> and <b>IEEE Mangalore Subsection.</b>
             {/* <b> 24 Hours. One campus. Endless possibilities.</b> */}
