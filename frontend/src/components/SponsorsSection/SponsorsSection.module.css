@@ -30,22 +30,18 @@
   margin-top: 16px;
 }
 
-.gridPlatinum {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.gridGold {
+.gridSponsors {
   grid-template-columns: repeat(3, 1fr);
 }
 
-.gridCommunity {
-  grid-template-columns: repeat(4, 1fr);
+.gridInKind {
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  padding: 32px 24px;
+  padding: 28px 24px 32px;
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius);
@@ -53,25 +49,50 @@
   height: 100%;
 }
 
-.sTop {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.sEmoji {
+/* Logo area — white box so any logo (transparent/dark/light) stays visible */
+.logoWrap {
+  width: 100%;
+  height: 88px;
+  background: #ffffff;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 18px;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.logoImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.logoPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #c9c9c9;
+  border-radius: 6px;
+  color: #9a9a9a;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .sName {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   letter-spacing: 0.05em;
   color: var(--text);
+  margin-bottom: 12px;
 }
 
 .sDesc {
@@ -107,63 +128,26 @@
   box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.05);
 }
 
-.platinum:hover {
+.sponsor:hover {
   border-color: #4ecdc4;
   box-shadow: 6px 6px 0px rgba(78, 205, 196, 0.2);
 }
-.platinum:hover .sLink { color: var(--surface); background: #4ecdc4; border-color: #4ecdc4; }
+.sponsor:hover .sLink { color: var(--surface); background: #4ecdc4; border-color: #4ecdc4; }
 
-.gold:hover {
-  border-color: #ffb830;
-  box-shadow: 6px 6px 0px rgba(255, 184, 48, 0.2);
-}
-.gold:hover .sLink { color: var(--surface); background: #ffb830; border-color: #ffb830; }
-
-.community:hover {
+.inKind:hover {
   border-color: #a78bfa;
   box-shadow: 6px 6px 0px rgba(167, 139, 250, 0.2);
 }
-.community:hover .sLink { color: var(--surface); background: #a78bfa; border-color: #a78bfa; }
+.inKind:hover .sLink { color: var(--surface); background: #a78bfa; border-color: #a78bfa; }
 
 @media (max-width: 1000px) {
-  .gridGold, .gridCommunity {
+  .gridSponsors {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
-  .gridPlatinum, .gridGold, .gridCommunity {
+  .gridSponsors, .gridInKind {
     grid-template-columns: 1fr;
   }
-}
-
-/* Become sponsor CTA */
-.becomeSponsor {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-  background: var(--surface);
-  border: 4px dashed var(--text);
-  border-radius: var(--radius);
-  padding: 40px 48px;
-  flex-wrap: wrap;
-}
-
-.bsLeft { flex: 1; min-width: 240px; }
-
-.bsTitle {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.bsDesc {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
-
-@media (max-width: 600px) {
-  .becomeSponsor { flex-direction: column; padding: 28px; }
 }

@@ -52,11 +52,11 @@ export default function Home() {
           <AboutSection />
           <TracksSection />
           <PrizesSection />
-          <ScheduleSection />
-          <CoordinatorsSection />
-          <FAQSection />
-          <SponsorsSection />
           <TeamsSection />
+          <SponsorsSection />
+          <CoordinatorsSection />
+          <ScheduleSection />         
+          <FAQSection />         
         </main>
         <Footer />
       </motion.div>
