@@ -5,12 +5,13 @@
 
 .header {
   max-width: none;
-  margin-bottom: 64px;
+  margin-bottom: 35px;
 }
 
 .description {
   max-width: none;
   width: 100%;
+  font-size: 1.1rem;  
 }
 
 .statsGrid {
@@ -21,7 +22,7 @@
   border: 2px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  margin-bottom: 64px;
+  margin-bottom: 50px;
   box-shadow: 4px 4px 0px var(--accent-lime);
 }
 
@@ -74,7 +75,7 @@
 .pillarDesc {
   font-size: 0.9rem;
   color: var(--text-muted);
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 @media (max-width: 900px) {
