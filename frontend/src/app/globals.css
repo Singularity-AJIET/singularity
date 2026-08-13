@@ -153,18 +153,18 @@ video {
   border: 2px solid var(--accent-lime);
   cursor: pointer;
   transition: all 0.1s ease;
-  border-radius: var(--radius);
-  box-shadow: 4px 4px 0px var(--accent-lime);
+  border-radius: var(--radius); /* 4px */
+  box-shadow: 4px 4px 0px var(--accent-lime); /* hard offset shadow */
 }
 
 .btn-primary {
-  background: var(--accent-lime);
+  background: var(--accent-lime); /* #c8f135 */
   color: #111010;
 }
 .btn-primary:hover {
   background: #d4f74a;
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px var(--accent-lime);
+  box-shadow: 2px 2px 0px var(--accent-lime); /* shadow "shrinks" as button moves into it */
 }
 
 .btn-outline {

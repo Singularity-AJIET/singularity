@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SINGULARITY HACK 2026 — 36-Hour National Hackathon",
+  title: "Singularity 2026",
   description:
     "Singularity Hack is a 36-hour national inter-college hackathon bringing together the brightest minds to build, compete, and connect. Register now — Aug 15–17, 2026.",
   keywords: ["hackathon", "singularity hack", "college hackathon", "India hackathon", "coding competition"],
   openGraph: {
-    title: "SINGULARITY HACK 2026",
+    title: "Singularity 2026",
     description: "36 hours. 4 tracks. ₹1,00,000+ in prizes. Are you ready?",
     type: "website",
   },

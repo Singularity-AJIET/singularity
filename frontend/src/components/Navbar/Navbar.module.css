@@ -53,13 +53,10 @@
 }
 
 .logoIcon {
-  background: var(--accent-lime);
-  color: #111010;
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  border-radius: 2px;
-  transition: transform 0.3s ease;
-  font-weight: 800;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
 .logo:hover .logoIcon {
@@ -82,10 +79,11 @@
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  transition: color 0.2s ease;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;              /* re-enabled */
+  color: var(--text);
+  transition: color 0.35s ease, transform 0.35s ease;
+  display: inline-block;
   position: relative;
   padding: 4px 8px;
 }
@@ -97,20 +95,29 @@
   bottom: -2px;
   width: 0;
   height: 2px;
-  background: var(--accent-lime);
+  background: var(--text);                /* white underline, was lime */
   transition: width 0.3s ease;
 }
 
 .link:hover {
-  color: var(--text);
+  color: var(--accent-lime);              /* neon green on hover */
+  transform: scale(1.12);                 /* slow scale-up on hover */
 }
 .link:hover::after {
   width: 100%;
 }
 
+/* === Right-side actions cluster (scramble stat + register button) === */
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
 /* === Terminal scramble display === */
 .termDisplay {
-  flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -132,6 +139,32 @@
   text-shadow: 0 0 12px rgba(200, 241, 53, 0.5), 0 0 24px rgba(200, 241, 53, 0.2);
   min-width: 100px;
   text-align: left;
+}
+
+/* === Register button === */
+.registerBtn {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #050505;
+  background: var(--accent-lime);
+  border: 1px solid var(--accent-lime);
+  padding: 10px 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease, color 0.25s ease;
+}
+
+.registerBtn:hover {
+  background: transparent;
+  color: var(--accent-lime);
+  box-shadow: 0 0 18px rgba(200, 241, 53, 0.35);
+}
+
+.registerBtn:active {
+  transform: translateY(1px);
 }
 
 .hamburger {
@@ -190,8 +223,26 @@
   padding-left: 48px;
 }
 
+/* Register button repeated at the bottom of the mobile menu */
+.mobileRegisterBtn {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #050505;
+  background: var(--accent-lime);
+  text-align: center;
+  padding: 20px 40px;
+  transition: opacity 0.2s ease;
+}
+.mobileRegisterBtn:hover {
+  opacity: 0.9;
+}
+
 @media (max-width: 900px) {
   .links { display: none; }
   .termDisplay { display: none; }
+  .registerBtn { display: none; }
   .hamburger { display: flex; }
 }

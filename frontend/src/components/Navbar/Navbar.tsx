@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
+import Image from "next/image";
 
 const NAV_LINKS = [
   { href: "/#about", label: "About" },
@@ -11,7 +12,10 @@ const NAV_LINKS = [
   { href: "/#faq", label: "FAQ" },
 ];
 
-const STATS = ["36 HRS", "₹1L+ PRIZES", "4 TRACKS", "AUG 15", "HACK_ON"];
+// TODO: replace with your actual Unstop event registration URL
+const UNSTOP_URL = "https://unstop.com/";
+
+const STATS = ["24HRS", "HACKATHON", "AJIET", "MANGALORE"];
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
 
 export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
@@ -19,6 +23,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [statIdx, setStatIdx] = useState(0);
   const [display, setDisplay] = useState(STATS[0]);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -26,16 +31,18 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Cycle stats
+  // Cycle stats — paused while hovered
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => {
       setStatIdx((i) => (i + 1) % STATS.length);
     }, 2400);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
 
-  // Scramble text on stat change
+  // Scramble text on stat change — skipped while paused
   useEffect(() => {
+    if (paused) return;
     const target = STATS[statIdx];
     let frame = 0;
     const total = 10;
@@ -60,7 +67,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
       frame++;
     }, 32);
     return () => clearInterval(id);
-  }, [statIdx]);
+  }, [statIdx, paused]);
 
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
@@ -72,7 +79,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
           className={styles.logo}
           style={hideLogo ? { opacity: 0 } : { transition: "opacity 0.5s ease" }}
         >
-          <span className={styles.logoIcon}>&gt;_</span>
+          <Image src="/logo.webp" alt="Singularity" width={40} height={40} className={styles.logoIcon} />
           <span>SINGULARITY</span>
         </a>
 
@@ -85,10 +92,30 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
           ))}
         </ul>
 
-        {/* Scramble display — no container, pure terminal text */}
-        <div className={styles.termDisplay}>
-          <span className={styles.termPrefix}>&gt;_&nbsp;</span>
-          <span className={styles.termText}>{display}</span>
+        {/* Right side: scramble stat + register button */}
+        <div className={styles.navActions}>
+          {/* Scramble display — pauses on hover */}
+          <div
+            className={styles.termDisplay}
+            onMouseEnter={() => {
+              setDisplay(STATS[statIdx]); // snap to the clean word immediately, even mid-scramble
+              setPaused(true);
+            }}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <span className={styles.termPrefix}>&gt;_&nbsp;</span>
+            <span className={styles.termText}>{display}</span>
+          </div>
+
+          {/* Register button — links out to Unstop */}
+          <a
+            href={UNSTOP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.registerBtn}
+          >
+            INIT_REGISTER
+          </a>
         </div>
 
         {/* Hamburger */}
@@ -116,6 +143,15 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
               {l.label}
             </a>
           ))}
+          <a
+            href={UNSTOP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.mobileRegisterBtn}
+            onClick={() => setMenuOpen(false)}
+          >
+            INIT_REGISTER
+          </a>
         </div>
       )}
     </nav>

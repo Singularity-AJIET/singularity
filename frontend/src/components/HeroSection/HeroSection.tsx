@@ -3,7 +3,20 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import styles from "./HeroSection.module.css";
 
-const TARGET_DATE = new Date("2026-08-15T09:00:00+05:30");
+const TARGET_DATE = new Date("2026-09-17T09:00:00+05:30");
+
+function createRipple(e: React.MouseEvent<HTMLElement>) {
+  const target = e.currentTarget;
+  const rect = target.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const ripple = document.createElement("span");
+  ripple.className = styles.ripple;
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+  ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+  target.appendChild(ripple);
+  ripple.addEventListener("animationend", () => ripple.remove());
+}
 
 function useCountdown(target: Date) {
   const calc = () => {
@@ -24,11 +37,37 @@ function useCountdown(target: Date) {
   return time;
 }
 
-function Pad({ v, label }: { v: number; label: string }) {
+function BigUnit({ v, label }: { v: number; label: string }) {
   return (
-    <div className={styles.unit}>
-      <span className={styles.num}>{String(v).padStart(2, "0")}</span>
-      <span className={styles.label}>{label}</span>
+    <div className={styles.bigUnit}>
+      <span className={styles.bigNum}>{String(v).padStart(2, "0")}</span>
+      <span className={styles.bigLabel}>{label}</span>
+    </div>
+  );
+}
+
+function RailNode({
+  label,
+  value,
+  center,
+  active,
+}: {
+  label: string;
+  value: string;
+  center?: boolean;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`${styles.railNode} ${center ? styles.railNodeCenter : ""} ${
+        active ? styles.active : ""
+      }`}
+    >
+      <span className={styles.nodeDot} />
+      <span className={styles.railNodeText}>
+        <span className={styles.nodeLabel}>{label}</span>
+        <span className={styles.nodeValue}>{value}</span>
+      </span>
     </div>
   );
 }
@@ -36,13 +75,66 @@ function Pad({ v, label }: { v: number; label: string }) {
 export default function HeroSection() {
   const { days, hours, minutes, seconds } = useCountdown(TARGET_DATE);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
+  const [scanned, setScanned] = useState(false);
+
+  const pulseRef = useRef<HTMLSpanElement>(null);
+  const activeIndexRef = useRef<number | null>(null);
+  const [activeNode, setActiveNode] = useState<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Animated particle canvas
+  useEffect(() => {
+    const el = railRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setScanned(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const DURATION = 6000;
+    const NODE_POS = [1 / 6, 1 / 2, 5 / 6];
+    const HIT_WINDOW = 0.05;
+
+    let raf: number;
+    let start: number | null = null;
+
+    const tick = (ts: number) => {
+      if (start === null) start = ts;
+      const progress = ((ts - start) % DURATION) / DURATION;
+
+      if (pulseRef.current) {
+        pulseRef.current.style.left = `${progress * 100}%`;
+      }
+
+      let hit: number | null = null;
+      NODE_POS.forEach((p, i) => {
+        if (Math.abs(progress - p) < HIT_WINDOW) hit = i;
+      });
+
+      if (hit !== activeIndexRef.current) {
+        activeIndexRef.current = hit;
+        setActiveNode(hit);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -58,7 +150,7 @@ export default function HeroSection() {
     window.addEventListener("resize", onResize, { passive: true });
 
     const pts: { x: number; y: number; vx: number; vy: number; r: number }[] = Array.from(
-      { length: 60 }, // Reduced slightly for better performance
+      { length: 60 },
       () => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -72,9 +164,8 @@ export default function HeroSection() {
     let isVisible = true;
 
     const draw = () => {
-      if (!isVisible) return; // Stop rendering when out of viewport
+      if (!isVisible) return;
       ctx.clearRect(0, 0, w, h);
-      // Draw lines
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
           const dx = pts[i].x - pts[j].x;
@@ -90,7 +181,6 @@ export default function HeroSection() {
           }
         }
       }
-      // Draw dots
       pts.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -116,7 +206,7 @@ export default function HeroSection() {
       },
       { threshold: 0 }
     );
-    
+
     observer.observe(canvas);
 
     return () => {
@@ -132,52 +222,93 @@ export default function HeroSection() {
       <div className={styles.topo} aria-hidden="true" />
 
       <div className={styles.content}>
-        {/* Badge */}
-        <div className={styles.badge}>
-          <span className={styles.dot} />
-          <span className={styles.badgeText}>AUG 15–17, 2026 &nbsp;·&nbsp; 36 HOURS &nbsp;·&nbsp; INDIA</span>
+        <div className={styles.layout}>
+          <div className={styles.left}>
+            <h1 className={styles.title}>SINGULARITY</h1>
+            <div className={styles.titleLine} />
+
+            <p className={styles.sub}>
+              Singularity Hack is a 24-hour national inter-college hackathon
+              where the brightest minds compete, collaborate, and create
+              solutions that matter.
+            </p>
+
+            <div className={styles.ctas}>
+              <Link
+                href="/register"
+                className={`btn btn-primary ${styles.ctaBtn}`}
+                onMouseDown={createRipple}
+              >
+                INIT_REGISTER
+                <span className={styles.loadingDots} aria-hidden="true">
+                  <span className={styles.dot} />
+                  <span className={styles.dot} />
+                  <span className={styles.dot} />
+                </span>
+              </Link>
+              <a
+                href="/singularity-2026.pdf"
+                download
+                className={`btn btn-outline ${styles.ctaBtn} ${styles.ctaBtnOutline}`}
+                onMouseDown={createRipple}
+              >
+                BROCHURE
+              </a>
+            </div>
+          </div>
+
+          <div className={styles.right}>
+            <div className={styles.countdownPanel}>
+              <span className={styles.panelLabel}>
+                EVENT<br />
+                <span className={styles.panelLabelAccent}>COUNTDOWN</span>
+              </span>
+              <div className={styles.panelDivider} />
+              <div className={styles.countdownRow}>
+                <BigUnit v={mounted ? days : 0} label="DAYS" />
+                <BigUnit v={mounted ? hours : 0} label="HRS" />
+                <BigUnit v={mounted ? minutes : 0} label="MIN" />
+                <BigUnit v={mounted ? seconds : 0} label="SEC" />
+              </div>
+            </div>
+          </div>
         </div>
 
-
-        <p className={styles.sub}>
-          Singularity Hack is a 36-hour national inter-college hackathon where the
-          brightest minds compete, collaborate, and create solutions that matter.
-        </p>
-
-        {/* Countdown */}
-        <div className={styles.countdown}>
-          <Pad v={mounted ? days : 0} label="DAYS" />
-          <span className={styles.colon}>:</span>
-          <Pad v={mounted ? hours : 0} label="HRS" />
-          <span className={styles.colon}>:</span>
-          <Pad v={mounted ? minutes : 0} label="MIN" />
-          <span className={styles.colon}>:</span>
-          <Pad v={mounted ? seconds : 0} label="SEC" />
-        </div>
-
-        {/* CTAs */}
-        <div className={styles.ctas}>
-          <Link href="/register" className="btn btn-primary">
-            INIT_REGISTER →
-          </Link>
-          <a href="#about" className="btn btn-outline">
-            LEARN MORE
-          </a>
-        </div>
-
-        {/* Stats strip */}
-        <div className={styles.stats}>
-          <div className={styles.stat}><span className={styles.statNum}>₹1L+</span><span className={styles.statLabel}>Prize Pool</span></div>
-          <div className={styles.statDivider} />
-          <div className={styles.stat}><span className={styles.statNum}>500+</span><span className={styles.statLabel}>Participants</span></div>
-          <div className={styles.statDivider} />
-          <div className={styles.stat}><span className={styles.statNum}>50+</span><span className={styles.statLabel}>Colleges</span></div>
-          <div className={styles.statDivider} />
-          <div className={styles.stat}><span className={styles.statNum}>4</span><span className={styles.statLabel}>Tracks</span></div>
+        <div
+          ref={railRef}
+          className={`${styles.dataRail} ${scanned ? styles.scanned : ""}`}
+        >
+          <div className={styles.railLine}>
+            <span ref={pulseRef} className={styles.railPulse} />
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <span
+                key={i}
+                className={styles.railParticle}
+                style={{ animationDelay: `${i * -1}s` }}
+              />
+            ))}
+          </div>
+          <div className={styles.railNodes}>
+            <RailNode
+              label="EVENT DATE"
+              value="SEP 17–18, 2026"
+              active={activeNode === 0}
+            />
+            <RailNode
+              label="EVENT DURATION"
+              value="24 HOURS"
+              center
+              active={activeNode === 1}
+            />
+            <RailNode
+              label="EVENT LOCATION"
+              value="MANGALORE, KARNATAKA"
+              active={activeNode === 2}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className={styles.scrollHint}>
         <span className={styles.scrollLine} />
         <span className={styles.scrollText}>SCROLL</span>
