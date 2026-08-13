@@ -1,0 +1,87 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+model Team {
+  id         Int           @id @default(autoincrement())
+  teamName   String        @map("team_name")
+  teamNumber String?       @map("team_number")
+  college    String
+  participants Participant[]
+
+  @@map("teams")
+}
+
+model Participant {
+  id          String    @id @default(uuid())
+  teamId      Int?      @map("team_id")
+  name        String
+  email       String    @unique
+  phone       String?
+  role        String    @default("participant")
+  isReported  Boolean   @default(false) @map("is_reported")
+  reportedAt  DateTime? @map("reported_at")
+  
+  team        Team?     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  claims      Claim[]
+
+  @@map("participants")
+}
+
+model EventStaff {
+  id          String    @id @default(uuid())
+  name        String
+  email       String    @unique
+  phone       String?
+  role        String    // hod, faculty, volunteer
+  isReported  Boolean   @default(false) @map("is_reported")
+  reportedAt  DateTime? @map("reported_at")
+  claims      Claim[]
+
+  @@map("event_staff")
+}
+
+model CounterSession {
+  id        String    @id
+  name      String
+  isOpen    Boolean   @default(false) @map("is_open")
+  openedAt  DateTime? @map("opened_at")
+  closedAt  DateTime? @map("closed_at")
+  claims    Claim[]
+
+  @@map("counter_sessions")
+}
+
+model Claim {
+  id            Int            @id @default(autoincrement())
+  participantId String?        @map("participant_id")
+  staffId       String?        @map("staff_id")
+  itemType      String         @map("item_type")
+  claimedAt     DateTime       @default(now()) @map("claimed_at")
+  scanId        String?        @map("scan_id")
+  
+  participant   Participant?   @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  staff         EventStaff?    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  session       CounterSession @relation(fields: [itemType], references: [id], onDelete: Cascade)
+
+  @@unique([participantId, itemType])
+  @@unique([staffId, itemType])
+  @@map("claims")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  name      String?
+  role      String   @default("admin") // superadmin | admin | volunteer
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admins")
+}

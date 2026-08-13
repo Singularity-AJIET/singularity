@@ -228,7 +228,7 @@ export default function HeroSection() {
             <div className={styles.titleLine} />
 
             <p className={styles.sub}>
-              Singularity Hack is a 24-hour national inter-college hackathon
+              Singularity is a 24-hour national inter-college hackathon
               where the brightest minds compete, collaborate, and create
               solutions that matter.
             </p>
@@ -266,8 +266,11 @@ export default function HeroSection() {
               <div className={styles.panelDivider} />
               <div className={styles.countdownRow}>
                 <BigUnit v={mounted ? days : 0} label="DAYS" />
+                <span className={styles.bigColon}>:</span>
                 <BigUnit v={mounted ? hours : 0} label="HRS" />
+                <span className={styles.bigColon}>:</span>
                 <BigUnit v={mounted ? minutes : 0} label="MIN" />
+                <span className={styles.bigColon}>:</span>
                 <BigUnit v={mounted ? seconds : 0} label="SEC" />
               </div>
             </div>

@@ -40,7 +40,7 @@ export default function SponsorsSection() {
             OUR <span className="text-lime">SPONSORS</span>
           </h2>
           <p className="section-sub">
-            Singularity Hack is proudly supported by industry leaders who believe
+            Singularity is proudly supported by industry leaders who believe
             in the next generation of builders.
           </p>
         </div>

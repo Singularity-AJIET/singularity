@@ -59,9 +59,7 @@
   object-fit: contain;
 }
 
-.logo:hover .logoIcon {
-  transform: rotate(90deg);
-}
+
 
 .logoAccent {
   color: var(--accent-lime);

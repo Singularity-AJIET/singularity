@@ -42,7 +42,7 @@ export default function RegistrationInfoSection() {
         <div className="section-label">// registration</div>
         <h2 className="section-title">TEAM <span className="text-lime">REGISTRATION</span></h2>
         <p className="section-sub">
-          Join the Singularity Hack 2026 journey by applying with your team. Selected teams will be announced after the resume-based screening process.
+          Join the Singularity 2026 journey by applying with your team. Selected teams will be announced after the resume-based screening process.
         </p>
       </div>
 

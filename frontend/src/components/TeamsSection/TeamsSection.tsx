@@ -72,7 +72,7 @@ export default function TeamsSection() {
           <div className="section-label">// finalists</div>
           <h2 className="section-title">SELECTED <span className="text-lime">TEAMS</span></h2>
           <p className="section-sub">
-            Out of 5,000+ applications, these 30 teams have been selected to compete at Singularity Hack 2026.
+            Out of 5,000+ applications, these 30 teams have been selected to compete at Singularity 2026.
           </p>
         </div>
 

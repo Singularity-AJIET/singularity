@@ -74,7 +74,8 @@
   font-weight: 700;
   color: rgba(17,16,16,0.4);
   line-height: 1;
-  margin-bottom: 20px;
+  align-self: flex-start;
+  margin-top: 24px;
 }
 
 /* Countdown old styles — removed, now using .unit/.num/.colon above */
