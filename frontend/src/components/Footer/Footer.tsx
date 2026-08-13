@@ -20,7 +20,7 @@ const SOCIAL = [
   { label: "Discord", href: "https://discord.com", icon: <Gamepad2 size={20} />, tooltip: "Discord" },
 ];
 
-const TARGET = new Date("2026-08-15T09:00:00").getTime();
+const TARGET = new Date("2026-09-17T09:00:00+05:30").getTime();
 
 function computeTimeLeft() {
   const diff = TARGET - Date.now();
@@ -135,7 +135,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className={styles.bar}>
           <span className={styles.barLeft}>
-            @singularity-hack:~# 2026 copyright initialized.
+            © 2026 Singularity — All rights reserved.
           </span>
           <span className={styles.barRight}>
             status: <span className={styles.statusDot}>operational_</span>
