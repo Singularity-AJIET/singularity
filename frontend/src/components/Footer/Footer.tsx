@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./Footer.module.css";
 
 const LINKS = [
@@ -99,7 +100,7 @@ export default function Footer() {
           {/* Logo */}
           <div className={styles.logoCol}>
             <div className={styles.logo}>
-              <span className={styles.logoIcon}>&gt;_</span>
+              <Image src="/logo.webp" alt="Singularity" width={40} height={40} />
               <span>SINGULARITY</span>
             </div>
             <p className={styles.logoSub}>

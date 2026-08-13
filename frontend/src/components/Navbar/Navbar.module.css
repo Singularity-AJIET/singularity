@@ -5,9 +5,7 @@
   right: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(5, 5, 5, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #050505;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
 }
@@ -25,7 +23,7 @@
 }
 
 .scrolled {
-  background: rgba(5, 5, 5, 0.85);
+  background: #050505;
   border-bottom: 1px solid var(--accent-lime);
   box-shadow: 0 4px 30px rgba(200, 241, 53, 0.15);
 }

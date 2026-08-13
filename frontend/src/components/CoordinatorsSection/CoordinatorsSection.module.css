@@ -3,7 +3,7 @@
   border-top: 2px solid var(--border);
   position: relative;
   overflow: hidden;
-  padding: 80px 0;
+  padding: 20px 0;
 }
 
 .header {
@@ -615,7 +615,7 @@
 
 /* === MOBILE === */
 @media (max-width: 640px) {
-  .section { padding: 48px 0; }
+  .section { padding: 20px 0; }
   .carouselContainer { padding: 0 12px; gap: 16px; }
   .header { padding: 0 12px; margin-bottom: 24px; }
 

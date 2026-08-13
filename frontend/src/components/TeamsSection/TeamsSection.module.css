@@ -1,7 +1,7 @@
 .section {
   background: var(--bg);
   border-top: 2px solid var(--border);
-  padding-bottom: 80px;
+  padding-bottom: 30px;
 }
 
 .adminBar {
@@ -206,7 +206,7 @@
 
 @media (max-width: 640px) {
   .section {
-    padding-bottom: 64px;
+    padding-bottom: 30px;
   }
 
   .header {
@@ -245,7 +245,7 @@
 
 @media (max-width: 480px) {
   .section {
-    padding-bottom: 52px;
+    padding-bottom: 20px;
   }
 
   .header {

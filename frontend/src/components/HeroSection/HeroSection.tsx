@@ -248,7 +248,7 @@ export default function HeroSection() {
                 </span>
               </Link>
               <a
-                href="/singularity-2026.pdf"
+                href="/Singularity-2026.pdf"
                 download
                 className={`btn btn-outline ${styles.ctaBtn} ${styles.ctaBtnOutline}`}
                 onMouseDown={createRipple}
