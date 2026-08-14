@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import React from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { getSiteUrl } from "@/lib/site";
+
+const siteName = "Singularity 2026";
+const siteUrl = getSiteUrl();
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,14 +19,47 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Singularity 2026",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Singularity 2026 | National Hackathon",
+    template: "%s | Singularity 2026",
+  },
   description:
-    "Singularity Hack is a 36-hour national inter-college hackathon bringing together the brightest minds to build, compete, and connect. Register now — Aug 15–17, 2026.",
-  keywords: ["hackathon", "singularity hack", "college hackathon", "India hackathon", "coding competition"],
+    "Singularity Hack is a 24-hour national inter-college hackathon bringing together the brightest minds to build, compete, and connect. Register now — Aug 15-17, 2026.",
+  alternates: {
+    canonical: "/",
+  },
+
+  keywords: ["Hackathon", "Singularity hack", "Inter-college hackathon", "National Level hackathon", "24-hour hackathon","Tech competition", "Student innovation", "Hackathon registration"],
+  applicationName: siteName,
+  category: "technology",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
   openGraph: {
-    title: "Singularity 2026",
-    description: "36 hours. 4 tracks. ₹1,00,000+ in prizes. Are you ready?",
+    title: "Singularity 2026 | National Hackathon",
+    description: "24 hours. 3 tracks. Build, compete, and win at Singularity 2026.",
     type: "website",
+    url: siteUrl,
+    siteName,
+    locale: "en_IN",
+    images: [
+      {
+        url: "/icon.png",
+        width: 1200,
+        height: 630,
+        alt: "Singularity 2026 Hackathon",
+      },
+    ],
   },
 };
 
