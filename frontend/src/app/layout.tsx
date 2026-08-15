@@ -21,16 +21,16 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Singularity 2026 | National Hackathon",
+    default: "Singularity 2026 | National Level Hackathon",
     template: "%s | Singularity 2026",
   },
   description:
-    "Singularity Hack is a 24-hour national inter-college hackathon bringing together the brightest minds to build, compete, and connect. Register now — Aug 15-17, 2026.",
+    "Singularity Hack is a 24-hour national inter-college hackathon bringing together the brightest minds to build, compete, and connect. Happening Sep 17-18, 2026. Register now.",
   alternates: {
     canonical: "/",
   },
 
-  keywords: ["Hackathon", "Singularity hack", "Inter-college hackathon", "National Level hackathon", "24-hour hackathon","Tech competition", "Student innovation", "Hackathon registration"],
+  keywords: ["Hackathon", "Singularity hack", "Singularity 2026", "Inter-college hackathon", "National Level hackathon", "24-hour hackathon","Tech competition", "Student innovation", "Hackathon registration"],
   applicationName: siteName,
   category: "technology",
   robots: {
@@ -46,15 +46,15 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Singularity 2026 | National Hackathon",
-    description: "24 hours. 3 tracks. Build, compete, and win at Singularity 2026.",
+    title: "Singularity 2026 | National Level Hackathon",
+    description: "24 hours. 3 tracks. Sep 17-18, 2026. Join the ultimate inter-college hackathon and showcase your skills.",
     type: "website",
     url: siteUrl,
     siteName,
     locale: "en_IN",
     images: [
       {
-        url: "/icon.png",
+        url: "/og.png",
         width: 1200,
         height: 630,
         alt: "Singularity 2026 Hackathon",
