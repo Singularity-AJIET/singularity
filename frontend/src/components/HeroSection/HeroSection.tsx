@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "./HeroSection.module.css";
 
 const TARGET_DATE = new Date("2026-09-17T09:00:00+05:30");
-const UNSTOP_URL = "https://unstop.com/";
+const UNSTOP_URL = "https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983";
 
 function createRipple(e: React.MouseEvent<HTMLElement>) {
   const target = e.currentTarget;
