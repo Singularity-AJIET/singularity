@@ -1,0 +1,638 @@
+.wrap {
+  position: relative;
+  height: var(--header-h, 400px);
+  width: auto;
+  max-width: 100%;
+  min-height: 260px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  overflow: hidden;   /* ADD THIS — contains tags, labels, sweep */
+  filter: drop-shadow(0 40px 70px rgba(0, 0, 0, 0.4));
+}
+
+.svg {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.parallax {
+  transform-box: fill-box;
+  will-change: transform;
+}
+
+/* ---------- Radar sweep (real conic-gradient, screen blend) ----------
+   Replaces the old SVG linear-gradient wedge, which rendered as a flat
+   gray panel. This rotates in lockstep with SCAN_PERIOD_MS in the
+   component (11s). Bright edge sits at the 0/360 boundary; rotating the
+   whole element by +90deg aligns that edge with "angle 0 = pointing
+   right", matching the JS scanAngle convention used for node lighting. */
+.radarSweep {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 278deg,
+    rgba(200, 241, 53, 0.03) 314deg,
+    rgba(200, 241, 53, 0.1) 342deg,
+    rgba(234, 255, 176, 0.22) 356deg,
+    rgba(243, 255, 206, 0.32) 360deg
+  );
+  /* closest-side => 100% here means exactly half the box's width/height
+     (the box is the same size as the SVG, so this maps directly onto
+     wrap-relative percentages, unlike the corner-relative default).
+     Solid out to 70% (~35% of wrap = just inside the mid ring), fully
+     gone by 92% (~46% of wrap = right at the outer ring) — nowhere
+     near the corner tags, which sit much further out. */
+  -webkit-mask-image: radial-gradient(circle closest-side at center, #000 0%, #000 70%, transparent 92%);
+  mask-image: radial-gradient(circle closest-side at center, #000 0%, #000 70%, transparent 92%);
+  animation: radarSweep 11s linear infinite;
+}
+
+@keyframes radarSweep {
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(450deg);
+  }
+}
+
+/* ---------- Center graticule ---------- */
+.graticule line {
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 0.5;
+  stroke-dasharray: 1 7;
+  opacity: 0.14;
+}
+
+/* ---------- Radar bezel ticks ---------- */
+.tick {
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 0.6;
+  opacity: 0.22;
+}
+
+.tickMajor {
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 1.1;
+  opacity: 0.5;
+}
+
+/* ---------- Orbital rings (host the nodes) ----------
+   TRUE circles now (rx === ry, no rotate) so nodes sit exactly on the
+   line instead of floating off an elliptical path. */
+.ringA,
+.ringB,
+.ringC {
+  fill: none;
+  stroke: var(--accent-lime, #c8f135);
+  transform-origin: 230px 230px;
+}
+
+.ringA {
+  stroke-width: 0.9;
+  opacity: 0.32;
+  animation: spinCW 95s linear infinite;
+}
+
+.ringB {
+  stroke-width: 0.9;
+  opacity: 0.26;
+  animation: spinCCW 150s linear infinite;
+}
+
+.ringC {
+  stroke-width: 0.8;
+  opacity: 0.2;
+  stroke-dasharray: 1 7;
+  animation: spinCW 230s linear infinite;
+}
+
+@keyframes spinCW {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinCCW {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* ---------- Outward energy pulse ---------- */
+.energyPulse {
+  fill: none;
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 1.2;
+  transform-origin: 230px 230px;
+  animation: energyPulse 5s ease-out infinite;
+}
+
+@keyframes energyPulse {
+  0% {
+    r: 16;
+    opacity: 0.5;
+    stroke-width: 2;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    r: 210;
+    opacity: 0;
+    stroke-width: 0.3;
+  }
+}
+
+/* ---------- Layered core ---------- */
+.coreGlow {
+  animation: coreGlowPulse 4.8s ease-in-out infinite;
+}
+
+.coreLayer3,
+.coreLayer2,
+.coreLayer1 {
+  fill: none;
+  stroke: var(--accent-lime, #c8f135);
+  transform-origin: 230px 230px;
+}
+
+.coreLayer3 {
+  stroke-width: 0.6;
+  opacity: 0.18;
+  animation: coreBreathe 4.8s ease-in-out infinite;
+}
+
+.coreLayer2 {
+  stroke-width: 0.8;
+  opacity: 0.3;
+  animation: coreBreathe 4.8s ease-in-out 0.15s infinite;
+}
+
+.coreLayer1 {
+  stroke-width: 1;
+  opacity: 0.5;
+  animation: coreBreathe 4.8s ease-in-out 0.3s infinite;
+}
+
+@keyframes coreBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.28;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.55;
+  }
+}
+
+.core {
+  fill: #f3ffce;
+  transform-origin: 230px 230px;
+  animation: corePulse 4.8s ease-in-out infinite,
+    coreFlowFlash 4.8s ease-in-out calc(4 * 0.9s) infinite;
+  filter: drop-shadow(0 0 8px rgba(200, 241, 53, 0.9));
+}
+
+@keyframes corePulse {
+  0%,
+  100% {
+    r: 11;
+  }
+  50% {
+    r: 13.5;
+  }
+}
+
+@keyframes coreFlowFlash {
+  0%,
+  85%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(200, 241, 53, 0.9));
+  }
+  90% {
+    filter: drop-shadow(0 0 22px rgba(238, 255, 200, 1));
+  }
+}
+
+.coreFlash {
+  animation: coreClickFlash 0.75s ease-out;
+}
+
+@keyframes coreClickFlash {
+  0% {
+    filter: drop-shadow(0 0 30px rgba(238, 255, 200, 1));
+  }
+  100% {
+    filter: drop-shadow(0 0 8px rgba(200, 241, 53, 0.9));
+  }
+}
+
+@keyframes coreGlowPulse {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---------- Node orbits ---------- */
+.orbit {
+  transform-origin: 230px 230px;
+  animation-name: orbitRotate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes orbitRotate {
+  from {
+    transform: rotate(var(--start));
+  }
+  to {
+    transform: rotate(calc(var(--start) + 360deg));
+  }
+}
+
+/* Cancels the parent orbit rotation so labels/dots stay upright */
+.counter {
+  transform-origin: 0px 0px;
+  animation-name: counterRotate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes counterRotate {
+  from {
+    transform: rotate(calc(var(--start) * -1));
+  }
+  to {
+    transform: rotate(calc(var(--start) * -1 - 360deg));
+  }
+}
+
+.connector {
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 0.6;
+  opacity: 0.2;
+  transition: opacity 0.35s ease, stroke-width 0.35s ease;
+}
+
+.connectorActive {
+  opacity: 0.65;
+  stroke-width: 0.9;
+}
+
+/* ---------- Data packets ---------- */
+.packet {
+  fill: #eaffb0;
+  opacity: 0;
+  animation-name: packetMove;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 6s;
+  filter: drop-shadow(0 0 3px rgba(200, 241, 53, 0.9));
+}
+
+/* Flow-chain nodes (IDEA -> CODE -> BUILD -> INNOVATE) fire in sequence,
+   staggered by --flow-delay, sharing one common cycle length so the
+   sequence reads clearly and repeats together. */
+.packetFlow {
+  animation-duration: 4.8s;
+  animation-delay: var(--flow-delay, 0s);
+}
+
+@keyframes packetMove {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateX(var(--radius));
+    opacity: 0;
+  }
+}
+
+.packetBurst {
+  fill: #f3ffce;
+  animation: packetBurstMove 0.6s ease-out 1;
+  filter: drop-shadow(0 0 6px rgba(238, 255, 200, 1));
+}
+
+@keyframes packetBurstMove {
+  0% {
+    transform: translateX(var(--radius));
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
+/* ---------- Nodes ---------- */
+.node {
+  cursor: pointer;
+  outline: none;
+}
+
+.nodeDot {
+  fill: #0a0c08;
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 1.4;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: fill 0.3s ease, stroke-width 0.3s ease, transform 0.25s ease;
+}
+
+.nodeRing {
+  fill: none;
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 0.5;
+  opacity: 0.35;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.3s ease, transform 0.25s ease;
+}
+
+/* Target-lock reticle ticks (N/E/S/W) around each node */
+.reticle line {
+  stroke: var(--accent-lime, #c8f135);
+  stroke-width: 0.9;
+  opacity: 0.4;
+  transition: opacity 0.3s ease, stroke-width 0.3s ease;
+}
+
+/* Labels — bumped from ~7px to a legible size, with a dark stroke
+   outline (paint-order) so they stay readable over rings/particles
+   regardless of what's behind them, instead of relying on a muted
+   gray fill that disappeared into the background.
+   Positioning is now handled entirely via the `transform` attribute
+   set in the component (outward from the core), not via x/y here —
+   that's the label-overlap fix. dominant-baseline: central keeps the
+   text vertically centered on its anchor point regardless of which
+   direction it's pushed (up, down, sideways). */
+.nodeLabel {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  fill: #e4ffb8;
+  opacity: 0.88;
+  paint-order: stroke fill;
+  stroke: rgba(4, 7, 2, 0.9);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  transition: fill 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* Depth tiers: inner ring brightest/largest, outer ring quietest/smallest */
+.tier-mid .nodeLabel {
+  font-size: 13px;
+  opacity: 0.76;
+}
+
+.tier-outer .nodeDot {
+  stroke-width: 1;
+}
+
+.tier-outer .nodeLabel {
+  font-size: 12px;
+  opacity: 0.62;
+}
+
+.node:hover .nodeDot,
+.node:focus-visible .nodeDot,
+.nodeActive .nodeDot,
+.scanHit .nodeDot {
+  fill: var(--accent-lime, #c8f135);
+  stroke-width: 2;
+}
+
+.node:hover .nodeDot,
+.node:focus-visible .nodeDot,
+.nodeActive .nodeDot {
+  transform: scale(1.15);
+}
+
+.node:hover .nodeRing,
+.node:focus-visible .nodeRing,
+.nodeActive .nodeRing,
+.scanHit .nodeRing {
+  opacity: 0.8;
+  transform: scale(1.15);
+}
+
+.node:hover .reticle line,
+.node:focus-visible .reticle line,
+.nodeActive .reticle line,
+.scanHit .reticle line {
+  opacity: 0.95;
+  stroke-width: 1.3;
+}
+
+.node:hover .nodeLabel,
+.node:focus-visible .nodeLabel,
+.nodeActive .nodeLabel,
+.scanHit .nodeLabel {
+  fill: #f8ffe0;
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(200, 241, 53, 0.9));
+}
+
+/* ---------- Particles ---------- */
+.particleOrbit {
+  transform-origin: 230px 230px;
+  animation-name: orbitRotate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.particle {
+  fill: var(--accent-lime, #c8f135);
+  opacity: 0.32;
+  animation: particleDrift 6s ease-in-out infinite;
+}
+
+@keyframes particleDrift {
+  0%,
+  100% {
+    opacity: 0.18;
+    r: 1;
+  }
+  50% {
+    opacity: 0.5;
+    r: 1.6;
+  }
+}
+
+/* ---------- HUD corner-bracket frame ---------- */
+.corner {
+  position: absolute;
+  z-index: 3;
+  width: 15px;
+  height: 15px;
+  opacity: 0.55;
+  pointer-events: none;
+  border-color: var(--accent-lime, #c8f135);
+  border-style: solid;
+  border-width: 0;
+}
+
+.cornerTL {
+  top: 2px;
+  left: 2px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.cornerTR {
+  top: 2px;
+  right: 2px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.cornerBL {
+  bottom: 2px;
+  left: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.cornerBR {
+  bottom: 2px;
+  right: 2px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+/* ---------- Floating tech HUD ---------- */
+.tag {
+  position: absolute;
+  z-index: 4;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted, #9a9a92);
+  opacity: 0.55;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.tagTopLeft {
+  top: 4%;
+  left: 2%;
+  color: var(--accent-lime, #c8f135);
+  opacity: 0.8;
+}
+
+.tagTopRight {
+  top: 4%;
+  right: 2%;
+}
+
+.tagBottomLeft {
+  bottom: 4%;
+  left: 2%;
+}
+
+.tagBottomRight {
+  bottom: 4%;
+  right: 2%;
+  color: var(--accent-lime, #c8f135);
+  opacity: 0.8;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-lime, #c8f135);
+  box-shadow: 0 0 6px rgba(200, 241, 53, 0.8);
+  animation: statusBlink 2.4s ease-in-out infinite;
+}
+
+@keyframes statusBlink {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---------- Responsive ----------
+   FIX (huge top/bottom gap on mobile): .wrap has an explicit `height`
+   (from --header-h, which is the full measured header block — e.g.
+   558px) and only `width: auto`. Because aspect-ratio only fills in
+   the dimension that's `auto`, it computed width = height first, and
+   THEN max-width clamped that width down — but height stayed at the
+   full desktop value. Result: a narrow column trapped inside a tall
+   (558px) box, so the square SVG letterboxed with big empty bands
+   above/below it.
+   Fix: on these breakpoints, drop back to `height: auto` so aspect-
+   ratio derives height FROM the (now width-capped) box instead, making
+   it a true, compact square again. Desktop behaviour (exact header-
+   height match) is untouched since this only applies under 900px. */
+@media (max-width: 900px) {
+  .wrap {
+    height: auto;
+    max-width: min(320px, 80vw);
+  }
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    height: auto;
+    max-width: min(260px, 82vw);
+  }
+  .tag {
+    font-size: 0.5rem;
+  }
+  .particle {
+    opacity: 0.2;
+  }
+  .corner {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .parallax {
+    transform: none !important;
+  }
+  .packet,
+  .particle {
+    opacity: 0 !important;
+  }
+  .radarSweep {
+    opacity: 0 !important;
+  }
+}
