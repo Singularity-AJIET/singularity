@@ -128,7 +128,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
               <span className={styles.registerCornerTR} aria-hidden="true" />
               <span className={styles.registerSweep} aria-hidden="true" />
               <span className={styles.registerLabel}>REGISTER</span>
-              <span className={styles.registerArrow} aria-hidden="true">→</span>
+
               <span className={styles.registerCornerBL} aria-hidden="true" />
             </a>
           </div>
@@ -194,7 +194,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
             >
               <span className={styles.mobileRegisterCornerTR} aria-hidden="true" />
               <span className={styles.mobileRegisterLabel}>REGISTER</span>
-              <span className={styles.mobileRegisterArrow} aria-hidden="true">→</span>
+
               <span className={styles.mobileRegisterCornerBL} aria-hidden="true" />
             </a>
           </div>
