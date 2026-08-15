@@ -139,13 +139,13 @@ const ROLES = [
   "Faculty Coordinator",
   "Lead Organizer",
   "Tech Lead",
-  "Media & Publicity Lead",
+  "Press & Media Lead",
   "Logistics & Accommodation Lead",
   "Food & Refreshments Lead",
   "Stage & Venue Lead",
   "Registration Lead",
   "Cultural Lead",
-  "Documentation & Design Lead",
+  "Design Lead",
 ];
 
 // Minimum horizontal drag distance (px) before a touch gesture counts as a swipe
