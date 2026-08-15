@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -6,9 +8,10 @@ import apiRouter from './routes/api.js';
 dotenv.config();
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
-// Configure CORS for next.js admin interface & network IP / tunnel access
+// Configure CORS — restricts to FRONTEND_URL in production, allows all in dev
+const allowedOrigin = process.env.FRONTEND_URL || true;
 app.use(cors({
-    origin: true,
+    origin: allowedOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -34,8 +37,9 @@ app.use((err, req, res, next) => {
 // Start listening
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`=========================================`);
-    console.log(`Event Pass Tracker Node.js/TS Backend    `);
+    console.log(`Singularity Node.js/TS Backend    `);
     console.log(`Server listening on port ${PORT}          `);
-    console.log(`API base url: http://localhost:${PORT}/api`);
+    const apiUrl = process.env.API_URL || `http://localhost:${PORT}`;
+    console.log(`API base url: ${apiUrl}/api`);
     console.log(`=========================================`);
 });

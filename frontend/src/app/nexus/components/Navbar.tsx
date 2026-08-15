@@ -104,16 +104,6 @@ export default function Navbar() {
             
             {!isVolunteer && (
               <>
-                <button
-                  onClick={() => router.push("/nexus/web-launch")}
-                  className={`rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer ${
-                    pathname === "/nexus/web-launch"
-                      ? "bg-yellow-400/10 border border-yellow-400/25 font-bold text-yellow-400"
-                      : "font-semibold text-slate-400 hover:text-white"
-                  }`}
-                >
-                  Web Launch
-                </button>
               <button
                 onClick={() => router.push("/nexus/settings")}
                 className={`rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer ${

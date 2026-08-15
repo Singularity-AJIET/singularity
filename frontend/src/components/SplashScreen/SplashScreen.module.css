@@ -5,10 +5,10 @@
   background: #0D0D0D;
   display: flex;
   flex-direction: column;
-  align-items: center;        /* was flex-start */
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;         /* new */
-  padding: 0 0.5vw;           /* virtually no side margin — maximize word size */
+  text-align: left;
+  padding: 0 8vw;           /* match the corner padding for alignment */
   overflow: hidden;
 }
 
@@ -16,7 +16,7 @@
 .wordRow {
   display: flex;
   align-items: flex-end;
-  justify-content: center;    /* new — centers the letters as a group */
+  justify-content: flex-start;
   line-height: 1;
   width: 100%;
   white-space: nowrap;
@@ -57,15 +57,15 @@
   text-transform: uppercase;
   color: #888580;
   will-change: transform, opacity;
-  text-align: center;
-  white-space: normal;
+  text-align: left;
+  white-space: nowrap;
 }
 
 /* >_ DECODING... corner label */
 .corner {
   position: absolute;
   top: 36px;
-  left: 4vw;
+  left: 8vw;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 700;

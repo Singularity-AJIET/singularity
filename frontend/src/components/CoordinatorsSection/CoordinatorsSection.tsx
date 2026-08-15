@@ -129,7 +129,7 @@ const TEAM_COORDINATORS: Coordinator[] = [
   // Documentation & Design Committee
   { name: "Shramish", role: "Documentation & Design Committee", seed: "Shramish", photo: "/team/shramish poojary.webp", color: "#ffe66d", github: "https://github.com/ShramishR", instagram: "https://www.instagram.com/shramish_poojary?igsh=djlzZm9pa2g0bGNv&igsi=djlzZm9pa2g0bGNv", linkedin: "https://www.linkedin.com/in/shramish-poojary-98b9502a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
   { name: "Shivani S Poojary", role: "Documentation & Design Committee", seed: "Shivani", photo: "/team/Shivani S Poojary .webp", color: "#ff8ed4", github: "https://github.com/Shivani512005", instagram: "https://www.instagram.com/_iiamshivani_?igsh=MXNsMzkzNnN6cXRiYg==", linkedin: "https://www.linkedin.com/in/shivani-s-poojary-047a2a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
-  { name: "Adithya Unni", role: "Documentation & Design Committee", seed: "Adithya", photo: "/team/Adithya _unni.webp", color: "#845ec2", github: "https://github.com/adithyaunni", linkedin: "https://linkedin.com/in/adithya-unni" },
+  { name: "Adithya Unni", role: "Documentation & Design Committee", seed: "Adithya", photo: "/team/Adithya _unni.webp", color: "#845ec2", github: "https://github.com/adithyaunni", instagram:"https://www.instagram.com/u_____n_____n_____i?igsh=Y3JzMDVleXNqbWhm",linkedin: "https://www.linkedin.com/in/adithya-unni-364b8232b" },
 ];
 
 const COORDINATORS = [...FACULTY_COORDINATORS, ...TEAM_COORDINATORS];

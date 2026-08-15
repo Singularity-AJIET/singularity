@@ -44,7 +44,10 @@ const TICKS = Array.from({ length: 24 }, (_, i) => {
 
 function polar(angleDeg: number, radius: number) {
   const rad = (angleDeg * Math.PI) / 180;
-  return { x: Math.cos(rad) * radius, y: Math.sin(rad) * radius };
+  return { 
+    x: Number((Math.cos(rad) * radius).toFixed(4)), 
+    y: Number((Math.sin(rad) * radius).toFixed(4)) 
+  };
 }
 
 function reticleLines(ringRadius: number) {

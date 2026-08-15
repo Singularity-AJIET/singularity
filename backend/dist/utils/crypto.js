@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as ed from '@noble/ed25519';
 import crypto from 'crypto';
 // Setup Node.js shims for noble-ed25519 v2+

@@ -73,7 +73,7 @@ export default function Home() {
           <SponsorsSection />
           <CoordinatorsSection />
           <ScheduleSection />
-          <TeamsSection />
+          {/* <TeamsSection /> */}
           <FAQSection />
         </main>
         <Footer />
