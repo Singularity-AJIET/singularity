@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "./HeroSection.module.css";
 
 const TARGET_DATE = new Date("2026-09-17T09:00:00+05:30");
+const UNSTOP_URL = "https://unstop.com/";
 
 function createRipple(e: React.MouseEvent<HTMLElement>) {
   const target = e.currentTarget;
@@ -64,7 +65,9 @@ function RailNode({
         active ? styles.active : ""
       }`}
     >
-      <span className={styles.nodeDot} />
+      <span className={styles.nodeMarker}>
+        <span className={styles.nodeDot} />
+      </span>
       <span className={styles.railNodeText}>
         <span className={styles.nodeLabel}>{label}</span>
         <span className={styles.nodeValue}>{value}</span>
@@ -222,6 +225,14 @@ export default function HeroSection() {
       <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
       <div className={styles.topo} aria-hidden="true" />
 
+      {/* Decorative ambient nodes — invisible on desktop, extremely subtle
+          on mobile (see .orbitalNodes / .orbNode in the mobile media query) */}
+      <div className={styles.orbitalNodes} aria-hidden="true">
+        <span className={styles.orbNode} />
+        <span className={styles.orbNode} />
+        <span className={styles.orbNode} />
+      </div>
+
       <div className={styles.content}>
         <div className={styles.layout}>
           <div className={styles.left}>
@@ -236,7 +247,7 @@ export default function HeroSection() {
 
             <div className={styles.ctas}>
               <Link
-                href="/register"
+                href={UNSTOP_URL}
                 className={`btn btn-primary ${styles.ctaBtn}`}
                 onMouseDown={createRipple}
               >
@@ -245,6 +256,9 @@ export default function HeroSection() {
                   <span className={styles.dot} />
                   <span className={styles.dot} />
                   <span className={styles.dot} />
+                </span>
+                <span className={styles.arrowIcon} aria-hidden="true">
+                  →
                 </span>
               </Link>
               <a
@@ -262,7 +276,10 @@ export default function HeroSection() {
             <div className={styles.countdownPanel}>
               <span className={styles.panelLabel}>
                 EVENT<br />
-                <span className={styles.panelLabelAccent}>COUNTDOWN</span>
+                <span className={styles.panelLabelAccent}>
+                  COUNTDOWN
+                  <span className={styles.statusDot} aria-hidden="true" />
+                </span>
               </span>
               <div className={styles.panelDivider} />
               <div className={styles.countdownRow}>

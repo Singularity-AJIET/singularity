@@ -25,6 +25,18 @@
   pointer-events: none;
 }
 
+.orbitalNodes {
+  display: none;
+}
+
+.orbNode {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-lime);
+}
+
 .content {
   position: relative;
   z-index: 1;
@@ -33,7 +45,6 @@
   padding: 140px 40px 60px;
 }
 
-/* ============ TWO-COLUMN LAYOUT ============ */
 .layout {
   display: grid;
   grid-template-columns: 1fr minmax(320px, 420px);
@@ -91,7 +102,6 @@
   text-align: left;
 }
 
-/* CTAs */
 .ctas {
   display: flex;
   gap: 60px;
@@ -99,8 +109,6 @@
   flex-wrap: wrap;
 }
 
-/* button wave sweep + click ripple — applied via the local .ctaBtn class
-   added alongside the global "btn btn-primary" / "btn btn-outline" classes */
 .ctaBtn {
   position: relative;
   overflow: hidden;
@@ -137,8 +145,6 @@
   pointer-events: none;
 }
 
-/* lime ripple specifically on the outline button — compound selector is
-   "pure" because .ctaBtn (local) is present alongside :global(.btn-outline) */
 .ctaBtn:global(.btn-outline) .ripple {
   background: rgba(200, 241, 53, 0.3);
 }
@@ -176,7 +182,14 @@
   40% { opacity: 1; transform: scale(1); }
 }
 
-/* ============ COUNTDOWN PANEL (right column) ============ */
+.arrowIcon {
+  display: none;
+}
+
+.statusDot {
+  display: none;
+}
+
 .right {
   justify-self: end;
   width: 100%;
@@ -197,12 +210,9 @@
 }
 
 @keyframes panelGlow {
-
-  0%,
-  100% {
+  0%, 100% {
     box-shadow: 0 0 0px rgba(200, 241, 53, 0);
   }
-
   50% {
     box-shadow: 0 0 28px rgba(200, 241, 53, 0.08);
   }
@@ -335,7 +345,6 @@
   margin-top: 8px;
 }
 
-/* ============ EVENT DATA RAIL ============ */
 .dataRail {
   position: relative;
   width: 100%;
@@ -461,6 +470,10 @@
   transform: translateY(-4px) scale(1.04);
 }
 
+.nodeMarker {
+  display: contents;
+}
+
 .nodeDot {
   position: relative;
   width: 11px;
@@ -530,7 +543,6 @@
   text-shadow: 0 0 10px rgba(200, 241, 53, 0.4);
 }
 
-/* ============ JS-SYNCED PULSE ACTIVATION ============ */
 .railNode.active .nodeDot {
   background: var(--accent-lime);
   box-shadow: 0 0 22px rgba(200, 241, 53, 0.9), 0 0 44px rgba(200, 241, 53, 0.35);
@@ -624,9 +636,29 @@
     animation: none;
     opacity: 0.6;
   }
+
+  .hero,
+  .hero * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .left,
+  .title,
+  .titleLine,
+  .sub,
+  .ctas,
+  .right,
+  .orbNode,
+  .statusDot,
+  .arrowIcon,
+  .scrollTextMobile,
+  .scrollLine {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
-/* ============ SCROLL HINT ============ */
 .scrollHint {
   position: absolute;
   bottom: 32px;
@@ -667,7 +699,10 @@
   color: var(--text-muted);
 }
 
-/* ============ RESPONSIVE ============ */
+.scrollTextMobile {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .content {
     padding: 120px 24px 60px;
@@ -715,9 +750,6 @@
 }
 
 @media (max-width: 600px) {
-  /* --- Hero shell: size to its own content on mobile instead of being
-     forced to fill 100vh — that stretch was what pushed SCROLL way
-     down and left a dead gap after the event timeline --- */
   .hero {
     min-height: 0;
     height: auto;
@@ -726,24 +758,205 @@
   }
 
   .content {
-    padding: 110px 18px 0;
+    padding: 104px 18px 0;
+    position: relative;
   }
 
   .layout {
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-top: 18px;
+    margin-bottom: 34px;
   }
 
-  /* --- Scroll hint: normal flow, a short fixed gap below the
-     timeline instead of pinned to the viewport bottom --- */
+  .canvas {
+    opacity: 0.55;
+  }
+
+  .topo {
+    opacity: 0.7;
+  }
+
+  .content::before {
+    content: "";
+    position: absolute;
+    inset: -40px -18px 0;
+    background: radial-gradient(
+      ellipse 100% 60% at 50% 8%,
+      rgba(6, 8, 6, 0.35),
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .orbitalNodes {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .orbNode {
+    opacity: 0;
+    animation: orbFadeIn 1.4s ease-out forwards, orbPulse 5.5s ease-in-out infinite;
+  }
+
+  .orbNode:nth-child(1) {
+    top: 14%;
+    left: 12%;
+    animation-delay: 1.6s, 3s;
+  }
+
+  .orbNode:nth-child(2) {
+    top: 22%;
+    right: 10%;
+    animation-delay: 2s, 4.2s;
+  }
+
+  .orbNode:nth-child(3) {
+    top: 62%;
+    left: 8%;
+    width: 3px;
+    height: 3px;
+    animation-delay: 2.4s, 5s;
+  }
+
+  @keyframes orbFadeIn {
+    to {
+      opacity: 0.35;
+    }
+  }
+
+  @keyframes orbPulse {
+    0%, 100% {
+      box-shadow: 0 0 3px rgba(200, 241, 53, 0.3);
+      opacity: 0.2;
+    }
+    50% {
+      box-shadow: 0 0 9px rgba(200, 241, 53, 0.55);
+      opacity: 0.5;
+    }
+  }
+
+  .left {
+    opacity: 0;
+    animation: mobileRise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) 0.05s forwards;
+  }
+
+  .title {
+    opacity: 0;
+    animation: mobileTitleIn 1s cubic-bezier(0.16, 0.84, 0.44, 1) 0.15s forwards;
+  }
+
+  .titleLine {
+    width: 0;
+    opacity: 0;
+    animation: mobileLineIn 0.7s ease-out 0.55s forwards,
+      lineBreathe 4.2s ease-in-out 1.3s infinite;
+  }
+
+  .sub {
+    opacity: 0;
+    animation: mobileRise 0.85s cubic-bezier(0.16, 0.84, 0.44, 1) 0.68s forwards;
+  }
+
+  .ctas {
+    opacity: 0;
+    animation: mobileRise 0.8s cubic-bezier(0.16, 0.84, 0.44, 1) 0.86s forwards;
+  }
+
+  .right {
+    opacity: 0;
+    animation: mobileRise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) 1.02s forwards;
+  }
+
+  @keyframes mobileRise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes mobileTitleIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes mobileLineIn {
+    from {
+      width: 0;
+      opacity: 0;
+    }
+    to {
+      width: 72px;
+      opacity: 1;
+    }
+  }
+
+  @keyframes lineBreathe {
+    0%, 100% {
+      box-shadow: 0 0 8px rgba(200, 241, 53, 0.45);
+      opacity: 0.85;
+    }
+    50% {
+      box-shadow: 0 0 16px rgba(200, 241, 53, 0.75);
+      opacity: 1;
+    }
+  }
+
   .scrollHint {
     position: static;
     transform: none;
     width: 100%;
-    margin: 20px 0 28px;
+    margin: 18px 0 26px;
   }
 
-  /* --- CTAs: guaranteed side-by-side, no clipping on 320px --- */
+  .scrollLine {
+    animation: scrollDriftMobile 2.2s ease-in-out infinite;
+  }
+
+  @keyframes scrollDriftMobile {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateY(5px);
+      opacity: 1;
+    }
+  }
+
+  .title {
+    font-size: clamp(2.15rem, 11.5vw, 2.9rem);
+    white-space: nowrap;
+    color: #f4f4f2;
+    text-shadow: 0 0 22px rgba(200, 241, 53, 0.14);
+  }
+
+  .titleLine {
+    height: 2px;
+    margin-bottom: 22px;
+  }
+
+  .sub {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin: 0 auto 28px;
+  }
+
   .ctas {
     flex-direction: row;
     gap: 10px;
@@ -757,45 +970,139 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
     text-align: center;
     padding: 14px 8px;
-    font-size: 0.7rem;
-    letter-spacing: 0.01em;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
     white-space: nowrap;
+    border-radius: 0 !important;
+    clip-path: polygon(
+      10px 0,
+      100% 0,
+      100% calc(100% - 10px),
+      calc(100% - 10px) 100%,
+      0 100%,
+      0 10px
+    );
+    transition: box-shadow 0.25s ease, transform 0.15s ease, border-color 0.25s ease;
+  }
+
+  .ctaBtn:active {
+    transform: scale(0.97);
+  }
+
+  .ctaBtn:global(.btn-primary):active {
+    box-shadow: 0 0 22px rgba(200, 241, 53, 0.5);
+  }
+
+  .ctaBtn:global(.btn-outline) {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(200, 241, 53, 0.55);
+  }
+
+  .ctaBtn:global(.btn-outline):active {
+    border-color: var(--accent-lime);
+    box-shadow: 0 0 16px rgba(200, 241, 53, 0.25);
   }
 
   .loadingDots {
-    margin-left: 4px;
-    transform: translateY(3px);
+    display: none;
   }
 
-  /* --- Countdown panel: full width, safe margins, nothing clipped --- */
+  .arrowIcon {
+    display: inline-block;
+    font-family: var(--font-mono);
+    animation: arrowNudge 2s ease-in-out infinite;
+  }
+
+  @keyframes arrowNudge {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(3px);
+    }
+  }
+
   .countdownPanel {
     width: 100%;
-    padding: 26px 18px 22px;
+    min-width: 0;
+    padding: 22px 16px 20px;
+    box-sizing: border-box;
+    animation: panelGlow 4s ease-in-out infinite;
+  }
+
+  .panelLabel {
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .panelLabelAccent {
+    font-size: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .statusDot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-lime);
+    box-shadow: 0 0 6px rgba(200, 241, 53, 0.7);
+    animation: statusPulse 2.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% {
+      opacity: 0.45;
+      transform: scale(0.85);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+  }
+
+  .panelDivider {
+    margin: 12px 0 16px;
+  }
+
+  .countdownRow {
+    gap: 6px;
   }
 
   .bigUnit {
-    padding: 14px 4px 12px;
+    padding: 12px 2px 10px;
+    min-width: 0;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
   }
 
   .bigNum {
-    font-size: 1.55rem;
+    font-size: clamp(1.3rem, 6vw, 1.65rem);
   }
 
   .bigColon {
-    font-size: 1.2rem;
-    padding-bottom: 14px;
+    display: none;
   }
 
   .bigLabel {
-    font-size: 0.5rem;
+    font-size: 0.46rem;
+    letter-spacing: 0.14em;
+    margin-top: 6px;
   }
 
-  /* --- Event timeline: tighter so it doesn't leave a dead gap
-     before the next section --- */
   .dataRail {
-    padding: 22px 20px 18px;
+    padding: 18px 20px 14px;
   }
 
   .railLine,
@@ -813,7 +1120,7 @@
 
   .railNode {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     gap: 14px;
     padding: 0;
     position: relative;
@@ -824,14 +1131,49 @@
     transform: translateX(4px) scale(1);
   }
 
-  .railNode:not(:last-child)::after {
+  .nodeMarker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .railNode:not(:last-child) .nodeMarker::after {
     content: "";
     position: absolute;
-    left: 5px;
-    top: 22px;
+    top: 100%;
+    left: 50%;
     width: 1px;
-    height: 20px;
-    background: rgba(200, 241, 53, 0.2);
+    height: 16px;
+    background: rgba(200, 241, 53, 0.15);
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: top;
+  }
+
+  .dataRail.scanned .railNode:not(:last-child) .nodeMarker::after {
+    animation: connectorFill 0.7s ease forwards;
+  }
+
+  .dataRail.scanned .railNode:nth-child(1) .nodeMarker::after {
+    animation-delay: 0.3s;
+  }
+
+  .dataRail.scanned .railNode:nth-child(2) .nodeMarker::after {
+    animation-delay: 0.6s;
+  }
+
+  @keyframes connectorFill {
+    from {
+      transform: translateX(-50%) scaleY(0);
+      background: rgba(200, 241, 53, 0.15);
+    }
+    to {
+      transform: translateX(-50%) scaleY(1);
+      background: linear-gradient(to bottom, var(--accent-lime), rgba(200, 241, 53, 0.15));
+    }
   }
 
   .nodeDot {
@@ -844,4 +1186,32 @@
     align-items: flex-start;
     gap: 2px;
   }
+
+  .nodeValue {
+    white-space: normal;
+  }
+
+  
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--bg) 0%,
+    rgba(17, 16, 16, 0.55) 45%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 600px) {
+  .hero::after {
+    height: 150px;
+  }
+}
 }

@@ -193,7 +193,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
               onClick={() => setMenuOpen(false)}
             >
               <span className={styles.mobileRegisterCornerTR} aria-hidden="true" />
-              <span className={styles.mobileRegisterLabel}>INIT_REGISTER</span>
+              <span className={styles.mobileRegisterLabel}>REGISTER</span>
               <span className={styles.mobileRegisterArrow} aria-hidden="true">→</span>
               <span className={styles.mobileRegisterCornerBL} aria-hidden="true" />
             </a>
