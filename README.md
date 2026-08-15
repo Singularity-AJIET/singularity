@@ -1,52 +1,76 @@
-# Singularity Hack — Hackathon Website
+# Singularity
 
-A full-stack hackathon website built for inter-college participation and registration.
+A full-stack landing page and event management system for inter-college participation.
 
 ## Tech Stack
-- **Frontend**: Next.js 14 (App Router), Vanilla CSS Modules, Space Grotesk + JetBrains Mono
-- **Backend**: Python 3.12, FastAPI
+
+### Frontend
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Vanilla CSS Modules
+- **Typography**: Space Grotesk + JetBrains Mono
+
+### Backend
+- **Framework**: Node.js (Express & TypeScript)
+- **Database**: LibSQL via Prisma ORM
+- **Architecture**: REST API
 
 ## Project Structure
+
 ```
 singularity/
-├── frontend/     ← Next.js 14
-└── backend/      ← FastAPI
+├── frontend/     ← Next.js 14 Application
+│   ├── src/app/
+│   │   ├── (landing)       ← Main event landing page
+│   │   └── nexus/          ← Admin/Scanner portal routes
+│   └── src/components/     ← Landing page & shared UI components
+└── backend/      ← Node.js Express Server
+    ├── src/routes/         ← API endpoints
+    ├── prisma/             ← Database schema and migrations
+    └── src/index.ts        ← Server entrypoint
 ```
 
 ## Running Locally
 
-### Backend (port 8000)
+### Backend
 ```bash
 cd backend
-pip install -r requirements.txt
-python -m uvicorn main:app --reload
+npm install
+npm run dev
 ```
-API docs available at: http://localhost:8000/docs
+API runs on the configured port.
 
-### Frontend (port 3000)
+### Frontend (Port 3000)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Site available at: http://localhost:3000
+Site available at: `http://localhost:3000`
 
 ## API Endpoints
+
 | Method | Path | Description |
 |---|---|---|
-| GET | `/` | Health check |
-| POST | `/api/registrations/` | Submit registration |
-| GET | `/api/registrations/` | List all registrations |
-| GET | `/api/registrations/stats` | Participant stats |
-| GET | `/api/event-info` | Full event metadata |
-| GET | `/api/tracks` | Hackathon tracks |
-| GET | `/api/prizes` | Prize breakdown |
-| GET | `/api/schedule` | Event schedule |
-| GET | `/api/faq/` | FAQ items |
+| `GET` | `/api/status` | Health & uptime check |
+| `GET/POST` | `/api/participants/*` | Manage event participants & staff |
+| `GET/POST` | `/api/counters/*` | Manage counters & real-time SSE updates |
+| `POST` | `/api/claims` | QR Code scanner claims |
+| `GET` | `/api/claims/report` | View generated claims data |
+| `POST` | `/api/scan/batch` | Offline scan batch sync |
+| `GET/POST` | `/api/admin/*` | Authentication & admin management |
 
 ## Pages
-- `/` — Full landing page (Hero, About, Tracks, Prizes, Schedule, Judges, FAQ, Sponsors, Footer)
-- `/register` — 4-step registration form
+
+### Landing Page
+- `/` — Full landing page containing sections for Hero, About, Tracks, Schedule, Prizes, Teams, Sponsors, Coordinators, and FAQ.
+
+### Nexus (Admin/Scanner Portal)
+- `/nexus/login` — Admin authentication
+- `/nexus/scanner` — QR Code scanner
+- `/nexus/claims` — Claims dashboard
+- `/nexus/registration` — Participant registration
+- `/nexus/settings` — Admin settings
 
 ## Customization
-Update event details (name, date, prizes, tracks) in `backend/routes/events.py`
+- Landing page contents can be modified in `frontend/src/components/`.
+- Event data and admin portal behavior are handled by the backend REST API.
