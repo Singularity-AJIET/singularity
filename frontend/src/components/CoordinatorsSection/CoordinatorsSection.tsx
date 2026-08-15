@@ -29,54 +29,107 @@ const ChevronIcon = () => (
   </svg>
 );
 
-// Fixed for now — faculty coordinators are left untouched per request
-const FACULTY_COORDINATORS = [
-  { name: "Mrs. Sharon C Dsouza", role: "Faculty Coordinator", seed: "John", color: "#a78bfa", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Mrs. Snitha Shetty", role: "Faculty Coordinator", seed: "Emily", color: "#a78bfa", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+// Phone / call icon for the contact button
+const PhoneIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+  </svg>
+);
+
+interface Coordinator {
+  name: string;
+  role: string;
+  seed: string;
+  photo: string;
+  color: string;
+  github?: string;
+  instagram?: string;
+  linkedin?: string;
+  phone?: string;
+  imgScale?: number;
+  imgPosition?: string;
+}
+
+// Returns a smaller font size for longer names so they stay on one line
+// instead of wrapping. Short names keep the default large clamp() size
+// defined in the CSS (.name), so this only returns a value when the name
+// is long enough to need shrinking.
+const getNameFontSize = (name: string): string | undefined => {
+  const len = name.length;
+  if (len > 20) return "clamp(1.8rem, 3.2vw, 3rem)";
+  if (len > 16) return "clamp(2.2rem, 3.8vw, 3.6rem)";
+  if (len > 12) return "clamp(2.6rem, 4.3vw, 4.2rem)";
+  return undefined;
+};
+
+// On mobile, names longer than this still wrap even after getNameFontSize
+// shrinks them (e.g. "Mr. Sathyendra Bhat J", "Mrs. Sharon C Dsouza").
+// These get an extra-compact size via .nameCompact so they stay on one
+// line and the card doesn't grow taller and push the socials into the dots.
+const isCompactName = (name: string): boolean => name.length > 18;
+
+// Faculty coordinators only carry a LinkedIn link (no GitHub / Instagram
+// for this group). Snitha has no LinkedIn account at all, so she is left
+// with no social fields — her socials row will simply render empty.
+const FACULTY_COORDINATORS: Coordinator[] = [
+  { name: "Mrs. Sharon C Dsouza", role: "Faculty Coordinator", seed: "sharon", photo: "/team/sharon.webp", color: "#a78bfa", linkedin: "https://www.linkedin.com/in/sharon-dsouza-b89ab9233/" },
+  { name: "Mrs. Snitha Shetty", role: "Faculty Coordinator", seed: "Snitha", photo: "/team/snithashetty.webp", color: "#a78bfa" },
+  { name: "Mr. Sathyendra Bhat J", imgPosition: "center 0%", role: "Faculty Coordinator", seed: "Sathyendra", photo: "/team/Sathyendra Bhat J.webp", color: "#a78bfa", linkedin: "https://www.linkedin.com/in/sathyendra-bhat/" },
+  { name: "Mr. Manjukiran B", role: "Faculty Coordinator", seed: "Manjukiran", photo: "/team/manjukiran.webp", color: "#a78bfa", linkedin: "https://www.linkedin.com/in/manju-kiran-24756470/" },
 ];
 
-// Updated from the roster table. Finance and Master of Ceremonies intentionally excluded.
-const TEAM_COORDINATORS = [
-  // Lead Organizers
-  { name: "Durgesh A P", role: "Lead Organizer", seed: "Durgesh", color: "#c8f135", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Suyash Devadiga", role: "Lead Organizer", seed: "Suyash", color: "#ff6b6b", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Neekshith", role: "Lead Organizer", seed: "Neekshith", color: "#4ecdc4", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Arjun", role: "Lead Organizer", seed: "Arjun", color: "#ffe66d", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+// Updated to match the official roster sheet. Finance and Master of
+// Ceremonies intentionally excluded per earlier request. Phone numbers
+// are kept ONLY on Lead Organizers, since the phone button is restricted
+// to that role — everyone else has no phone field at all.
+const TEAM_COORDINATORS: Coordinator[] = [
+  // Lead Organizers — the only role with a phone number / phone button
+  { name: "Durgesh A P", imgPosition: "center 15%", role: "Lead Organizer", seed: "Durgesh", photo: "/team/DurgeshAP.webp", color: "#c8f135", github: "https://github.com/Durgesh3805", instagram: "https://www.instagram.com/_duxgexh_", linkedin: "https://www.linkedin.com/in/durgeshap/", phone: "+919353250245" },
+  { name: "Suyash Devadiga", imgPosition: "center 15%", role: "Lead Organizer", seed: "Suyash", photo: "/team/Suyash.webp", color: "#ff6b6b", github: "https://github.com/SuyashD22", instagram: "https://www.instagram.com/suyashdevadiga_", linkedin: "https://www.linkedin.com/in/suyashdevadiga/", phone: "+917899288198" },
+  { name: "Neekshith", role: "Lead Organizer", seed: "Neekshith", photo: "/team/Neekshith .webp", color: "#4ecdc4", github: "https://github.com/Neekshith8296", linkedin: "https://www.linkedin.com/in/neekshith-s/", phone: "+918296303393" },
+  { name: "Arjun R", role: "Lead Organizer", seed: "Arjun", photo: "/team/Arjun_R.webp", color: "#ffe66d", github: "https://github.com/Arjun-333", instagram: "https://www.instagram.com/arjun._.raj._?igsh=YzB0aTc5amxsZWc3", linkedin: "https://www.linkedin.com/in/arjun-r-44a336294", phone: "+919019934133" },
 
   // Tech Lead
-  { name: "Keerthana", role: "Tech Lead", seed: "Keerthana", color: "#ff8ed4", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Praneek C K", role: "Tech Lead", seed: "Praneek", color: "#845ec2", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Kishan C Bandary", role: "Tech Lead", seed: "Kishan", color: "#ffb830", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+  { name: "Keerthana", imgPosition: "center 45%", role: "Tech Lead", seed: "Keerthana", photo: "/team/Keerthana_K.webp", color: "#ff8ed4", github: "https://github.com/Keerthana430", instagram: "https://www.instagram.com/keerthana___kulal", linkedin: "https://www.linkedin.com/in/keerthana-kulal-32045a295/" },
+  { name: "Sunpreeth Vishva", role: "Tech Lead", seed: "Sunpreeth", photo: "/team/sunp.webp", color: "#ffb830", github: "https://github.com/anysdefdefe", instagram: "https://instagram.com/_.sunp._/", linkedin: "https://linkedin.com/in/sunpreeth-vishva/" },
+  { name: "Kishan C Bandary", role: "Tech Lead", seed: "Kishan", photo: "/team/kishan.webp", color: "#ffb830", github: "https://github.com/kishanBhandary", instagram: "https://www.instagram.com/__kixhan__/", linkedin: "https://www.linkedin.com/in/kishanbhandary/" },
+  { name: "Praneeth C K", role: "Tech Lead", seed: "Praneek", photo: "/team/Praneek.webp", color: "#845ec2", github: "https://github.com/praneeth-ck", instagram: "https://www.instagram.com/praneethck_official?igsh=MWdtaWk0aGRva3owMw==", linkedin: "https://www.linkedin.com/in/praneeth-c-k" },
 
-  // Press & Media Lead
-  { name: "Deeksha", role: "Press & Media Lead", seed: "Deeksha", color: "#ff2d6f", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Krithi Raj", role: "Press & Media Lead", seed: "KrithiRaj", color: "#c8f135", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Chirag", role: "Press & Media Lead", seed: "Chirag", color: "#ff6b6b", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Rohit", role: "Press & Media Lead", seed: "Rohit", color: "#4ecdc4", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Shramish", role: "Press & Media Lead", seed: "Shramish", color: "#ffe66d", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Arjith Kumar", role: "Press & Media Lead", seed: "Arjith", color: "#ff8ed4", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+  // Media & Publicity Committee
+  { name: "Deeksha", role: "Media & Publicity Committee", seed: "Deeksha", photo: "/team/deeksha.webp", color: "#ff2d6f", github: "https://github.com/Deeksha3227", linkedin: "https://www.linkedin.com/in/deeksha-g-458a672a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  { name: "R Krithi Mallika", imgPosition: "center 15%", role: "Media & Publicity Committee", seed: "KrithiRaj", photo: "/team/R_krithimallika.webp", color: "#c8f135", github: "https://github.com/Kri252005", instagram: "https://www.instagram.com/kri3_raj?igsh=MTEzZGt1MnM5Z3Q0ZQ==&igsi=MTEzZGt1MnM5Z3Q0ZQ==", linkedin: "https://www.linkedin.com/in/r-krithi-mallika-90294a299?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  { name: "Chirag", role: "Media & Publicity Committee", seed: "Chirag", photo: "/team/chirag.webp", color: "#ff6b6b", github: "https://github.com/chiragushetty", instagram: "https://www.instagram.com/chirag_shetty19", linkedin: "https://www.linkedin.com/in/chirag-shetty-6110b5309" },
+  { name: "Rohit G Shet", role: "Media & Publicity Committee", seed: "Rohit", photo: "/team/Rohit G Shet 4JK24CI090.webp", color: "#4ecdc4", github: "https://github.com/rohitgshet", instagram: "https://instagram.com/rohitgshet", linkedin: "https://linkedin.com/in/rohitgshet" },
+  { name: "Arjith Kumar", role: "Media & Publicity Committee", seed: "Arjith", photo: "/team/Arjith Kumar.webp", color: "#ff8ed4", github: "https://github.com/arjithkumar021", instagram: "https://www.instagram.com/arjith01.__", linkedin: "https://www.linkedin.com/in/arjith-kumar01" },
 
   // Logistics & Accommodation Lead
-  { name: "Ashray K", role: "Logistics & Accommodation Lead", seed: "Ashray", color: "#845ec2", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Krithi", role: "Logistics & Accommodation Lead", seed: "Krithi", color: "#ffb830", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+  { name: "Ashray K", role: "Logistics & Accommodation Lead", seed: "Ashray", photo: "/team/Ashray_K.webp", color: "#845ec2", github: "https://github.com/Ashray156", instagram: "https://www.instagram.com/ashra__y", linkedin: "https://www.linkedin.com/in/ashray-k-950a332a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  { name: "Krithi", role: "Logistics & Accommodation Lead", seed: "Krithi", photo: "/team/Krithi.webp", color: "#ffb830", github: "https://github.com/Krithi-162", instagram: "https://www.instagram.com/kithu_kulal17", linkedin: "https://github.com/Krithi-162" },
 
   // Food & Refreshments Lead
-  { name: "Vaishnav", role: "Food & Refreshments Lead", seed: "Vaishnav", color: "#ff2d6f", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Prathvish P Shetty", role: "Food & Refreshments Lead", seed: "Prathvish", color: "#c8f135", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+  { name: "Vaishnav", role: "Food & Refreshments Lead", seed: "Vaishnav", photo: "/team/Vaishnav.webp", color: "#ff2d6f", github: "https://github.com/vaish73", instagram: "https://www.instagram.com/vaiszzzzz/", linkedin: "https://www.linkedin.com/in/vaishnav-c00/" },
+  { name: "Prathvish S Shetty", role: "Food & Refreshments Lead", seed: "Prathvish", photo: "/team/Prathvish_S_Shetty.webp", color: "#c8f135", github: "https://github.com/prathuu-23-08", instagram: "https://www.instagram.com/prathvish.shetty", linkedin: "https://www.linkedin.com/in/prathvish-shetty" },
 
   // Stage & Venue Lead
-  { name: "Krithi A S", role: "Stage & Venue Lead", seed: "KrithiAS", color: "#ff6b6b", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Shrijan", role: "Stage & Venue Lead", seed: "Shrijan", color: "#4ecdc4", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Prakyath", role: "Stage & Venue Lead", seed: "Prakyath", color: "#ffe66d", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+  { name: "Srijan R", imgPosition: "center 15%", role: "Stage & Venue Lead", seed: "SrijanR", photo: "/team/srijan.webp", color: "#ff6b6b", github: "https://github.com/srijanpoojary991-bit", instagram: "https://www.instagram.com/srijan.chilimbi?igsh=MWxzeHpuZHExaDY5eg%3D%3D&utm_source=qr", linkedin: "https://www.linkedin.com/in/srijan-rajendra-5a36a632b" },
+  { name: "Nidhi D", role: "Stage & Venue Lead", seed: "NidhiD", photo: "/team/Nidhi.webp", color: "#4ecdc4", github: "https://github.com/NidhiD26", instagram: "https://www.instagram.com/d_nidhi26?igsh=MWllNHBxcmRyeWVwYQ==", linkedin: "https://www.linkedin.com/in/nidhidinesh" },
+  { name: "Prakyath", role: "Stage & Venue Lead", seed: "Prakyath", photo: "/team/Prakyath.webp", color: "#ffe66d", github: "https://github.com/prakyathbhat28-dotcom", instagram: "https://www.instagram.com/prakyath_2611", linkedin: "https://www.linkedin.com/in/prakyath-a-443490333/" },
 
   // Registration Lead
-  { name: "Chinmay", role: "Registration Lead", seed: "Chinmay", color: "#ff8ed4", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Shrinithi", role: "Registration Lead", seed: "Shrinithi", color: "#845ec2", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Shivani", role: "Registration Lead", seed: "Shivani", color: "#ffb830", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+  { name: "Chinmaygouda Patil", role: "Registration Lead", seed: "Chinmay", photo: "/team/Chinmay.webp", color: "#ff8ed4", github: "https://github.com/Chinmaygouda", instagram: "https://www.instagram.com/chinmaygouda__12", linkedin: "https://www.linkedin.com/in/chinmaygouda-patil-1b7b4332b/" },
+  { name: "Shrinithi Hegde", role: "Registration Lead", seed: "Shrinithi", photo: "/team/shrinithi_Hegde.webp", color: "#845ec2", github: "https://github.com/shrinithihegde29", instagram: "https://www.instagram.com/shrinithi_hegde", linkedin: "https://www.linkedin.com/in/shrinithi-hegde-39a0762a2" },
+  { name: "Krithi A S", role: "Registration Lead", seed: "KrithiAS", photo: "/team/krithi_a_s.webp", color: "#ffb830", github: "https://github.com/KrithiAS10", instagram: "https://www.instagram.com/krithi____kulal", linkedin: "https://www.linkedin.com/in/krithias10" },
 
   // Cultural Lead
-  { name: "Davana H S", role: "Cultural Lead", seed: "Davana", color: "#ff2d6f", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
-  { name: "Shreyas Shettigar", role: "Cultural Lead", seed: "Shreyas", color: "#c8f135", github: "https://github.com", instagram: "https://instagram.com", linkedin: "https://linkedin.com" },
+  { name: "Davana Hiremath H S", role: "Cultural Lead", seed: "Davana", photo: "/team/Davana.webp", color: "#ff2d6f", github: "https://github.com/Davanahs", instagram: "https://www.instagram.com/davana_h_s?igsh=Mmp4aHoxdzlmeHQ1", linkedin: "https://www.linkedin.com/in/davana-hiremath-h-s-440677321" },
+  { name: "Varsha Hegde", role: "Cultural Lead", seed: "Varsha", photo: "/team/Varsha_Hegde.webp", color: "#4ecdc4", github: "https://github.com/Varsush", instagram: "https://www.instagram.com/varsush_?igsh=MWVxaHB0MzlmY2V4Nw%3D%3D&utm_source=qr", linkedin: "https://www.linkedin.com/in/varsha-hegde-072005s" },
+  { name: "Shreyas Shettigar", imgPosition: "center 15%", role: "Cultural Lead", seed: "Shreyas", photo: "/team/Shreyas_shettigar.webp", color: "#c8f135", github: "https://github.com/Shreyas-hs-22", instagram: "https://www.instagram.com/shreyas_shettigar?igsh=MTZsMGVicDRobXI0YQ==", linkedin: "https://www.linkedin.com/in/shreyas-shettigar-2ba345356?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  { name: "Aishwarya  H C", role: "Cultural Lead", seed: "Aishwarya", photo: "/team/Aishwarya_HC.webp", color: "#c8f135", github: "https://github.com/Madeby-Aish", instagram: "https://www.instagram.com/tfaish_?igsh=ajVubGF3ZzhxMm94", linkedin: "https://www.linkedin.com/in/aishwaryahc5506/" },
+
+  // Documentation & Design Committee
+  { name: "Shramish", role: "Documentation & Design Committee", seed: "Shramish", photo: "/team/shramish poojary.webp", color: "#ffe66d", github: "https://github.com/ShramishR", instagram: "https://www.instagram.com/shramish_poojary?igsh=djlzZm9pa2g0bGNv&igsi=djlzZm9pa2g0bGNv", linkedin: "https://www.linkedin.com/in/shramish-poojary-98b9502a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  { name: "Shivani S Poojary", role: "Documentation & Design Committee", seed: "Shivani", photo: "/team/Shivani S Poojary .webp", color: "#ff8ed4", github: "https://github.com/Shivani512005", instagram: "https://www.instagram.com/_iiamshivani_?igsh=MXNsMzkzNnN6cXRiYg==", linkedin: "https://www.linkedin.com/in/shivani-s-poojary-047a2a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  { name: "Adithya Unni", role: "Documentation & Design Committee", seed: "Adithya", photo: "/team/Adithya _unni.webp", color: "#845ec2", github: "https://github.com/adithyaunni", linkedin: "https://linkedin.com/in/adithya-unni" },
 ];
 
 const COORDINATORS = [...FACULTY_COORDINATORS, ...TEAM_COORDINATORS];
@@ -86,13 +139,17 @@ const ROLES = [
   "Faculty Coordinator",
   "Lead Organizer",
   "Tech Lead",
-  "Press & Media Lead",
+  "Media & Publicity Committee",
   "Logistics & Accommodation Lead",
   "Food & Refreshments Lead",
   "Stage & Venue Lead",
   "Registration Lead",
   "Cultural Lead",
+  "Documentation & Design Committee",
 ];
+
+// Minimum horizontal drag distance (px) before a touch gesture counts as a swipe
+const SWIPE_THRESHOLD = 40;
 
 export default function CoordinatorsSection() {
   const [selectedRole, setSelectedRole] = useState("ALL");
@@ -112,10 +169,17 @@ export default function CoordinatorsSection() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Drag state for the active polaroid
+  // Drag state for the active polaroid (mouse/pen wobble — desktop-oriented,
+  // uses Pointer Events, kept fully separate from the touch-swipe navigation below)
   const [isDragging, setIsDragging] = useState(false);
   const [dragPos, setDragPos] = useState({ x: 0, y: 0 });
   const dragStartRef = useRef<{ mouseX: number; mouseY: number; startX: number; startY: number } | null>(null);
+
+  // Swipe-to-navigate state for touch devices. Separate from the polaroid
+  // pointer-drag above: that one just wobbles the photo and snaps back,
+  // this one is what actually changes the active card on mobile.
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const isSwipingRef = useRef(false);
 
   // The list currently being shown in the carousel, filtered by role
   const visibleList = useMemo(() => {
@@ -176,6 +240,44 @@ export default function CoordinatorsSection() {
     }
   };
 
+  // Touch handlers — mobile swipe-to-navigate on the screen area.
+  // Kept independent of the polaroid's onPointerDown/Move/Up wobble handlers,
+  // which only attach to the active card itself.
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+    isSwipingRef.current = false;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const dx = e.touches[0].clientX - touchStartRef.current.x;
+    const dy = e.touches[0].clientY - touchStartRef.current.y;
+
+    // Once the gesture is clearly horizontal, claim it so the page doesn't
+    // scroll vertically while the user is trying to swipe cards
+    if (!isSwipingRef.current && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+      isSwipingRef.current = true;
+    }
+    if (isSwipingRef.current && e.cancelable) e.preventDefault();
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const dx = e.changedTouches[0].clientX - touchStartRef.current.x;
+    const dy = e.changedTouches[0].clientY - touchStartRef.current.y;
+
+    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) {
+        handleNext(); // swiped left → next card
+      } else {
+        handlePrev(); // swiped right → previous card
+      }
+    }
+    touchStartRef.current = null;
+    isSwipingRef.current = false;
+  };
+
   // Calculates the relative offset from the current index with infinite wrap-around
   const getOffset = (index: number) => {
     const diff = index - currentIndex;
@@ -215,7 +317,13 @@ export default function CoordinatorsSection() {
 
         <div className={styles.carouselContainer}>
           {/* Screen Area */}
-          <div className={styles.screen} onWheel={handleWheel}>
+          <div
+            className={styles.screen}
+            onWheel={handleWheel}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {/* Background elements */}
             <div className={styles.uiOverlay}>
                <div className={styles.uiTopRight}>V 1.0.4</div>
@@ -278,6 +386,13 @@ export default function CoordinatorsSection() {
               // Since it's infinite, anything further away than 2 units is hidden anyway
               if (absOffset > 2) return null;
 
+              // How many social buttons this card will actually show. When
+              // there's only one (e.g. faculty with just a LinkedIn link),
+              // that single button renders wider instead of looking like a
+              // tiny orphaned square.
+              const socialCount = [coord.linkedin, coord.github, coord.instagram, coord.phone].filter(Boolean).length;
+              const soloBtnClass = socialCount === 1 ? styles.socialBtnWide : "";
+
               return (
                 <div
                   key={coord.name}
@@ -307,12 +422,22 @@ export default function CoordinatorsSection() {
                       onPointerUp={offset === 0 ? handlePointerUp : undefined}
                       onPointerCancel={offset === 0 ? handlePointerUp : undefined}
                     >
+                      {/* Real photo from /public/team/, with a graceful fallback
+                          to the generated DiceBear avatar for anyone whose photo
+                          hasn't been added yet (so a missing file doesn't break
+                          the card — it just shows a placeholder face). */}
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={`https://api.dicebear.com/8.x/micah/svg?seed=${coord.seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc`}
+                        src={coord.photo}
                         alt={coord.name}
                         className={styles.avatar}
                         draggable={false}
+                        style={coord.imgPosition ? { objectPosition: coord.imgPosition } : undefined}
+                        onError={(e) => {
+                          const img = e.currentTarget;
+                          const fallback = `https://api.dicebear.com/8.x/micah/svg?seed=${coord.seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc`;
+                          if (img.src !== fallback) img.src = fallback;
+                        }}
                       />
                     </div>
                     {/* 3D Platform */}
@@ -321,18 +446,38 @@ export default function CoordinatorsSection() {
                     <div className={`${styles.groundGlow} ${isDragging && offset === 0 ? styles.groundGlowOff : ""}`}></div>
                   </div>
                   <div className={styles.info}>
-                    <h3 className={styles.name}>{coord.name}</h3>
+                    <h3
+                      className={`${styles.name} ${isCompactName(coord.name) ? styles.nameCompact : ""}`}
+                      style={{ fontSize: getNameFontSize(coord.name), whiteSpace: "nowrap" }}
+                    >
+                      {coord.name}
+                    </h3>
                     <p className={styles.role}>{coord.role}</p>
                     <div className={styles.socials}>
-                      <a href={coord.linkedin} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} aria-label="LinkedIn" onClick={e => e.stopPropagation()}>
-                        <LinkedinIcon />
-                      </a>
-                      <a href={coord.github} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} aria-label="GitHub" onClick={e => e.stopPropagation()}>
-                        <GithubIcon />
-                      </a>
-                      <a href={coord.instagram} target="_blank" rel="noopener noreferrer" className={styles.socialBtn} aria-label="Instagram" onClick={e => e.stopPropagation()}>
-                        <InstagramIcon />
-                      </a>
+                      {/* LinkedIn button — only rendered when the coordinator has a linkedin field */}
+                      {coord.linkedin ? (
+                        <a href={coord.linkedin} target="_blank" rel="noopener noreferrer" className={`${styles.socialBtn} ${soloBtnClass}`} aria-label="LinkedIn" onClick={e => e.stopPropagation()}>
+                          <LinkedinIcon />
+                        </a>
+                      ) : null}
+                      {/* GitHub button — only rendered when the coordinator has a github field */}
+                      {coord.github ? (
+                        <a href={coord.github} target="_blank" rel="noopener noreferrer" className={`${styles.socialBtn} ${soloBtnClass}`} aria-label="GitHub" onClick={e => e.stopPropagation()}>
+                          <GithubIcon />
+                        </a>
+                      ) : null}
+                      {/* Instagram button — only rendered when the coordinator has an instagram field */}
+                      {coord.instagram ? (
+                        <a href={coord.instagram} target="_blank" rel="noopener noreferrer" className={`${styles.socialBtn} ${soloBtnClass}`} aria-label="Instagram" onClick={e => e.stopPropagation()}>
+                          <InstagramIcon />
+                        </a>
+                      ) : null}
+                      {/* Phone button — Lead Organizers only (only they carry a phone field) */}
+                      {coord.phone ? (
+                        <a href={`tel:${coord.phone}`} className={`${styles.socialBtn} ${soloBtnClass}`} aria-label="Phone" onClick={e => e.stopPropagation()}>
+                          <PhoneIcon />
+                        </a>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -345,7 +490,6 @@ export default function CoordinatorsSection() {
                 <button
                   key={`dot-${coord.name}-${index}`}
                   className={`${styles.dot} ${index === currentIndex ? styles.dotActive : ""}`}
-                  style={{ "--accent-lime": coord.color } as React.CSSProperties}
                   onClick={(e) => {
                     e.stopPropagation();
                     setCurrentIndex(index);

@@ -1,9 +1,46 @@
 .about {
   background: var(--bg);
   border-top: 2px solid var(--text);
+  overflow-x: clip;
+}
+
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 380px);
+  grid-template-areas:
+    "header  visual"
+    "stats   stats"
+    "pillars pillars";
+  column-gap: 56px;
+  row-gap: 0;
+  align-items: start;
+}
+
+/* FIX (sizing/overlap): was vertically centered with height:100%, which
+   let the visual's midpoint sit level with the header column's
+   midpoint — pushing its top above "// ABOUT THE EVENT" and its bottom
+   well past the final line of the paragraph. Top-aligning it (align-self:
+   start, no height:100%) pins its top edge to the top of the header
+   column instead, and the smaller max-width in SingularityCore.module.css
+   keeps its bottom edge from running past the paragraph. */
+.visualWrap {
+  grid-area: visual;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  align-self: start;
+  /* Matches the header block's measured height (set as --header-h on
+     .aboutGrid in AboutSection.tsx) so SingularityCore's aspect-ratio
+     box — sized off this height, see its own .wrap — always spans
+     exactly from the top of the header to the bottom of the paragraph.
+     Overridden back to auto on mobile below — see that media query for
+     why. */
+  height: var(--header-h, 400px);
 }
 
 .header {
+  grid-area: header;
   max-width: none;
   margin-bottom: 35px;
 }
@@ -15,6 +52,7 @@
 }
 
 .statsGrid {
+  grid-area: stats;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2px;
@@ -50,6 +88,7 @@
 }
 
 .pillars {
+  grid-area: pillars;
   margin-top: 0;
 }
 
@@ -79,8 +118,31 @@
 }
 
 @media (max-width: 900px) {
-  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .aboutGrid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "visual"
+      "stats"
+      "pillars";
+    row-gap: 32px;
+  }
+  .visualWrap {
+    margin: 0 auto;
+    height: auto;
+  }
+  .header {
+    margin-bottom: 0;
+    text-align: left;
+  }
+  .description {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); margin-bottom: 0; }
 }
+
 @media (max-width: 600px) {
   .statsGrid { grid-template-columns: 1fr 1fr; }
 }

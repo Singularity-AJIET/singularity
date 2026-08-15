@@ -13,7 +13,7 @@ const NAV_LINKS = [
 ];
 
 // TODO: replace with your actual Unstop event registration URL
-const UNSTOP_URL = "https://unstop.com/";
+const UNSTOP_URL = "https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983";
 
 const STATS = ["24HRS", "HACKATHON", "AJIET", "MANGALORE","INNOVATE","BUILD"];
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
@@ -193,7 +193,7 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
               onClick={() => setMenuOpen(false)}
             >
               <span className={styles.mobileRegisterCornerTR} aria-hidden="true" />
-              <span className={styles.mobileRegisterLabel}>INIT_REGISTER</span>
+              <span className={styles.mobileRegisterLabel}>REGISTER</span>
               <span className={styles.mobileRegisterArrow} aria-hidden="true">→</span>
               <span className={styles.mobileRegisterCornerBL} aria-hidden="true" />
             </a>
