@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import nodemailer from 'nodemailer';
 const smtpHost = process.env.SMTP_HOST || 'smtp-relay.brevo.com';
 const smtpPort = parseInt(process.env.SMTP_PORT || '587');
@@ -75,7 +76,7 @@ export async function sendEmailPass(email, name, token) {
                 console.error('Failed to fetch/generate QR pass inline attachment:', qrErr);
             }
             await transporter.sendMail({
-                from: `"${process.env.SMTP_FROM_NAME || 'Event Pass Tracker'}" <${smtpFrom}>`,
+                from: `"${process.env.SMTP_FROM_NAME || 'Singularity'}" <${smtpFrom}>`,
                 to: email,
                 subject: subject,
                 text: textBody,

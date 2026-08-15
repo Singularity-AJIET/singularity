@@ -3,42 +3,45 @@ import { hashPassword, comparePassword, signJwt } from '../utils/crypto.js';
 // Load JWT Secret
 const JWT_SECRET = process.env.JWT_SECRET || process.env.EVENT_SIGNING_KEY || 'default-jwt-super-secret-key-999';
 const JWT_EXPIRY_SECONDS = 86400; // 24 Hours
+const VALID_ROLES = ['superadmin', 'admin', 'volunteer'];
 /**
  * POST /api/admin/register
  * Registers a new administrative user.
+ * Requires superadmin — only superadmins can create new accounts.
  */
 export async function registerAdmin(req, res, next) {
     try {
-        const { username, password, name } = req.body;
+        const { username, password, name, role } = req.body;
         if (!username || !password) {
             res.status(400).json({ detail: "Fields 'username' and 'password' are required." });
             return;
         }
+        const assignedRole = (role && VALID_ROLES.includes(String(role).toLowerCase()))
+            ? String(role).toLowerCase()
+            : 'admin';
         const trimmedUsername = String(username).trim().toLowerCase();
-        // Check if username already exists
-        const existing = await prisma.admin.findUnique({
-            where: { username: trimmedUsername }
-        });
+        const existing = await prisma.admin.findUnique({ where: { username: trimmedUsername } });
         if (existing) {
             res.status(400).json({ detail: "Username already exists." });
             return;
         }
-        // Hash password and store
         const hashedPassword = hashPassword(String(password));
         const newAdmin = await prisma.admin.create({
             data: {
                 username: trimmedUsername,
                 password: hashedPassword,
-                name: name ? String(name).trim() : null
+                name: name ? String(name).trim() : null,
+                role: assignedRole
             }
         });
         res.status(201).json({
             success: true,
-            message: "Admin registered successfully",
+            message: "Account registered successfully.",
             admin: {
                 id: newAdmin.id,
                 username: newAdmin.username,
-                name: newAdmin.name
+                name: newAdmin.name,
+                role: newAdmin.role
             }
         });
     }
@@ -48,7 +51,7 @@ export async function registerAdmin(req, res, next) {
 }
 /**
  * POST /api/admin/login
- * Authenticates an admin and returns a JWT token.
+ * Authenticates an admin and returns a JWT token containing the role.
  */
 export async function loginAdmin(req, res, next) {
     try {
@@ -58,25 +61,22 @@ export async function loginAdmin(req, res, next) {
             return;
         }
         const trimmedUsername = String(username).trim().toLowerCase();
-        // Find admin by username
-        const admin = await prisma.admin.findUnique({
-            where: { username: trimmedUsername }
-        });
+        const admin = await prisma.admin.findUnique({ where: { username: trimmedUsername } });
         if (!admin) {
             res.status(401).json({ detail: "Invalid username or password." });
             return;
         }
-        // Compare passwords
         const isValid = comparePassword(String(password), admin.password);
         if (!isValid) {
             res.status(401).json({ detail: "Invalid username or password." });
             return;
         }
-        // Generate JWT token
+        // Embed role in JWT payload so middleware can verify without a DB lookup
         const tokenPayload = {
             sub: admin.id,
             username: admin.username,
-            name: admin.name
+            name: admin.name,
+            role: admin.role
         };
         const token = signJwt(tokenPayload, JWT_SECRET, JWT_EXPIRY_SECONDS);
         res.json({
@@ -85,7 +85,8 @@ export async function loginAdmin(req, res, next) {
             admin: {
                 id: admin.id,
                 username: admin.username,
-                name: admin.name
+                name: admin.name,
+                role: admin.role
             }
         });
     }
@@ -95,19 +96,16 @@ export async function loginAdmin(req, res, next) {
 }
 /**
  * GET /api/admin/me
- * Returns details of the currently authenticated admin.
+ * Returns details of the currently authenticated admin, including role.
  */
 export async function getMe(req, res, next) {
     try {
-        // If auth middleware is attached, we can access the parsed admin
         const adminId = req.adminId;
         if (!adminId) {
             res.status(401).json({ detail: "Unauthorized." });
             return;
         }
-        const admin = await prisma.admin.findUnique({
-            where: { id: adminId }
-        });
+        const admin = await prisma.admin.findUnique({ where: { id: adminId } });
         if (!admin) {
             res.status(401).json({ detail: "Admin user not found." });
             return;
@@ -115,7 +113,8 @@ export async function getMe(req, res, next) {
         res.json({
             id: admin.id,
             username: admin.username,
-            name: admin.name
+            name: admin.name,
+            role: admin.role
         });
     }
     catch (err) {
@@ -124,17 +123,12 @@ export async function getMe(req, res, next) {
 }
 /**
  * GET /api/admin
- * Returns the list of all administrator accounts.
+ * Returns the list of all administrator accounts (admin + superadmin only).
  */
 export async function listAdmins(req, res, next) {
     try {
         const admins = await prisma.admin.findMany({
-            select: {
-                id: true,
-                username: true,
-                name: true,
-                createdAt: true
-            },
+            select: { id: true, username: true, name: true, role: true, createdAt: true },
             orderBy: { username: 'asc' }
         });
         res.json(admins);
@@ -145,7 +139,10 @@ export async function listAdmins(req, res, next) {
 }
 /**
  * PUT /api/admin/:id/password
- * Updates an admin's password.
+ * Updates a user's password.
+ * Rules:
+ *   - Superadmin: can change anyone's password
+ *   - Admin/Volunteer: can only change their OWN password
  */
 export async function updateAdminPassword(req, res, next) {
     try {
@@ -155,28 +152,26 @@ export async function updateAdminPassword(req, res, next) {
             res.status(400).json({ detail: "Field 'password' is required." });
             return;
         }
-        const adminId = parseInt(id);
-        if (isNaN(adminId)) {
+        const targetId = parseInt(id);
+        if (isNaN(targetId)) {
             res.status(400).json({ detail: "Invalid admin ID format." });
             return;
         }
-        const admin = await prisma.admin.findUnique({
-            where: { id: adminId }
-        });
+        const requesterId = req.adminId;
+        const requesterRole = req.adminRole || 'admin';
+        // Non-superadmins can only change their own password
+        if (requesterRole !== 'superadmin' && requesterId !== targetId) {
+            res.status(403).json({ detail: "Access denied. You can only change your own password." });
+            return;
+        }
+        const admin = await prisma.admin.findUnique({ where: { id: targetId } });
         if (!admin) {
             res.status(404).json({ detail: "Admin user not found." });
             return;
         }
-        // Hash and update password
         const hashedPassword = hashPassword(String(password));
-        await prisma.admin.update({
-            where: { id: adminId },
-            data: { password: hashedPassword }
-        });
-        res.json({
-            success: true,
-            message: "Admin password updated successfully."
-        });
+        await prisma.admin.update({ where: { id: targetId }, data: { password: hashedPassword } });
+        res.json({ success: true, message: "Password updated successfully." });
     }
     catch (err) {
         next(err);
@@ -184,39 +179,36 @@ export async function updateAdminPassword(req, res, next) {
 }
 /**
  * DELETE /api/admin/:id
- * Safely deletes an admin account.
+ * Deletes an admin account. Superadmin only.
  */
 export async function deleteAdmin(req, res, next) {
     try {
         const { id } = req.params;
-        const adminId = parseInt(id);
-        if (isNaN(adminId)) {
+        const targetId = parseInt(id);
+        if (isNaN(targetId)) {
             res.status(400).json({ detail: "Invalid admin ID format." });
             return;
         }
         const requesterId = req.adminId;
-        if (requesterId === adminId) {
+        if (requesterId === targetId) {
             res.status(400).json({ detail: "Self-deletion is not permitted." });
             return;
         }
-        const admin = await prisma.admin.findUnique({
-            where: { id: adminId }
-        });
+        const admin = await prisma.admin.findUnique({ where: { id: targetId } });
         if (!admin) {
             res.status(404).json({ detail: "Admin user not found." });
             return;
         }
-        if (admin.username === 'admin') {
-            res.status(400).json({ detail: "Cannot delete the primary root admin account." });
-            return;
+        if (admin.role === 'superadmin') {
+            // Count how many superadmins exist — don't allow deleting the last one
+            const superadminCount = await prisma.admin.count({ where: { role: 'superadmin' } });
+            if (superadminCount <= 1) {
+                res.status(400).json({ detail: "Cannot delete the last superadmin account." });
+                return;
+            }
         }
-        await prisma.admin.delete({
-            where: { id: adminId }
-        });
-        res.json({
-            success: true,
-            message: "Admin account deleted successfully."
-        });
+        await prisma.admin.delete({ where: { id: targetId } });
+        res.json({ success: true, message: "Account deleted successfully." });
     }
     catch (err) {
         next(err);
