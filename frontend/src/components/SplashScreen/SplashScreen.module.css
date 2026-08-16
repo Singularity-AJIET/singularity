@@ -7,7 +7,8 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 0 8vw;
+  text-align: left;
+  padding: 0 8vw;           /* match the corner padding for alignment */
   overflow: hidden;
 }
 
@@ -15,7 +16,10 @@
 .wordRow {
   display: flex;
   align-items: flex-end;
+  justify-content: flex-start;
   line-height: 1;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .charClip {
@@ -28,13 +32,14 @@
 .charLetter {
   display: block;
   font-family: "Bebas Neue", "Anton", var(--font-display), sans-serif;
-  font-size: clamp(5.5rem, 16vw, 14rem);
-  font-weight: 400; /* Bebas Neue is single-weight, already ultra-bold */
+  /* Sized so all 11 letters fill the available width edge-to-edge, like
+     desktop, but stay just inside the viewport on narrow phones (~360px) */
+  font-size: clamp(3.5rem, 16.5vw, 14rem);
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   line-height: 1;
   will-change: transform, color;
-  /* Monospaced character width for clean alignment */
   font-variant-numeric: tabular-nums;
 }
 
@@ -46,12 +51,14 @@
 
 .subLabel {
   font-family: var(--font-mono);
-  font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+  font-size: clamp(0.6rem, 2.6vw, 0.85rem);
   font-weight: 700;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #888580;
   will-change: transform, opacity;
+  text-align: left;
+  white-space: nowrap;
 }
 
 /* >_ DECODING... corner label */
@@ -94,4 +101,11 @@
   width: 100%;
   background: #c8f135;
   transform-origin: left;
+}
+
+/* Extra safety net for very small phones (iPhone SE / 320px class) */
+@media (max-width: 340px) {
+  .charLetter {
+    font-size: clamp(3.2rem, 15.8vw, 14rem);
+  }
 }

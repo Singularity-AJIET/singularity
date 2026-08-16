@@ -3,10 +3,10 @@ import styles from "./TickerTape.module.css";
 
 const PHRASES = [
   "BUILD THE FUTURE",
-  "DEFY LIMITS",
-  "SINGULARITY 2026",
   "CODE THE UNKNOWN",
+  "DEFY LIMITS",
   "CODE OR CONQUER",
+  "SINGULARITY 2026",
   "CODE IS LAW",
   "NO BOUNDARIES",
 ];

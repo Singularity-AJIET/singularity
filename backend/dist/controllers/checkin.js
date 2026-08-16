@@ -8,7 +8,7 @@ import { sendEmailPass } from '../services/email.js';
 export async function reportParticipant(req, res, next) {
     try {
         const { id } = req.params;
-        let participant = await prisma.participant.findUnique({
+        const participant = await prisma.participant.findUnique({
             where: { id },
             include: { team: true }
         });
@@ -79,6 +79,53 @@ export async function reportParticipant(req, res, next) {
             success: true,
             message: `${isStaff ? 'Staff member' : 'Participant'} check-in recorded successfully`,
             qr_payload: token
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+}
+/**
+ * POST /api/checkin/bulk-staff
+ * Generates signed Ed25519 access tokens and dispatches email passes for all pending staff.
+ */
+export async function bulkReportStaff(req, res, next) {
+    try {
+        const pendingStaff = await prisma.eventStaff.findMany({
+            where: { isReported: false }
+        });
+        if (pendingStaff.length === 0) {
+            res.json({ success: true, count: 0, message: 'No pending staff found to process.' });
+            return;
+        }
+        const signingKey = getSigningKey();
+        const tokenLifetimeSeconds = parseInt(process.env.TOKEN_EXPIRY_SECONDS || '604800', 10);
+        const expiry = Math.floor(Date.now() / 1000) + tokenLifetimeSeconds;
+        const now = new Date();
+        let sentCount = 0;
+        for (const staff of pendingStaff) {
+            const token = await signToken({
+                p: staff.id,
+                t: null, // staff have no team
+                n: staff.name,
+                e: expiry
+            }, signingKey);
+            await prisma.eventStaff.update({
+                where: { id: staff.id },
+                data: {
+                    isReported: true,
+                    reportedAt: now
+                }
+            });
+            sendEmailPass(staff.email, staff.name, token).catch(err => {
+                console.error(`Async email dispatch failed for staff ${staff.email}:`, err);
+            });
+            sentCount++;
+        }
+        res.json({
+            success: true,
+            count: sentCount,
+            message: `Successfully generated and sent ${sentCount} QR passes for staff.`
         });
     }
     catch (err) {

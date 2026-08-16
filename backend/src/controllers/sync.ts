@@ -176,9 +176,9 @@ export async function syncBatchScans(req: Request, res: Response, next: NextFunc
       } catch (err: unknown) {
         const isUnique =
           (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') ||
-          err?.code === 'P2002' ||
-          err?.code === 'SQLITE_CONSTRAINT' ||
-          err?.message?.includes('UNIQUE constraint failed');
+          (err as any)?.code === 'P2002' ||
+          (err as any)?.code === 'SQLITE_CONSTRAINT' ||
+          (err as any)?.message?.includes('UNIQUE constraint failed');
 
         if (isUnique) {
           // Double-check race condition duplicate

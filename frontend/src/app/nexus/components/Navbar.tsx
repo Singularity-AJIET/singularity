@@ -39,7 +39,7 @@ export default function Navbar() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 013.138-3.138z" />
               </svg>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2" draggable={false}>
               <span className="text-lg sm:text-xl font-bold tracking-tight">Singularity<span className="text-yellow-400 drop-shadow-[0_0_5px_rgba(234,179,8,0.3)]"> &apos;26</span></span>
             </div>
           </div>
@@ -104,16 +104,6 @@ export default function Navbar() {
             
             {!isVolunteer && (
               <>
-                <button
-                  onClick={() => router.push("/nexus/web-launch")}
-                  className={`rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer ${
-                    pathname === "/nexus/web-launch"
-                      ? "bg-yellow-400/10 border border-yellow-400/25 font-bold text-yellow-400"
-                      : "font-semibold text-slate-400 hover:text-white"
-                  }`}
-                >
-                  Web Launch
-                </button>
               <button
                 onClick={() => router.push("/nexus/settings")}
                 className={`rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer ${
