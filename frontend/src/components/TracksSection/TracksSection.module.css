@@ -133,3 +133,9 @@
   .grid { grid-template-columns: 1fr; }
   .card:nth-child(3) { grid-column: auto; }
 }
+
+@media (max-width: 480px) {
+  .cardName {
+    font-size: 1.2rem;
+  }
+}

@@ -133,6 +133,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .cardTop {
@@ -186,9 +188,8 @@
 
 /* Large background step number */
 .stepNum {
-  position: absolute;
-  right: 12px;
-  bottom: 6px;
+  align-self: flex-end;
+  padding: 0 16px 12px 0;
   font-family: var(--font-mono);
   font-size: 3.5rem;
   font-weight: 900;
@@ -196,6 +197,7 @@
   pointer-events: none;
   user-select: none;
   letter-spacing: -0.04em;
+  z-index: 0;
 }
 
 @media (max-width: 768px) {

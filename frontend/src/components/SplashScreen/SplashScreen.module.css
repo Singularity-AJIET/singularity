@@ -8,7 +8,7 @@
   align-items: flex-start;
   justify-content: center;
   text-align: left;
-  padding: 0 8vw;           /* match the corner padding for alignment */
+  padding: 0 4vw;           /* match the corner padding for alignment */
   overflow: hidden;
 }
 
@@ -65,7 +65,7 @@
 .corner {
   position: absolute;
   top: 36px;
-  left: 8vw;
+  left: 4vw;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 700;

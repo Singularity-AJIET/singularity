@@ -320,7 +320,7 @@ export default function HeroSection() {
             />
             <RailNode
               label="EVENT LOCATION"
-              value="MANGALORE, KARNATAKA"
+              value="AJIET, MANGALORE, KARNATAKA"
               active={activeNode === 2}
             />
           </div>

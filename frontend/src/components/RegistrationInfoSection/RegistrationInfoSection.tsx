@@ -4,7 +4,7 @@ const REGISTRATION_ITEMS = [
   {
     title: "Eligibility",
     points: [
-      "Open to all UG and PG students pursuing B.E./B.Tech, M.Tech, BCA, MCA, B.Sc. in Computer Science, M.Sc. in Computer Science.",
+      "Open to all UG and PG students pursuing B.E./B.Tech, M.Tech, BCA, MCA, B.Sc. & M.Sc. in Computer Science.",
       "Teams can have 2 to 4 members.",
       "Participants may form teams with members from different colleges.",
     ],

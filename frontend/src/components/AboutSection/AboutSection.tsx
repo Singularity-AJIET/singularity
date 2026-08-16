@@ -121,7 +121,7 @@ export default function AboutSection() {
           {/* Stats */}
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
-              <span className={styles.statNum}><CountUp target={150} suffix="+" /></span>
+              <span className={styles.statNum}><CountUp target={120} suffix="+" /></span>
               <span className={styles.statLabel}>Participants</span>
             </div>
             <div className={styles.statCard}>

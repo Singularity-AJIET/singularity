@@ -33,7 +33,7 @@ const LinkedinIcon = ({ size = 20 }: { size?: number }) => (
 
 const SOCIAL = [
   { label: "Instagram", href: "https://www.instagram.com/singularity__2026?igsh=dndmMDFlMmxjeGY0", icon: <InstagramIcon size={20} />, tooltip: "Instagram" },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: <LinkedinIcon size={20} />, tooltip: "LinkedIn" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/enigma-cse", icon: <LinkedinIcon size={20} />, tooltip: "LinkedIn" },
 ];
 
 const TARGET = new Date("2026-09-17T09:00:00+05:30").getTime();
