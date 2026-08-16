@@ -20,28 +20,22 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
       logo: "/GOE.webp",
     },
     {
-      name: "IEEE Computer Society",
-      desc: "IEEE Computer Society is a global community advancing computer science, engineering, and technology through innovation and education. It supports students and professionals through research, technical resources, conferences, and industry opportunities.",
-      link: "novasystems.io",
-      buttonText: "Visit Website",
-      logo: "/ICS.webp",
-    },
-    {
       name: "IEEE Mangalore Subsection",
       desc: "IEEE Mangalore Subsection is a regional IEEE community connecting students, professionals, and technology enthusiasts. It promotes technical learning, collaboration, innovation, and professional development through various activities.  ",
       link: "buildfast.dev",
       buttonText: "Visit Website",
       logo: "/IMS.webp",
     },
+    {
+      name: "IEEE Computer Society",
+      desc: "IEEE Computer Society is a global community advancing computer science, engineering, and technology through innovation and education. It supports students and professionals through research, technical resources, conferences, and industry opportunities.",
+      link: "novasystems.io",
+      buttonText: "Visit Website",
+      logo: "/ICS.webp",
+    },
+    
   ],
   inKind: [
-    {
-      name: "Unstop",
-      desc: "Unstop is a leading platform connecting students and professionals with opportunities to learn, compete, and grow. It provides access to internships, jobs, competitions, and industry-driven opportunities for career development.  ",
-      link: "https://unstop.com/",
-      buttonText: "Visit Website",
-      logo: "/Unstop.webp",
-    },
     {
       name: ".xyz",
       desc: "XYZ is a domain registry company that operates the .xyz domain and other domain extensions. It helps creators, startups, developers, and businesses build flexible digital identities and establish an online presence. XYZ focuses on making domain names accessible, innovative, and suitable for the next generation of internet users.   ",
@@ -49,6 +43,14 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
       buttonText: "Visit Website",
       logo: "/xyzLogo.webp",
     },
+    {
+      name: "Unstop",
+      desc: "Unstop is a leading platform connecting students and professionals with opportunities to learn, compete, and grow. It provides access to internships, jobs, competitions, and industry-driven opportunities for career development.  ",
+      link: "https://unstop.com/",
+      buttonText: "Visit Website",
+      logo: "/Unstop.webp",
+    },
+    
   ],
 };
 

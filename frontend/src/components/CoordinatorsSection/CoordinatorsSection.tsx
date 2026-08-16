@@ -72,10 +72,10 @@ const isCompactName = (name: string): boolean => name.length > 18;
 // for this group). Snitha has no LinkedIn account at all, so she is left
 // with no social fields — her socials row will simply render empty.
 const FACULTY_COORDINATORS: Coordinator[] = [
-  { name: "Mrs. Sharon C Dsouza", role: "Faculty Coordinator", seed: "sharon", photo: "/team/sharon.webp", color: "#a78bfa", linkedin: "https://www.linkedin.com/in/sharon-dsouza-b89ab9233/" },
-  { name: "Mrs. Snitha Shetty", role: "Faculty Coordinator", seed: "Snitha", photo: "/team/snithashetty.webp", color: "#a78bfa" },
-  { name: "Mr. Sathyendra Bhat J", imgPosition: "center 0%", role: "Faculty Coordinator", seed: "Sathyendra", photo: "/team/Sathyendra Bhat J.webp", color: "#a78bfa", linkedin: "https://www.linkedin.com/in/sathyendra-bhat/" },
-  { name: "Mr. Manjukiran B", role: "Faculty Coordinator", seed: "Manjukiran", photo: "/team/manjukiran.webp", color: "#a78bfa", linkedin: "https://www.linkedin.com/in/manju-kiran-24756470/" },
+  { name: "Mrs. Sharon C Dsouza", role: "Faculty Coordinator", seed: "sharon", photo: "/team/sharon.webp", color: "#ff8ed4", linkedin: "https://www.linkedin.com/in/sharon-dsouza-b89ab9233/" },
+  { name: "Mrs. Snitha Shetty", role: "Faculty Coordinator", seed: "Snitha", photo: "/team/snithashetty.webp", color: "#4ecdc4" },
+  { name: "Mr. Sathyendra Bhat J", imgPosition: "center 0%", role: "Faculty Coordinator", seed: "Sathyendra", photo: "/team/Sathyendra Bhat J.webp", color: "#ffb830", linkedin: "https://www.linkedin.com/in/sathyendra-bhat/" },
+  { name: "Mr. Manjukiran B", role: "Faculty Coordinator", seed: "Manjukiran", photo: "/team/manjukiran.webp", color: "#ff6b6b", linkedin: "https://www.linkedin.com/in/manju-kiran-24756470/" },
 ];
 
 // Updated to match the official roster sheet. Finance and Master of
@@ -85,14 +85,14 @@ const FACULTY_COORDINATORS: Coordinator[] = [
 const TEAM_COORDINATORS: Coordinator[] = [
   // Lead Organizers — the only role with a phone number / phone button
   { name: "Durgesh A P", imgPosition: "center 15%", role: "Lead Organizer", seed: "Durgesh", photo: "/team/DurgeshAP.webp", color: "#c8f135", github: "https://github.com/Durgesh3805", instagram: "https://www.instagram.com/_duxgexh_", linkedin: "https://www.linkedin.com/in/durgeshap/", phone: "+919353250245" },
-  { name: "Suyash Devadiga", imgPosition: "center 15%", role: "Lead Organizer", seed: "Suyash", photo: "/team/Suyash.webp", color: "#ff6b6b", github: "https://github.com/SuyashD22", instagram: "https://www.instagram.com/suyashdevadiga_", linkedin: "https://www.linkedin.com/in/suyashdevadiga/", phone: "+917899288198" },
+  { name: "Suyash Devadiga", imgPosition: "center 15%", role: "Lead Organizer", seed: "Suyash", photo: "/team/Suyash.webp", color: "#e63946", github: "https://github.com/SuyashD22", instagram: "https://www.instagram.com/suyashdevadiga_", linkedin: "https://www.linkedin.com/in/suyashdevadiga/", phone: "+917899288198" },
   { name: "Neekshith", role: "Lead Organizer", seed: "Neekshith", photo: "/team/Neekshith .webp", color: "#4ecdc4", github: "https://github.com/Neekshith8296", linkedin: "https://www.linkedin.com/in/neekshith-s/", phone: "+918296303393" },
   { name: "Arjun R", role: "Lead Organizer", seed: "Arjun", photo: "/team/Arjun_R.webp", color: "#ffe66d", github: "https://github.com/Arjun-333", instagram: "https://www.instagram.com/arjun._.raj._?igsh=YzB0aTc5amxsZWc3", linkedin: "https://www.linkedin.com/in/arjun-r-44a336294", phone: "+919019934133" },
 
   // Tech Lead
   { name: "Keerthana", imgPosition: "center 45%", role: "Tech Lead", seed: "Keerthana", photo: "/team/Keerthana_K.webp", color: "#ff8ed4", github: "https://github.com/Keerthana430", instagram: "https://www.instagram.com/keerthana___kulal", linkedin: "https://www.linkedin.com/in/keerthana-kulal-32045a295/" },
   { name: "Sunpreeth Vishva", role: "Tech Lead", seed: "Sunpreeth", photo: "/team/sunp.webp", color: "#ffb830", github: "https://github.com/anysdefdefe", instagram: "https://instagram.com/_.sunp._/", linkedin: "https://linkedin.com/in/sunpreeth-vishva/" },
-  { name: "Kishan C Bandary", role: "Tech Lead", seed: "Kishan", photo: "/team/kishan.webp", color: "#ffb830", github: "https://github.com/kishanBhandary", instagram: "https://www.instagram.com/__kixhan__/", linkedin: "https://www.linkedin.com/in/kishanbhandary/" },
+  { name: "Kishan C Bandary", role: "Tech Lead", seed: "Kishan", photo: "/team/kishan.webp", color: "#00b4d8", github: "https://github.com/kishanBhandary", instagram: "https://www.instagram.com/__kixhan__/", linkedin: "https://www.linkedin.com/in/kishanbhandary/" },
   { name: "Praneeth C K", role: "Tech Lead", seed: "Praneek", photo: "/team/Praneek.webp", color: "#845ec2", github: "https://github.com/praneeth-ck", instagram: "https://www.instagram.com/praneethck_official?igsh=MWdtaWk0aGRva3owMw==", linkedin: "https://www.linkedin.com/in/praneeth-c-k" },
 
   // Media & Publicity Lead
@@ -157,6 +157,8 @@ export default function CoordinatorsSection() {
   const filterRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const lastScrollTime = useRef(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [clickedSideCard, setClickedSideCard] = useState<string | null>(null);
 
   // Close the custom filter dropdown when clicking anywhere outside it
   useEffect(() => {
@@ -288,13 +290,13 @@ export default function CoordinatorsSection() {
   };
 
   useEffect(() => {
-    if (isDragging) return;
+    if (isDragging || isHovered) return;
     if (visibleList.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % visibleList.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, [isDragging, visibleList.length]);
+  }, [isDragging, isHovered, visibleList.length]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -312,7 +314,7 @@ export default function CoordinatorsSection() {
         <div className={styles.header}>
           <div className="section-label">{"//"} the team</div>
           <h2 className="section-title">MEET THE <span className="text-lime">CREW</span></h2>
-          <p className="section-sub" style={{ textTransform: "lowercase", opacity: 0.7 }}>interact to explore the roster.</p>
+          <p className="section-sub" style={{ opacity: 0.7 }}>Interact to explore the roster.</p>
         </div>
 
         <div className={styles.carouselContainer}>
@@ -323,6 +325,9 @@ export default function CoordinatorsSection() {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={visibleList[currentIndex] ? { "--screen-accent": visibleList[currentIndex].color } as React.CSSProperties : undefined}
           >
             {/* Background elements */}
             <div className={styles.uiOverlay}>
@@ -393,6 +398,10 @@ export default function CoordinatorsSection() {
               const socialCount = [coord.linkedin, coord.github, coord.instagram, coord.phone].filter(Boolean).length;
               const soloBtnClass = socialCount === 1 ? styles.socialBtnWide : "";
 
+              const isSideCard = offset !== 0;
+              const isAdjacentCard = Math.abs(offset) === 1;
+              const isClicked = clickedSideCard === coord.name;
+
               return (
                 <div
                   key={coord.name}
@@ -400,9 +409,9 @@ export default function CoordinatorsSection() {
                   style={{
                     "--offset": offset,
                     "--scale": offset === 0 ? 1 : Math.max(0.7, 0.85 - (absOffset * 0.1)),
-                    "--opacity": offset === 0 ? 1 : Math.max(0, 0.4 - (absOffset * 0.2)),
+                    "--opacity": offset === 0 ? 1 : absOffset === 1 ? 0.5 : 0.2,
                     "--zIndex": 100 - absOffset,
-                    "--pointerEvents": offset === 0 ? "all" : "none",
+                    "--pointerEvents": isAdjacentCard ? "all" : offset === 0 ? "all" : "none",
                     "--accent": coord.color
                   } as React.CSSProperties}
                 >
@@ -447,8 +456,9 @@ export default function CoordinatorsSection() {
                   </div>
                   <div className={styles.info}>
                     <h3
-                      className={`${styles.name} ${isCompactName(coord.name) ? styles.nameCompact : ""}`}
-                      style={{ fontSize: getNameFontSize(coord.name), whiteSpace: "nowrap" }}
+                      className={`${styles.name} ${isCompactName(coord.name) ? styles.nameCompact : ""} ${isSideCard ? styles.nameNeon : ""} ${isSideCard && isClicked ? styles.nameClicked : ""}`}
+                      style={{ fontSize: getNameFontSize(coord.name), whiteSpace: "nowrap", cursor: isSideCard ? "pointer" : undefined }}
+                      onClick={isSideCard ? (e) => { e.stopPropagation(); setClickedSideCard(isClicked ? null : coord.name); } : undefined}
                     >
                       {coord.name}
                     </h3>
@@ -490,9 +500,11 @@ export default function CoordinatorsSection() {
                 <button
                   key={`dot-${coord.name}-${index}`}
                   className={`${styles.dot} ${index === currentIndex ? styles.dotActive : ""}`}
+                  style={index === currentIndex ? { background: coord.color, boxShadow: `0 0 8px 2px ${coord.color}` } : undefined}
                   onClick={(e) => {
                     e.stopPropagation();
                     setCurrentIndex(index);
+                    setClickedSideCard(null);
                   }}
                   aria-label={`Go to ${coord.name}`}
                   title={coord.name}
