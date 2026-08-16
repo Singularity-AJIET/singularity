@@ -52,7 +52,7 @@ export default function RegistrationInfoSection() {
         <div className={styles.registrationCard}>
           <div className={styles.registrationIntro}>
             <div className={styles.ctaRow}>
-              <a href="https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983" target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.registrationButton}`}>
+              <a href="https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983" target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.registrationButton}`} aria-label="INIT_REGISTER - Register for Singularity 2026 hackathon on Unstop">
                 INIT_REGISTER
               </a>
             </div>

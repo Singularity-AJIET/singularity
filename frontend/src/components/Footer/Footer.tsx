@@ -64,7 +64,7 @@ export default function Footer() {
       <div className={styles.cta}>
         <div className={styles.ctaInner}>
           <div className={styles.ctaLabel}>{"//"} ready to build?</div>
-          <h2 className={styles.ctaTitle}>THE CLOCK IS</h2>
+          <p className={styles.ctaTitle}>THE CLOCK IS</p>
           <div className={styles.countdown}>
             <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.d)}</span><span className={styles.unitLabel}>DAYS</span></div>
             <span className={styles.colon}>:</span>
@@ -77,7 +77,7 @@ export default function Footer() {
           <p className={styles.ctaSub}>
             24 hours. 3 tracks. ₹60,000+ in prizes. No excuses.
           </p>
-          <a href="https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983" target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.ctaBtn}`}>
+          <a href="https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983" target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.ctaBtn}`} aria-label="INIT_REGISTER - Register for Singularity 2026 hackathon on Unstop">
             INIT_REGISTER
           </a>
         </div>
@@ -95,7 +95,7 @@ export default function Footer() {
               [sys.log]: Building tomorrow&apos;s solutions<br />
               today — one idea at a time.
             </p>
-            <a href="https://mail.google.com/mail/?view=cm&to=singularity@ajiet.edu.in" target="_blank" rel="noopener noreferrer" className={styles.emailLink}>
+            <a href="mailto:singularity@ajiet.edu.in" className={styles.emailLink}>
               singularity@ajiet.edu.in
             </a>
             <div className={styles.social}>
@@ -120,14 +120,14 @@ export default function Footer() {
           </div>
 
           {/* Nav links */}
-          <div className={styles.col}>
+          <nav className={styles.col} aria-label="Footer navigation">
             <div className={styles.colTitle}>DIRECTORY</div>
             {LINKS.map((l) => (
               <a key={l.label} href={l.href} className={styles.footerLink}>
                 &gt; {l.label}
               </a>
             ))}
-          </div>
+          </nav>
 
           {/* Polaroid Window Art */}
           <div className={styles.artCol}>
@@ -151,7 +151,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className={styles.bar}>
           <span className={styles.barLeft}>
-            <span className={styles.copyrightSymbol}>©</span> 2026 Singularity — All rights reserved.
+            <span className={styles.copyrightSymbol}>©</span> 2026 Singularity Hackathon by A J Institute of Engineering and Technology (AJIET) — All rights reserved.
           </span>
           <span className={styles.barRight}>
             status: <span className={styles.statusDot}>operational_</span>

@@ -438,7 +438,7 @@ export default function CoordinatorsSection() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={coord.photo}
-                        alt={coord.name}
+                        alt={`${coord.name} — ${coord.role}, Singularity 2026 Hackathon`}
                         className={styles.avatar}
                         draggable={false}
                         style={coord.imgPosition ? { objectPosition: coord.imgPosition } : undefined}

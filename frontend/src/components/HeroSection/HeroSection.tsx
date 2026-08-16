@@ -236,13 +236,11 @@ export default function HeroSection() {
       <div className={styles.content}>
         <div className={styles.layout}>
           <div className={styles.left}>
-            <h1 className={styles.title}>SINGULARITY</h1>
+            <h1 className={styles.title}>SINGULARITY<span className="sr-only"> 2026 — National-Level 24-Hour Hackathon hosted by A J Institute of Engineering and Technology (AJIET), Mangalore</span></h1>
             <div className={styles.titleLine} />
 
             <p className={styles.sub}>
-              Singularity is a 24-hour national inter-college hackathon
-              where the brightest minds compete, collaborate, and create
-              solutions that matter.
+              Singularity is a 24-hour national inter-college hackathon hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the brightest minds to compete, collaborate, and create solutions that matter.
             </p>
 
             <div className={styles.ctas}>
@@ -250,6 +248,7 @@ export default function HeroSection() {
                 href={UNSTOP_URL}
                 className={`btn btn-primary ${styles.ctaBtn}`}
                 onMouseDown={createRipple}
+                aria-label="INIT_REGISTER - Register for Singularity 2026 hackathon on Unstop"
               >
                 INIT_REGISTER
                 <span className={styles.loadingDots} aria-hidden="true">
@@ -266,6 +265,7 @@ export default function HeroSection() {
                 download
                 className={`btn btn-outline ${styles.ctaBtn} ${styles.ctaBtnOutline}`}
                 onMouseDown={createRipple}
+                aria-label="Download Singularity 2026 hackathon brochure (PDF)"
               >
                 BROCHURE
               </a>

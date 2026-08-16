@@ -28,9 +28,7 @@ export default function FAQSection() {
             </h2>
             <p className="section-sub">
               Can&apos;t find your answer? Reach out at{" "}
-              <a href="https://mail.google.com/mail/?view=cm&to=singularity@ajiet.edu.in"
-  target="_blank"
-  rel="noopener noreferrer"
+              <a href="mailto:singularity@ajiet.edu.in"
   className={styles.email}
 >
   singularity@ajiet.edu.in

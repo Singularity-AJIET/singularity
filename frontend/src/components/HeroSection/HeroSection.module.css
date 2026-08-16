@@ -94,6 +94,7 @@
 }
 
 .sub {
+  font-family: var(--font-mono);
   font-size: 1.05rem;
   color: var(--text-muted);
   max-width: 560px;
