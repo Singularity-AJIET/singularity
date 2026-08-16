@@ -41,11 +41,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Singularity 2026 | National-Level Hackathon",
+    default: "Singularity 2026 | National-Level Hackathon at AJIET, Mangalore",
     template: "%s | Singularity 2026",
   },
   description:
-    "Singularity Hackathon is a 24-hour national inter-college hackathon bringing together the brightest minds to build, compete, and connect. Happening Sep 17-18, 2026. Register now.",
+    "Singularity 2026 is a 24-hour national-level inter-college hackathon hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the ultimate coding competition to build, compete, and connect on Sep 17-18, 2026.",
   alternates: {
     canonical: "/",
   },
@@ -58,6 +58,9 @@ export const metadata: Metadata = {
     "AJIET Hackathon Mangalore",
     "Singularity Hackathon",
     "Singularity 2026",
+    "A J Institute of Engineering and Technology",
+    "A J Institute of Engineering and Technology Hackathon",
+    "AJIET Mangalore",
     "Inter-college hackathon",
     "National-Level hackathon",
     "24-hour hackathon",
@@ -80,9 +83,20 @@ export const metadata: Metadata = {
     },
   },
 
+  icons: {
+    icon: [
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+
   openGraph: {
-    title: "Singularity 2026 | National-Level Hackathon",
-    description: "24 hours. 3 tracks. Sep 17-18, 2026. Join the ultimate Inter-college Hackathon and showcase your skills.",
+    title: "Singularity 2026 | National-Level Hackathon at AJIET",
+    description: "24 hours. 3 tracks. Hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the ultimate inter-college hackathon.",
     type: "website",
     url: siteUrl,
     siteName,
@@ -98,8 +112,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Singularity 2026 | National-Level Hackathon",
-    description: "24 hours. 3 tracks. Sep 17-18, 2026. Join the ultimate Inter-college Hackathon and showcase your skills.",
+    title: "Singularity 2026 | National-Level Hackathon at AJIET",
+    description: "24 hours. 3 tracks. Hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the ultimate inter-college hackathon.",
     images: [`${siteUrl}/og.png`],
   },
 };

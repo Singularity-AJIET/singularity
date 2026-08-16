@@ -18,7 +18,8 @@ const siteUrl = getSiteUrl();
 const eventJsonLd = {
   "@context": "https://schema.org",
   "@type": "Event",
-  name: "Singularity 2026",
+  name: "Singularity 2026 Hackathon",
+  alternateName: "AJIET Hackathon",
   startDate: "2026-09-17",
   endDate: "2026-09-18",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -27,7 +28,7 @@ const eventJsonLd = {
   image: [`${siteUrl}/og.png`], 
   location: {
     "@type": "Place",
-    name: "A J Institute of Engineering and Technology",
+    name: "A J Institute of Engineering and Technology (AJIET)",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Kodikal",
@@ -40,7 +41,7 @@ const eventJsonLd = {
   description: "24-hour National-Level Inter-college Hackathon at AJIET.",
   organizer: {
     "@type": "Organization",
-    name: "Singularity 2026",
+    name: "Singularity 2026 by AJIET",
     url: siteUrl,
   },
   offers: {

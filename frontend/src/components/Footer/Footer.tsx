@@ -151,7 +151,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className={styles.bar}>
           <span className={styles.barLeft}>
-            <span className={styles.copyrightSymbol}>©</span> 2026 Singularity — All rights reserved.
+            <span className={styles.copyrightSymbol}>©</span> 2026 Singularity Hackathon by A J Institute of Engineering and Technology (AJIET) — All rights reserved.
           </span>
           <span className={styles.barRight}>
             status: <span className={styles.statusDot}>operational_</span>
