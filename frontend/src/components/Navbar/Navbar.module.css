@@ -532,6 +532,7 @@
 }
 
 @media (max-width: 900px) {
+  .inner { padding: 0 20px; }
   .links { display: none; }
   .termDisplay { display: none; }
   .registerBtn { display: none; }

@@ -18,7 +18,7 @@
 
 .tierLabel {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 1.1rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text);
@@ -155,5 +155,9 @@
 @media (max-width: 600px) {
   .gridSponsors, .gridInKind {
     grid-template-columns: 1fr;
+  }
+  .logoWrap {
+    max-width: 220px;
+    padding: 8px;
   }
 }

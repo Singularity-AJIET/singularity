@@ -10,30 +10,30 @@ const THEME = {
 const TRACKS = [
   {
     id: "ps1",
-    name: "Generative AI Solutions",
-    icon: <Bot size={32} />,
-    color: "#c8f135",
+    name: "Coastal Intelligence",
+    icon: <Globe size={32} />,
+    color: "#00d2ff",
     description:
-      "Build applications leveraging Large Language Models (LLMs) or multimodal GenAI.",
-    tags: ["GenAI", "LLMs", "Multimodal"],
+      "Explore AI's potential in protecting and monitoring our oceans. This track challenges you to tackle critical issues in marine ecosystems and coastal environments.",
+    tags: ["Marine AI", "Sustainability", "Oceanography"],
   },
   {
     id: "ps2",
-    name: "Computer Vision",
-    icon: <Globe size={32} />,
-    color: "#ff2d6f",
+    name: "Supply Chain Intelligence",
+    icon: <LinkIcon size={32} />,
+    color: "#ffb830",
     description:
-      "Develop models that interpret and process visual data from the real world.",
-    tags: ["Computer Vision", "Image Processing", "Object Detection"],
+      "Dive into the complex world of global logistics. This track focuses on leveraging data and AI to solve challenges in forecasting and optimization.",
+    tags: ["Logistics", "Optimization", "Forecasting"],
   },
   {
     id: "ps3",
-    name: "Predictive Analytics",
-    icon: <LinkIcon size={32} />,
-    color: "#a78bfa",
+    name: "Industrial Intelligence",
+    icon: <Bot size={32} />,
+    color: "#c8f135",
     description:
-      "Create data-driven AI solutions for forecasting trends and optimization.",
-    tags: ["Machine Learning", "Forecasting", "Data Models"],
+      "Step into the future of manufacturing. This track challenges participants to find innovative ways to apply AI in smart automation and industrial processes.",
+    tags: ["Automation", "Predictive Maintenance", "Smart Manufacturing"],
   },
 ];
 
