@@ -25,7 +25,7 @@ const eventJsonLd = {
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   url: siteUrl,
-  image: [`${siteUrl}/og.png`], 
+  image: [`${siteUrl}/og.png`],
   location: {
     "@type": "Place",
     name: "A J Institute of Engineering and Technology (AJIET)",
@@ -50,9 +50,9 @@ const eventJsonLd = {
     price: "0",
     priceCurrency: "INR",
     availability: "https://schema.org/InStock",
-    validFrom: "2026-08-20", 
+    validFrom: "2026-08-20",
     description:
-      "Registration is free. Teams selected to participate pay a ₹600 fee.",
+      "Registration is free. Teams selected to participate pay a ₹650 fee.",
   },
 };
 

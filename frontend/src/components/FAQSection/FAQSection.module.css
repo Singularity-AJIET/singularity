@@ -46,6 +46,7 @@
   cursor: pointer;
   text-align: left;
   transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .question:hover .qText { color: var(--accent-lime); }
