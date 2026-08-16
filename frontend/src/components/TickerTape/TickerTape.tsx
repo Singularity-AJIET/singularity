@@ -24,7 +24,7 @@ export default function TickerTape() {
   );
 
   return (
-    <div className={styles.tickerWrapper}>
+    <div className={styles.tickerWrapper} role="marquee" aria-label="Singularity 2026 hackathon highlights: Build the Future, Code the Unknown, Defy Limits">
       {/* Container 1 */}
       <div className={styles.tickerContent}>
         {content}

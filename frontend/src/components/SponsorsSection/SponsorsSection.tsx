@@ -15,21 +15,21 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
     {
       name: "Gears of Excel",
       desc: "Gears of Excel is an edtech training and tech consultancy company focused on industry-oriented, AI-integrated learning. They bridge the gap between academic knowledge and industry demands through project-based training and expert guidance. They support innovation, mentorship, and real-world opportunities for aspiring technologists.  ",
-      link: "techcorp.in",
+      link: "https://gearsofexcel.com",
       buttonText: "Visit Website",
       logo: "/GOE.webp",
     },
     {
       name: "IEEE Mangalore Subsection",
       desc: "IEEE Mangalore Subsection is a regional IEEE community connecting students, professionals, and technology enthusiasts. It promotes technical learning, collaboration, innovation, and professional development through various activities.  ",
-      link: "buildfast.dev",
+      link: "https://ieeemangalore.org",
       buttonText: "Visit Website",
       logo: "/IMS.webp",
     },
     {
       name: "IEEE Computer Society",
       desc: "IEEE Computer Society is a global community advancing computer science, engineering, and technology through innovation and education. It supports students and professionals through research, technical resources, conferences, and industry opportunities.",
-      link: "novasystems.io",
+      link: "https://www.computer.org",
       buttonText: "Visit Website",
       logo: "/ICS.webp",
     },
@@ -75,11 +75,17 @@ function SponsorLogo({ name, logo }: { name: string; logo: string }) {
 
 function SponsorCard({ sponsor, variant }: { sponsor: Sponsor; variant: "sponsor" | "inKind" }) {
   return (
-    <div className={`${styles.card} ${styles[variant]}`}>
+    <a
+      href={sponsor.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${styles.card} ${styles[variant]}`}
+      aria-label={`Visit ${sponsor.name} website`}
+    >
       <SponsorLogo name={sponsor.name} logo={sponsor.logo} />
       <span className={styles.sName}>{sponsor.name}</span>
       <p className={styles.sDesc}>{sponsor.desc}</p>
-    </div>
+    </a>
   );
 }
 

@@ -1,0 +1,17 @@
+{
+  "name": "Singularity 2026 — National-Level Hackathon",
+  "short_name": "Singularity",
+  "description": "24-hour national inter-college hackathon at AJIET Mangalore. Build, compete, and connect — Sep 17-18, 2026.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111010",
+  "theme_color": "#c8f135",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

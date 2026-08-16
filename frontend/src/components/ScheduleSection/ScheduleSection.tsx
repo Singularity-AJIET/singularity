@@ -96,7 +96,7 @@ export default function ScheduleSection() {
                           {ev.label}
                         </span>
                       </div>
-                      <h3 className={styles.eventTitle}>{ev.title}</h3>
+                      <h4 className={styles.eventTitle}>{ev.title}</h4>
                       <ul className={styles.eventDesc}>
                         {ev.desc.map((d, j) => (
                           <li key={j}>{d}</li>

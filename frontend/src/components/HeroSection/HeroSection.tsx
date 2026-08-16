@@ -236,7 +236,7 @@ export default function HeroSection() {
       <div className={styles.content}>
         <div className={styles.layout}>
           <div className={styles.left}>
-            <h1 className={styles.title}>SINGULARITY</h1>
+            <h1 className={styles.title}>SINGULARITY<span className="sr-only"> 2026 — National-Level 24-Hour Hackathon at AJIET Mangalore</span></h1>
             <div className={styles.titleLine} />
 
             <p className={styles.sub}>
@@ -250,6 +250,7 @@ export default function HeroSection() {
                 href={UNSTOP_URL}
                 className={`btn btn-primary ${styles.ctaBtn}`}
                 onMouseDown={createRipple}
+                aria-label="Register for Singularity 2026 hackathon on Unstop"
               >
                 INIT_REGISTER
                 <span className={styles.loadingDots} aria-hidden="true">
@@ -266,6 +267,7 @@ export default function HeroSection() {
                 download
                 className={`btn btn-outline ${styles.ctaBtn} ${styles.ctaBtnOutline}`}
                 onMouseDown={createRipple}
+                aria-label="Download Singularity 2026 hackathon brochure (PDF)"
               >
                 BROCHURE
               </a>
