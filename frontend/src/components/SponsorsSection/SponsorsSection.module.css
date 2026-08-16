@@ -156,8 +156,20 @@
   .gridSponsors, .gridInKind {
     grid-template-columns: 1fr;
   }
+  .card {
+    padding: 20px 16px;
+  }
   .logoWrap {
-    max-width: 220px;
+    max-width: 120px;
     padding: 8px;
+    margin-bottom: 12px;
+  }
+  .sName {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  .sDesc {
+    font-size: 0.85rem;
+    margin-bottom: 16px;
   }
 }
