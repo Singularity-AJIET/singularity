@@ -250,7 +250,7 @@ export default function HeroSection() {
                 href={UNSTOP_URL}
                 className={`btn btn-primary ${styles.ctaBtn}`}
                 onMouseDown={createRipple}
-                aria-label="Register for Singularity 2026 hackathon on Unstop"
+                aria-label="INIT_REGISTER - Register for Singularity 2026 hackathon on Unstop"
               >
                 INIT_REGISTER
                 <span className={styles.loadingDots} aria-hidden="true">

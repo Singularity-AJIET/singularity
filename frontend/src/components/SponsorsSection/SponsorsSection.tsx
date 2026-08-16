@@ -59,7 +59,7 @@ function SponsorLogo({ name, logo }: { name: string; logo: string }) {
     return (
       <div className={styles.logoWrap}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logo} alt={`${name} logo`} className={styles.logoImg} />
+        <img src={logo} alt={`${name} logo`} className={styles.logoImg} width={250} height={100} style={{ objectFit: 'contain' }} />
       </div>
     );
   }
@@ -80,7 +80,7 @@ function SponsorCard({ sponsor, variant }: { sponsor: Sponsor; variant: "sponsor
       target="_blank"
       rel="noopener noreferrer"
       className={`${styles.card} ${styles[variant]}`}
-      aria-label={`Visit ${sponsor.name} website`}
+      aria-label={`${sponsor.name} - Visit Website`}
     >
       <SponsorLogo name={sponsor.name} logo={sponsor.logo} />
       <span className={styles.sName}>{sponsor.name}</span>

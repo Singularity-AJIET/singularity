@@ -77,7 +77,7 @@ export default function Footer() {
           <p className={styles.ctaSub}>
             24 hours. 3 tracks. ₹60,000+ in prizes. No excuses.
           </p>
-          <a href="https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983" target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.ctaBtn}`} aria-label="Register for Singularity 2026 hackathon on Unstop">
+          <a href="https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983" target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.ctaBtn}`} aria-label="INIT_REGISTER - Register for Singularity 2026 hackathon on Unstop">
             INIT_REGISTER
           </a>
         </div>
