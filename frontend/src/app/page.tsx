@@ -30,14 +30,14 @@ const eventJsonLd = {
     name: "A J Institute of Engineering and Technology",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "A J Institute of Engineering and Technology",
+      streetAddress: "Kodikal",
       addressLocality: "Mangalore",
       addressRegion: "Karnataka",
       postalCode: "575006",
       addressCountry: "IN",
     },
   },
-  description: "24-hour National Level Inter-college Hackathon.",
+  description: "24-hour National-Level Inter-college Hackathon at AJIET.",
   organizer: {
     "@type": "Organization",
     name: "Singularity 2026",
@@ -45,13 +45,13 @@ const eventJsonLd = {
   },
   offers: {
     "@type": "Offer",
-    url: ``, 
+    url: "https://unstop.com/o/6Y45JWH?lb=useYshOh",
     price: "0",
     priceCurrency: "INR",
     availability: "https://schema.org/InStock",
-    validFrom: "2026-08-01", 
+    validFrom: "2026-08-20", 
     description:
-      "Free to register. Selected teams pay ₹600 participation fee.",
+      "Registration is free. Teams selected to participate pay a ₹600 fee.",
   },
 };
 
