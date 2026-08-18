@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import styles from "./HeroSection.module.css";
 
-const TARGET_DATE = new Date("2026-09-17T09:00:00+05:30");
+const TARGET_DATE = new Date("2026-09-25T09:00:00+05:30");
 const UNSTOP_URL = "https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983";
 
 function createRipple(e: React.MouseEvent<HTMLElement>) {
@@ -309,7 +309,7 @@ export default function HeroSection() {
           <div className={styles.railNodes}>
             <RailNode
               label="EVENT DATE"
-              value="SEP 17–18, 2026"
+              value="SEP 25–26, 2026"
               active={activeNode === 0}
             />
             <RailNode

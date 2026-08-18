@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     template: "%s | Singularity 2026",
   },
   description:
-    "Singularity 2026 is a 24-hour national-level inter-college hackathon hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the ultimate coding competition to build, compete, and connect on Sep 17-18, 2026.",
+    "Singularity 2026 is a 24-hour national-level inter-college hackathon hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the ultimate coding competition to build, compete, and connect on Sep 25-26, 2026.",
   alternates: {
     canonical: "/",
   },

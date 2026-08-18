@@ -20,8 +20,8 @@ const eventJsonLd = {
   "@type": "Event",
   name: "Singularity 2026 Hackathon",
   alternateName: "AJIET Hackathon",
-  startDate: "2026-09-17",
-  endDate: "2026-09-18",
+  startDate: "2026-09-25",
+  endDate: "2026-09-26",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   url: siteUrl,
@@ -141,6 +141,7 @@ const organizationJsonLd = {
     postalCode: "575006",
     addressCountry: "IN",
   },
+  logo: `${siteUrl}/icon-512x512.png`,
 };
 
 export default function Home() {
