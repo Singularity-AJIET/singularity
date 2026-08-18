@@ -4,7 +4,7 @@ import styles from "./FAQSection.module.css";
 
 const FAQS = [
   { q: "Who can participate?", a: "The hackathon is open to all UG and PG students pursuing B.E./B.Tech, M.Tech, BCA, MCA, B.Sc. in Computer Science, and M.Sc. in Computer Science. Participants from colleges across India are welcome to take part." },
-  { q: "Is it free to participate?", a: "There is no fee required to submit your registration or participate in the selection process. A registration fee will be applicable only to the teams that are selected for the hackathon." },
+  { q: "Is it free to participate?", a: "There is no fee required to submit your registration or participate in the selection process. A registration fee of ₹650 per team will be applicable only to the teams that are selected for the hackathon." },
   { q: "How big can a team be?", a: "Teams can consist of 2 to 4 members. You can form a team with friends or other eligible participants who share your interest in building innovative solutions." },
   { q: "Can I team up with students from other colleges?", a: "Yes! You can team up with eligible students from other colleges across India. Collaborate with different skill sets and build a stronger team for the hackathon." },
   { q: "What should I build?", a: "Build an innovative solution that addresses a real-world problem using technology. You are encouraged to think creatively and develop something impactful, practical, and scalable." },

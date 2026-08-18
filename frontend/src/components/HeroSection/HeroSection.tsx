@@ -240,7 +240,7 @@ export default function HeroSection() {
             <div className={styles.titleLine} />
 
             <p className={styles.sub}>
-              Singularity is a 24-hour national inter-college hackathon hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the brightest minds to compete, collaborate, and create solutions that matter.
+              Singularity is a 24-hour national level hackathon hosted by A J Institute of Engineering and Technology (AJIET), Mangalore. Join the brightest minds to compete, collaborate, and create solutions that matter.
             </p>
 
             <div className={styles.ctas}>
