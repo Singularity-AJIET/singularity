@@ -29,7 +29,7 @@ const REGISTRATION_ITEMS = [
     title: "Selection & Commencement",
     points: [
       "Shortlisted teams will be notified after the review process.",
-      "The hack and program kickoff begins on 17th September 2026.",
+      "The hack and program kickoff begins on 25th September 2026.",
       "The process focuses on resume-based review and team fit.",
     ],
   },

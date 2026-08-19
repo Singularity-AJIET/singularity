@@ -5,7 +5,7 @@ import styles from "./ScheduleSection.module.css";
 const SCHEDULE = [
   {
     day: "Day 1",
-    date: "Sep 17",
+    date: "Sep 25",
     events: [
       { time: "8:00 AM – 9:00 AM", title: "Registration & Breakfast", color: "#00d2ff", label: "KICK-OFF", desc: [<>Check-in, Goodies distribution, Breakfast starts & <strong className="text-lime">Problem Statement Disclosure</strong></>] },
       { time: "9:00 AM – 9:30 AM", title: "Brainstorming & Initial Setup", color: "#a78bfa", label: "HACK", desc: ["Team workspace setup and initial discussions"] },
@@ -24,7 +24,7 @@ const SCHEDULE = [
   },
   {
     day: "Day 2",
-    date: "Sep 18",
+    date: "Sep 26",
     events: [
       { time: "1:00 AM", title: "Midnight Coffee Distribution", color: "#ffb830", label: "SOCIAL", desc: ["Midnight refreshment session"] },
       { time: "1:00 AM – 7:30 AM", title: "Overnight Development", color: "#c8f135", label: "HACK", desc: ["Uninterrupted coding sprint"] },
