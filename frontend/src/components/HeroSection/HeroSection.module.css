@@ -1012,9 +1012,7 @@
   }
 
   .arrowIcon {
-    display: inline-block;
-    font-family: var(--font-mono);
-    animation: arrowNudge 2s ease-in-out infinite;
+    display: none;
   }
 
   @keyframes arrowNudge {

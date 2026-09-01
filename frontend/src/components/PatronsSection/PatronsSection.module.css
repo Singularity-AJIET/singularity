@@ -1,0 +1,230 @@
+.section {
+  background: var(--bg);
+  border-top: 2px solid var(--text);
+}
+
+.header {
+  max-width: 100%;
+  margin-bottom: 56px;
+}
+
+.header p {
+  max-width: 100%;
+}
+
+/* ── Tier Subsections ──────────────────────────────────── */
+.tier {
+  margin-bottom: 56px;
+}
+
+.tier:last-child {
+  margin-bottom: 0;
+}
+
+.tierLabel {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  font-weight: 800;
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--text);
+}
+
+/* ── Grids ──────────────────────────────────────────────── */
+.tierGrid {
+  display: grid;
+  gap: 20px;
+}
+
+.gridPatrons {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.gridDeans {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.gridFaculty {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ── Card — mirrors SponsorsSection .card ───────────────── */
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 14px 22px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.25s ease;
+  height: 100%;
+  text-decoration: none;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: #4ecdc4;
+  box-shadow: 6px 6px 0px rgba(78, 205, 196, 0.2);
+}
+
+/* ── Logo area — white square box ───────────────────────── */
+.logoWrap {
+  width: 100%;
+  max-width: 110px;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  background: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.logoImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.logoPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #c9c9c9;
+  border-radius: 6px;
+  color: #9a9a9a;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Card text ──────────────────────────────────────────── */
+.pName {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.pDesc {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  flex: 1;
+}
+
+/* ── Person card extras ─────────────────────────────────── */
+.personCard {
+  text-decoration: none;
+}
+
+.photoWrap {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  background: #111;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.2);
+  border: 2px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pRole {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .gridPatrons {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gridDeans {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gridFaculty {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .gridPatrons,
+  .gridDeans,
+  .gridFaculty {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Patrons: 2-up at small size */
+  .gridPatrons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  /* Deans & Faculty: also 2-up */
+  .gridDeans,
+  .gridFaculty {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  /* Tighter card padding */
+  .card {
+    padding: 10px 8px 14px;
+  }
+  /* Smaller photo on patrons + deans + faculty in mobile */
+  .photoWrap {
+    margin-bottom: 8px;
+  }
+  .pName {
+    font-size: 0.78rem;
+    margin-bottom: 3px;
+  }
+  .pRole {
+    font-size: 0.65rem;
+  }
+  .logoWrap {
+    max-width: 70px;
+    padding: 6px;
+    margin-bottom: 8px;
+  }
+}

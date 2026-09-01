@@ -8,6 +8,7 @@ import CoordinatorsSection from "@/components/CoordinatorsSection/CoordinatorsSe
 import RegistrationInfoSection from "@/components/RegistrationInfoSection/RegistrationInfoSection";
 import FAQSection from "@/components/FAQSection/FAQSection";
 import SponsorsSection from "@/components/SponsorsSection/SponsorsSection";
+import PatronsSection from "@/components/PatronsSection/PatronsSection";
 import Footer from "@/components/Footer/Footer";
 import TickerTape from "@/components/TickerTape/TickerTape";
 import SplashWrapper from "@/components/SplashWrapper";
@@ -168,9 +169,9 @@ export default function Home() {
           <PrizesSection />
           <RegistrationInfoSection />
           <SponsorsSection />
-          <CoordinatorsSection />
+          <PatronsSection />
+          <CoordinatorsSection />      
           <ScheduleSection />
-          {/* <TeamsSection /> */}
           <FAQSection />
         </main>
         <Footer />

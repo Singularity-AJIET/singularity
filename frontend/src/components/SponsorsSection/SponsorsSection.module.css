@@ -56,7 +56,7 @@
 /* Logo area — square white box so any logo (transparent/dark/light) stays clearly visible */
 .logoWrap {
   width: 100%;
-  max-width: 172px;
+  max-width: 210px;
   aspect-ratio: 1 / 1;
   height: auto;
   background: #ffffff;
@@ -66,10 +66,12 @@
   justify-content: center;
   margin-bottom: 18px;
   overflow: hidden;
-  padding: 12px;
+  padding: 8px;
 }
 
 .logoImg {
+  width: 100%;
+  height: 100%;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
@@ -160,8 +162,8 @@
     padding: 20px 16px;
   }
   .logoWrap {
-    max-width: 120px;
-    padding: 8px;
+    max-width: 145px;
+    padding: 6px;
     margin-bottom: 12px;
   }
   .sName {
