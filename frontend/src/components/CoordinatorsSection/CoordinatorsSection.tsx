@@ -132,11 +132,10 @@ const TEAM_COORDINATORS: Coordinator[] = [
   { name: "Shivani S Poojary", role: "Design Lead", seed: "Shivani", photo: "/team/Shivani S Poojary .webp", color: "#ff8ed4", github: "https://github.com/Shivani512005", instagram: "https://www.instagram.com/_iiamshivani_?igsh=MXNsMzkzNnN6cXRiYg==", linkedin: "https://www.linkedin.com/in/shivani-s-poojary-047a2a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
 ];
 
-const COORDINATORS = [...FACULTY_COORDINATORS, ...TEAM_COORDINATORS];
+const COORDINATORS = [...TEAM_COORDINATORS];
 
 // Ordered list of roles for the filter dropdown
 const ROLES = [
-  "Faculty Coordinator",
   "Lead Organizer",
   "Tech Lead",
   "Press & Media Lead",
@@ -159,6 +158,8 @@ export default function CoordinatorsSection() {
   const lastScrollTime = useRef(0);
   const [isHovered, setIsHovered] = useState(false);
   const [clickedSideCard, setClickedSideCard] = useState<string | null>(null);
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Close the custom filter dropdown when clicking anywhere outside it
   useEffect(() => {
@@ -169,6 +170,18 @@ export default function CoordinatorsSection() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Start auto-play only when the section scrolls into view
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   // Drag state for the active polaroid (mouse/pen wobble — desktop-oriented,
@@ -290,13 +303,13 @@ export default function CoordinatorsSection() {
   };
 
   useEffect(() => {
-    if (isDragging || isHovered) return;
+    if (isDragging || isHovered || !isInView) return;
     if (visibleList.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % visibleList.length);
-    }, 4000);
+    }, 2500);
     return () => clearInterval(timer);
-  }, [isDragging, isHovered, visibleList.length]);
+  }, [isDragging, isHovered, isInView, visibleList.length]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -309,7 +322,7 @@ export default function CoordinatorsSection() {
   }, [visibleList.length]);
 
   return (
-    <section className={styles.section} id="coordinators">
+    <section className={styles.section} id="coordinators" ref={sectionRef}>
       <div className="section">
         <div className={styles.header}>
           <div className="section-label">{"//"} the team</div>
