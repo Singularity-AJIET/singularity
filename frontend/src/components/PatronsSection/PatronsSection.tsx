@@ -50,13 +50,13 @@ const PATRONS: Patron[] = [
   {
     type: "person",
     name: "Dr. P. Mahabaleswarappa",
-    role: "Dean",
+    role: "Dean Academics",
     photo: "/patrons/dean.webp",
   },
   {
     type: "person",
     name: "Dr. Antony P. J",
-    role: "Vice Principal",
+    role: "Vice Principal & Convenor",
     photo: "/patrons/viceprincipal.webp",
   },
 ];

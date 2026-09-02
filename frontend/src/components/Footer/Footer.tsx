@@ -36,7 +36,7 @@ const SOCIAL = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/enigma-cse", icon: <LinkedinIcon size={20} />, tooltip: "LinkedIn" },
 ];
 
-const TARGET = new Date("2026-10-07T09:00:00+05:30").getTime();
+const TARGET = new Date("2026-10-08T09:00:00+05:30").getTime();
 
 function computeTimeLeft() {
   const diff = TARGET - Date.now();
