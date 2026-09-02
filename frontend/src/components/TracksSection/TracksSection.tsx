@@ -1,5 +1,5 @@
 "use client";
-import { Bot, Link as LinkIcon, Globe } from "lucide-react";
+import { Compass, Boxes, Factory } from "lucide-react";
 import styles from "./TracksSection.module.css";
 
 const THEME = {
@@ -11,7 +11,7 @@ const TRACKS = [
   {
     id: "ps1",
     name: "Coastal Intelligence",
-    icon: <Globe size={32} />,
+    icon: <Compass size={28} color="#00d2ff" />,
     color: "#00d2ff",
     description:
       "Explore AI's potential in protecting and monitoring our oceans. This track challenges you to tackle critical issues in marine ecosystems and coastal environments.",
@@ -20,7 +20,7 @@ const TRACKS = [
   {
     id: "ps2",
     name: "Supply Chain Intelligence",
-    icon: <LinkIcon size={32} />,
+    icon: <Boxes size={28} color="#ffb830" />,
     color: "#ffb830",
     description:
       "Dive into the complex world of global logistics. This track focuses on leveraging data and AI to solve challenges in forecasting and optimization.",
@@ -29,7 +29,7 @@ const TRACKS = [
   {
     id: "ps3",
     name: "Industrial Intelligence",
-    icon: <Bot size={32} />,
+    icon: <Factory size={28} color="#c8f135" />,
     color: "#c8f135",
     description:
       "Step into the future of manufacturing. This track challenges participants to find innovative ways to apply AI in smart automation and industrial processes.",
