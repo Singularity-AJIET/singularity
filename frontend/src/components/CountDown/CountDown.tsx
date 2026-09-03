@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import styles from './CountDown.module.css';
 
-const SEQUENCE = ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1', '∞'] as const;
+const SEQUENCE = ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1'] as const;
 
 const STATUS_MESSAGES: Record<string, string> = {
   '10': 'INITIALIZING LAUNCH SEQUENCE...',
@@ -16,7 +16,6 @@ const STATUS_MESSAGES: Record<string, string> = {
   '3': 'CONTAINMENT FAILING',
   '2': 'CRITICAL STATE',
   '1': 'FINAL SEQUENCE',
-  '∞': 'COUNTDOWN TERMINATED',
 };
 
 const BG_TOKENS = [
@@ -24,7 +23,7 @@ const BG_TOKENS = [
   'NODE_04', '0x0007FF', 'PACKET_LOSS', 'CH_09::LOCK',
 ];
 
-type Phase = 'active' | 'glitchOut' | 'plain' | 'vanish' | 'gone';
+type Phase = 'active' | 'glitchOut' | 'plain' | 'gone';
 
 const STEP_MS = 1600;
 
@@ -45,7 +44,7 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
   }, []);
 
   const current = SEQUENCE[index];
-  const isInfinity = current === '∞';
+  const isLast = index === SEQUENCE.length - 1;
   const isGlitchNumber = current === '7' || current === '4' || current === '2' || current === '1';
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
     setPhase('active');
     setSeed((s) => s + 1);
 
-    const holdTime = isInfinity ? Math.round(STEP_MS * 1.6) : STEP_MS;
+    const holdTime = STEP_MS;
 
     // Mid-hold shake only for designated glitch numbers (7, 4, 2, 1)
     if (isGlitchNumber) {
@@ -65,8 +64,7 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
 
     // Begin exit phase
     schedule(() => {
-      if (isInfinity) setPhase('vanish');
-      else if (isGlitchNumber) setPhase('glitchOut');
+      if (isGlitchNumber) setPhase('glitchOut');
       else setPhase('plain');
 
       if (isGlitchNumber) {
@@ -75,13 +73,13 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
       }
     }, holdTime);
 
-    const vanishMs = isInfinity ? Math.round(STEP_MS * 0.6) : isGlitchNumber ? 380 : 220;
+    const vanishMs = isGlitchNumber ? 380 : 220;
 
-    // Finish exit, move on (or terminate on infinity)
+    // Finish exit, move on (or terminate on last number)
     schedule(() => {
       setPhase('gone');
-      if (isInfinity) {
-        // Auto-advance to splash screen after ∞ completes
+      if (isLast) {
+        // Auto-advance to splash screen after final number completes
         schedule(() => onComplete?.(), 400);
         return;
       }
@@ -107,7 +105,7 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
 
       <header className={styles.header}>
         <span>[ SYSTEM // SECURE CHANNEL ]</span>
-        <span>STATUS: {phase === 'gone' && isInfinity ? 'TERMINATED' : 'ACTIVE'}</span>
+        <span>STATUS: {phase === 'gone' && isLast ? 'TERMINATED' : 'ACTIVE'}</span>
       </header>
 
       <div className={styles.numberWrap}>
@@ -128,7 +126,6 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
 }
 
 function GlitchNumber({ value, phase, step, seed }: { value: string; phase: Phase; step: number; seed: number }) {
-  const isInfinity = value === '∞';
   const isGlitchNumber = value === '7' || value === '4' || value === '2' || value === '1';
 
   // Deterministic calculation based on step and seed to avoid SSR hydration mismatch
@@ -145,7 +142,6 @@ function GlitchNumber({ value, phase, step, seed }: { value: string; phase: Phas
   let phaseClass = styles.active;
   if (phase === 'glitchOut') phaseClass = styles.glitchOut;
   if (phase === 'plain') phaseClass = styles.plainOut;
-  if (phase === 'vanish') phaseClass = isInfinity ? styles.vanishInfinity : styles.glitchOut;
 
   return (
     <div

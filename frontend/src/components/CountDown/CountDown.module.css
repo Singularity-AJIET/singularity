@@ -127,8 +127,8 @@
   mix-blend-mode: screen;
 }
 
-.ghostRed { color: #ff2b2b; }
-.ghostCyan { color: #4de0e0; }
+.ghostRed { color: #c8f135; }
+.ghostCyan { color: #c8f135; }
 
 /* active: clean, solid appearance without distortion */
 .active .mainNumber {
@@ -241,18 +241,6 @@
   }
 }
 
-/* ---------- final: infinity clean exit ---------- */
-
-.vanishInfinity .mainNumber {
-  animation: plainFade 400ms ease-in forwards;
-}
-
-.vanishInfinity .ghostLayer {
-  display: none;
-  opacity: 0;
-  animation: none;
-}
-
 /* ---------- shared effects ---------- */
 
 .flash {
@@ -287,7 +275,6 @@
   .active .mainNumber,
   .glitchOut .mainNumber,
   .vanishSix .mainNumber,
-  .vanishInfinity .mainNumber,
   .fragment,
   .bgToken {
     animation: none !important;
