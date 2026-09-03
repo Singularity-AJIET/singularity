@@ -105,6 +105,16 @@ export default function Navbar() {
             {!isVolunteer && (
               <>
               <button
+                onClick={() => router.push("/nexus/countdown")}
+                className={`rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer ${
+                  pathname === "/nexus/countdown"
+                    ? "bg-yellow-400/10 border border-yellow-400/25 font-bold text-yellow-400"
+                    : "font-semibold text-slate-400 hover:text-white"
+                }`}
+              >
+                Countdown
+              </button>
+              <button
                 onClick={() => router.push("/nexus/settings")}
                 className={`rounded-lg px-3 py-1.5 text-xs transition-all cursor-pointer ${
                   pathname === "/nexus/settings"

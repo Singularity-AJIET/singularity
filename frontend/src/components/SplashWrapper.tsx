@@ -1,23 +1,92 @@
 "use client";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import CountDown from "@/components/CountDown/CountDown";
 import SplashScreen from "@/components/SplashScreen/SplashScreen";
 import Navbar from "@/components/Navbar/Navbar";
+import { getApiBaseUrl, fetchCountdownState, CountdownState } from "@/lib/api";
 
 export default function SplashWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [showSplash, setShowSplash] = useState(true);
+  const [countdownState, setCountdownState] = useState<CountdownState | null>(null);
+  const [showCountdown, setShowCountdown] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
+  const [hasLoadedState, setHasLoadedState] = useState(false);
+
+  // Fetch initial state and listen to real-time admin changes via SSE
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadCountdown() {
+      try {
+        const state = await fetchCountdownState();
+        if (isMounted) {
+          setCountdownState(state);
+          if (state.isDisplayed) {
+            setShowCountdown(true);
+            setShowSplash(false);
+          } else {
+            setShowCountdown(false);
+            setShowSplash(true);
+          }
+          setHasLoadedState(true);
+        }
+      } catch (err) {
+        console.error("Error loading countdown state in SplashWrapper:", err);
+        if (isMounted) {
+          setShowSplash(true);
+          setHasLoadedState(true);
+        }
+      }
+    }
+
+    loadCountdown();
+
+    const API_BASE = getApiBaseUrl();
+    const eventSource = new EventSource(`${API_BASE}/api/countdown/events`);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (isMounted && data) {
+          const isDisp = Boolean(data.isDisplayed);
+          const isSt = Boolean(data.isStarted);
+
+          setCountdownState({
+            isDisplayed: isDisp,
+            isStarted: isSt,
+            startedAt: data.startedAt || null,
+            updatedAt: data.updatedAt || new Date().toISOString(),
+          });
+
+          // If admin clicked Remove (isDisplayed: false), remove countdown immediately
+          if (!isDisp) {
+            setShowCountdown(false);
+          } else {
+            setShowCountdown(true);
+          }
+        }
+      } catch (err) {
+        console.error("SSE parse error in SplashWrapper:", err);
+      }
+    };
+
+    return () => {
+      isMounted = false;
+      eventSource.close();
+    };
+  }, []);
 
   useEffect(() => {
-    if (showSplash) {
+    if (!hasLoadedState || showCountdown || showSplash) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [showSplash]);
+  }, [hasLoadedState, showCountdown, showSplash]);
 
   useEffect(() => {
     // Ensure we start at the top on reload
@@ -29,15 +98,39 @@ export default function SplashWrapper({
     }
   }, []);
 
+  const isIntroActive = !hasLoadedState || showCountdown || showSplash;
+
   return (
     <>
-      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      <AnimatePresence mode="wait">
+        {hasLoadedState && showCountdown && countdownState?.isDisplayed && (
+          <motion.div
+            key="countdown-intro"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+            style={{ position: "fixed", inset: 0, zIndex: 99999, background: "#000000" }}
+          >
+            <CountDown
+              isStarted={countdownState.isStarted}
+              onComplete={() => {
+                setShowCountdown(false);
+                setShowSplash(true);
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {hasLoadedState && showSplash && (
+        <SplashScreen onComplete={() => setShowSplash(false)} />
+      )}
+
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: showSplash ? 0 : 1 }}
+        animate={{ opacity: isIntroActive ? 0 : 1 }}
         transition={{ duration: 0.8 }}
       >
-        <Navbar hideLogo={showSplash} />
+        <Navbar hideLogo={isIntroActive} />
         {children}
       </motion.div>
     </>

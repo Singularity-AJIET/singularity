@@ -85,3 +85,14 @@ model Admin {
 
   @@map("admins")
 }
+
+model CountdownState {
+  id          String    @id @default("default")
+  isDisplayed Boolean   @default(false) @map("is_displayed")
+  isStarted   Boolean   @default(false) @map("is_started")
+  startedAt   DateTime? @map("started_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  @@map("countdown_state")
+}
+

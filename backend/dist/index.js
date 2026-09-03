@@ -9,7 +9,10 @@ dotenv.config();
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
 // Configure CORS — restricts to FRONTEND_URL in production, allows all in dev
-const allowedOrigin = process.env.FRONTEND_URL || true;
+// Splits by comma to allow multiple origins, and strips trailing slashes which cause CORS errors
+const allowedOrigin = process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(',').map(u => u.trim().replace(/\/$/, ''))
+    : true;
 app.use(cors({
     origin: allowedOrigin,
     credentials: true,
