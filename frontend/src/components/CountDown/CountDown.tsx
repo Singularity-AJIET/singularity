@@ -27,7 +27,13 @@ type Phase = 'active' | 'glitchOut' | 'plain' | 'gone';
 
 const STEP_MS = 1600;
 
-export default function CountDown({ onComplete }: { onComplete?: () => void } = {}) {
+export default function CountDown({ 
+  onComplete,
+  isStarted = true,
+}: { 
+  onComplete?: () => void;
+  isStarted?: boolean;
+} = {}) {
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>('active');
   const [seed, setSeed] = useState(0);
@@ -50,6 +56,15 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
   useEffect(() => {
     clearTimers();
     setPhase('active');
+    setShake(false);
+    setFlash(false);
+
+    // If countdown has not been started by admin, stay in static idle state at 10
+    if (!isStarted) {
+      setIndex(0);
+      return;
+    }
+
     setSeed((s) => s + 1);
 
     const holdTime = STEP_MS;
@@ -88,7 +103,7 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
 
     return clearTimers;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index]);
+  }, [index, isStarted]);
 
   return (
     <div className={`${styles.stage} ${shake ? styles.shake : ''}`} id="countdown-stage">
@@ -105,7 +120,7 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
 
       <header className={styles.header}>
         <span>[ SYSTEM // SECURE CHANNEL ]</span>
-        <span>STATUS: {phase === 'gone' && isLast ? 'TERMINATED' : 'ACTIVE'}</span>
+        <span>STATUS: {!isStarted ? 'ARMED // STANDBY' : (phase === 'gone' && isLast ? 'TERMINATED' : 'ACTIVE')}</span>
       </header>
 
       <div className={styles.numberWrap}>
@@ -116,7 +131,7 @@ export default function CountDown({ onComplete }: { onComplete?: () => void } = 
 
       <footer className={styles.footer}>
         <span className={styles.footerText}>
-          {STATUS_MESSAGES[current]}
+          {!isStarted ? 'SEQUENCE ARMED — AWAITING LAUNCH TRIGGER...' : STATUS_MESSAGES[current]}
         </span>
       </footer>
 

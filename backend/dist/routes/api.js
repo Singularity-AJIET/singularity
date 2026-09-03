@@ -7,6 +7,7 @@ import { executeClaim } from '../controllers/claims.js';
 import { getClaimsReport } from '../controllers/claimsReport.js';
 import { syncBatchScans } from '../controllers/sync.js';
 import { registerAdmin, loginAdmin, getMe, listAdmins, updateAdminPassword, deleteAdmin } from '../controllers/admin.js';
+import { getCountdownState, countdownEvents, updateCountdownDisplay, triggerCountdownStart, removeCountdown, resetCountdown } from '../controllers/countdown.js';
 import { requireAnyAuth, requireAdminAuth, requireSuperAdmin } from '../middlewares/auth.js';
 const router = Router();
 const upload = multer(); // Store file in memory buffer for parser processing
@@ -44,6 +45,15 @@ router.get('/counters/events', counterEvents); // SSE stream for real-time scann
 // Admin + Superadmin only — volunteers cannot open/close counters
 router.post('/counters', requireAdminAuth, createCounter);
 router.post('/counters/:sessionId/toggle', requireAdminAuth, toggleCounter);
+// ─── Countdown Routes ────────────────────────────────────────────────────────
+// Public read & real-time SSE stream
+router.get('/countdown', getCountdownState);
+router.get('/countdown/events', countdownEvents);
+// Admin + Superadmin controls
+router.post('/countdown/display', requireAdminAuth, updateCountdownDisplay);
+router.post('/countdown/start', requireAdminAuth, triggerCountdownStart);
+router.post('/countdown/remove', requireAdminAuth, removeCountdown);
+router.post('/countdown/reset', requireAdminAuth, resetCountdown);
 // ─── Claim Routes ─────────────────────────────────────────────────────────────
 // Any authenticated user — volunteers scan and submit claims
 router.post('/claims', requireAnyAuth, executeClaim);
