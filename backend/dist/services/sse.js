@@ -18,3 +18,23 @@ export function broadcastCounterUpdate(counters) {
         client.write(`data: ${data}\n\n`);
     }
 }
+// Store connected SSE clients for countdown events
+const countdownClients = new Set();
+/**
+ * Add a new SSE client connection for countdown updates.
+ */
+export function addCountdownClient(res) {
+    countdownClients.add(res);
+    res.on('close', () => {
+        countdownClients.delete(res);
+    });
+}
+/**
+ * Broadcast countdown status update to all connected clients.
+ */
+export function broadcastCountdownUpdate(state) {
+    const data = JSON.stringify(state);
+    for (const client of countdownClients) {
+        client.write(`data: ${data}\n\n`);
+    }
+}

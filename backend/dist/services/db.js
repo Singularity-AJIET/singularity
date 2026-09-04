@@ -13,5 +13,27 @@ const libsqlClient = createClient({
 });
 const adapter = new PrismaLibSQL(libsqlClient);
 const prisma = new PrismaClient({ adapter });
-export { prisma };
+export { prisma, libsqlClient };
 export default prisma;
+// Auto-initialize countdown_state table in Turso
+export async function initDatabaseTables() {
+    try {
+        await libsqlClient.execute(`
+      CREATE TABLE IF NOT EXISTS countdown_state (
+        id TEXT PRIMARY KEY,
+        is_displayed INTEGER NOT NULL DEFAULT 0,
+        is_started INTEGER NOT NULL DEFAULT 0,
+        started_at TEXT,
+        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+        await libsqlClient.execute(`
+      INSERT OR IGNORE INTO countdown_state (id, is_displayed, is_started)
+      VALUES ('default', 0, 0);
+    `);
+    }
+    catch (err) {
+        console.error("Failed to ensure countdown_state table:", err);
+    }
+}
+initDatabaseTables().catch((err) => console.error("Database init error:", err));

@@ -4,6 +4,20 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/CountDown",
+        destination: "/countdown",
+        permanent: false,
+      },
+      {
+        source: "/countdown-launch",
+        destination: "/launch-countdown",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
@@ -19,3 +33,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
