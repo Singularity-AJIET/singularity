@@ -92,7 +92,7 @@ const TEAM_COORDINATORS: Coordinator[] = [
   // Tech Lead
   { name: "Keerthana", imgPosition: "center 45%", role: "Tech Lead", seed: "Keerthana", photo: "/team/Keerthana_K.webp", color: "#ff8ed4", github: "https://github.com/Keerthana430", instagram: "https://www.instagram.com/keerthana___kulal", linkedin: "https://www.linkedin.com/in/keerthana-kulal-32045a295/" },
   { name: "Sunpreeth Vishva", role: "Tech Lead", seed: "Sunpreeth", photo: "/team/sunp.webp", color: "#ffb830", github: "https://github.com/anysdefdefe", instagram: "https://instagram.com/_.sunp._/", linkedin: "https://linkedin.com/in/sunpreeth-vishva/" },
-  { name: "Kishan C Bandary", role: "Tech Lead", seed: "Kishan", photo: "/team/kishan.webp", color: "#00b4d8", github: "https://github.com/kishanBhandary", instagram: "https://www.instagram.com/__kixhan__/", linkedin: "https://www.linkedin.com/in/kishanbhandary/" },
+  { name: "Kishan C Bhandary", role: "Tech Lead", seed: "Kishan", photo: "/team/kishan.webp", color: "#00b4d8", github: "https://github.com/kishanBhandary", instagram: "https://www.instagram.com/__kixhan__/", linkedin: "https://www.linkedin.com/in/kishanbhandary/" },
   { name: "Praneeth C K", role: "Tech Lead", seed: "Praneek", photo: "/team/Praneek.webp", color: "#845ec2", github: "https://github.com/praneeth-ck", instagram: "https://www.instagram.com/praneethck_official?igsh=MWdtaWk0aGRva3owMw==", linkedin: "https://www.linkedin.com/in/praneeth-c-k" },
 
   // Media & Publicity Lead

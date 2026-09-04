@@ -3,7 +3,8 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import styles from "./HeroSection.module.css";
 
-const TARGET_DATE = new Date("2026-10-08T09:00:00+05:30");
+import { useEventCountdown } from "@/hooks/useEventCountdown";
+
 const UNSTOP_URL = "https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983";
 
 function createRipple(e: React.MouseEvent<HTMLElement>) {
@@ -19,30 +20,10 @@ function createRipple(e: React.MouseEvent<HTMLElement>) {
   ripple.addEventListener("animationend", () => ripple.remove());
 }
 
-function useCountdown(target: Date) {
-  const calc = () => {
-    const diff = target.getTime() - Date.now();
-    if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    return {
-      days: Math.floor(diff / 86400000),
-      hours: Math.floor((diff % 86400000) / 3600000),
-      minutes: Math.floor((diff % 3600000) / 60000),
-      seconds: Math.floor((diff % 60000) / 1000),
-    };
-  };
-  const [time, setTime] = useState(calc);
-  useEffect(() => {
-    const id = setInterval(() => setTime(calc()), 1000);
-    return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return time;
-}
-
 function BigUnit({ v, label }: { v: number; label: string }) {
   return (
     <div className={styles.bigUnit}>
-      <span className={styles.bigNum}>{String(v).padStart(2, "0")}</span>
+      <span className={styles.bigNum} suppressHydrationWarning>{String(v).padStart(2, "0")}</span>
       <span className={styles.bigLabel}>{label}</span>
     </div>
   );
@@ -77,7 +58,7 @@ function RailNode({
 }
 
 export default function HeroSection() {
-  const { days, hours, minutes, seconds } = useCountdown(TARGET_DATE);
+  const { days, hours, minutes, seconds } = useEventCountdown();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
@@ -283,10 +264,10 @@ export default function HeroSection() {
               </span>
               <div className={styles.panelDivider} />
               <div className={styles.countdownRow}>
-                <BigUnit v={mounted ? days : 0} label="DAYS" />
-                <BigUnit v={mounted ? hours : 0} label="HRS" />
-                <BigUnit v={mounted ? minutes : 0} label="MIN" />
-                <BigUnit v={mounted ? seconds : 0} label="SEC" />
+                <BigUnit v={days} label="DAYS" />
+                <BigUnit v={hours} label="HRS" />
+                <BigUnit v={minutes} label="MIN" />
+                <BigUnit v={seconds} label="SEC" />
               </div>
             </div>
           </div>

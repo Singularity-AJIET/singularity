@@ -1,8 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
-
 import Image from "next/image";
 import styles from "./Footer.module.css";
+import { useEventCountdown } from "@/hooks/useEventCountdown";
 
 const LINKS = [
   { label: "About", href: "/#about" },
@@ -36,26 +35,8 @@ const SOCIAL = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/enigma-cse", icon: <LinkedinIcon size={20} />, tooltip: "LinkedIn" },
 ];
 
-const TARGET = new Date("2026-10-08T09:00:00+05:30").getTime();
-
-function computeTimeLeft() {
-  const diff = TARGET - Date.now();
-  if (diff <= 0) return { d: 0, h: 0, m: 0, s: 0 };
-  return {
-    d: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    h: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-    m: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-    s: Math.floor((diff % (1000 * 60)) / 1000),
-  };
-}
-
 export default function Footer() {
-  const [timeLeft, setTimeLeft] = useState(computeTimeLeft);
-
-  useEffect(() => {
-    const timer = setInterval(() => setTimeLeft(computeTimeLeft()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const { days, hours, minutes, seconds } = useEventCountdown();
 
   const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -66,13 +47,13 @@ export default function Footer() {
           <div className={styles.ctaLabel}>{"//"} ready to build?</div>
           <p className={styles.ctaTitle}>THE CLOCK IS</p>
           <div className={styles.countdown}>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.d)}</span><span className={styles.unitLabel}>DAYS</span></div>
+            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(days)}</span><span className={styles.unitLabel}>DAYS</span></div>
             <span className={styles.colon}>:</span>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.h)}</span><span className={styles.unitLabel}>HRS</span></div>
+            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(hours)}</span><span className={styles.unitLabel}>HRS</span></div>
             <span className={styles.colon}>:</span>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.m)}</span><span className={styles.unitLabel}>MIN</span></div>
+            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(minutes)}</span><span className={styles.unitLabel}>MIN</span></div>
             <span className={styles.colon}>:</span>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(timeLeft.s)}</span><span className={styles.unitLabel}>SEC</span></div>
+            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(seconds)}</span><span className={styles.unitLabel}>SEC</span></div>
           </div>
           <p className={styles.ctaSub}>
             24 hours. 3 tracks. ₹60,000+ in prizes. No excuses.
