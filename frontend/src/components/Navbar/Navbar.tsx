@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Navbar.module.css";
 import Image from "next/image";
 
@@ -24,11 +24,37 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
   const [statIdx, setStatIdx] = useState(0);
   const [display, setDisplay] = useState(STATS[0]);
   const [paused, setPaused] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Track active section by observing each section's intersection with the viewport
+  useEffect(() => {
+    const sectionIds = NAV_LINKS.map((l) => l.href.replace("/#", ""));
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
+    );
+
+    sections.forEach((s) => observerRef.current!.observe(s));
+    return () => observerRef.current?.disconnect();
   }, []);
 
   // Cycle stats — paused while hovered
@@ -99,11 +125,21 @@ export default function Navbar({ hideLogo }: { hideLogo?: boolean }) {
 
           {/* Desktop links */}
           <ul className={styles.links}>
-            {NAV_LINKS.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} className={styles.link}>{l.label}</a>
-              </li>
-            ))}
+            {NAV_LINKS.map((l) => {
+              const sectionId = l.href.replace("/#", "");
+              const isActive = activeSection === sectionId;
+              return (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    className={`${styles.link} ${isActive ? styles.linkActive : ""}`}
+                    onClick={() => setActiveSection(sectionId)}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Right side: system identity + system command (desktop only) */}
