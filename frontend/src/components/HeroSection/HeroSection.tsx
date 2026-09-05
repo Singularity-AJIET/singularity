@@ -61,7 +61,8 @@ export default function HeroSection() {
   const { days, hours, minutes, seconds } = useEventCountdown();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
-  // const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [mounted, setMounted] = useState(false);
   const [scanned, setScanned] = useState(false);
 
   const pulseRef = useRef<HTMLSpanElement>(null);

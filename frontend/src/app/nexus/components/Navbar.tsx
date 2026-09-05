@@ -8,7 +8,8 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [admin, setAdmin] = useState<{ name?: string; username?: string; role?: string } | null>(null);
-  // const [scrolled, setScrolled] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
