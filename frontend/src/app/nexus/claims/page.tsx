@@ -235,9 +235,9 @@ export default function ClaimsReportPage() {
             >
               LOGS & METRICS
             </span>
-            <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.7rem", color: "#888580" }}>
+            <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.7rem", color: "#888580" }}>{`
               // CLAIMS AUDIT TRACKER
-            </span>
+            `}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#F0EDE8]">
             Claims Audit Tracker

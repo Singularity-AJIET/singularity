@@ -235,9 +235,9 @@ export default function DashboardPage() {
                   fontSize: "0.7rem",
                   color: "#888580",
                 }}
-              >
+              >{`
                 // ADMIN CONSOLE
-              </span>
+              `}</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#F0EDE8] mt-1">
               Command Overview

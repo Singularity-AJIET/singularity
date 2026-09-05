@@ -88,6 +88,7 @@ export default function LoginPage() {
         {/* Brand Header */}
         <div className="mb-8 text-center">
           <div className="flex justify-center mb-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.webp"
               alt="Singularity"

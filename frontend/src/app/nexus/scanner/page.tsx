@@ -9,7 +9,7 @@ import NexusSelect from "../components/NexusSelect";
 interface CounterSession {
   id: string;
   name: string;
-  isOpen: boolean;
+  is_open: boolean;
 }
 
 interface ScanLog {
@@ -106,7 +106,7 @@ export default function ScannerPage() {
       .then((data: CounterSession[]) => {
         setCounters(data);
         setIsLoadingCounters(false);
-        const firstOpen = data.find((c) => c.isOpen);
+        const firstOpen = data.find((c) => c.is_open);
         if (firstOpen) {
           setSelectedCounter(firstOpen.id);
         } else if (data.length > 0) {
@@ -131,7 +131,7 @@ export default function ScannerPage() {
   }, []);
 
   // Update scanner state when selectedCounter changes
-  const isSelectedCounterOpen = counters.find((c) => c.id === selectedCounter)?.isOpen ?? false;
+  const isSelectedCounterOpen = counters.find((c) => c.id === selectedCounter)?.is_open ?? false;
 
   useEffect(() => {
     if (!selectedCounter) return;
@@ -169,7 +169,38 @@ export default function ScannerPage() {
       });
   }, []);
 
-  // Lifecycle cleanup
+  // Visibility changes (Pause camera when app goes to background)
+  useEffect(() => {
+    const handlePause = () => stopScanner();
+    const handleResume = () => {
+      if (!document.hidden && isSelectedCounterOpen && !scanResult) {
+        startScanner();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        handlePause();
+      } else {
+        handleResume();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePause);
+    window.addEventListener("blur", handlePause);
+    window.addEventListener("focus", handleResume);
+    
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePause);
+      window.removeEventListener("blur", handlePause);
+      window.removeEventListener("focus", handleResume);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSelectedCounterOpen, scanResult, activeCameraId]);
+
+  // Lifecycle cleanup (unmount)
   useEffect(() => {
     return () => {
       stopScanner();
@@ -207,7 +238,10 @@ export default function ScannerPage() {
   };
 
   const stopScanner = async () => {
-    if (!scannerRef.current || !isScanningActive.current) return;
+    if (!scannerRef.current) {
+      isScanningActive.current = false;
+      return;
+    }
 
     const scanner = scannerRef.current;
     scannerRef.current = null;
@@ -218,6 +252,26 @@ export default function ScannerPage() {
       if (state === 2 || state === 3) {
         await scanner.stop();
       }
+    } catch {
+      // Ignored
+    }
+    
+    try {
+      scanner.clear(); // Nuke the DOM elements created by html5-qrcode unconditionally
+    } catch {
+      // Ignored
+    }
+
+    // Bulletproof fallback: forcefully kill ANY video tracks on the page globally
+    // This runs after graceful shutdown to catch any ghost tracks without triggering onabort()
+    try {
+      document.querySelectorAll("video").forEach((videoEl) => {
+        if (videoEl.srcObject) {
+          const stream = videoEl.srcObject as MediaStream;
+          stream.getTracks().forEach((track) => track.stop());
+          videoEl.srcObject = null;
+        }
+      });
     } catch {
       // Ignored
     }
@@ -410,9 +464,9 @@ export default function ScannerPage() {
             >
               OPTICAL SENSOR
             </span>
-            <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.7rem", color: "#888580" }}>
+            <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.7rem", color: "#888580" }}>{`
               // QR VERIFICATION
-            </span>
+            `}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#F0EDE8]">
             Access Pass Scanner
@@ -741,7 +795,7 @@ export default function ScannerPage() {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Counter Selector Card */}
-            <div className="nx-card space-y-4">
+            <div className="nx-card space-y-4 relative z-50">
               <div>
                 <h3 className="text-sm font-black uppercase tracking-tight text-[#F0EDE8]">Target Counter Door</h3>
                 <p className="text-xs text-[#888580]" style={{ fontFamily: '"JetBrains Mono", monospace' }}>Select active fulfillment session</p>
@@ -760,7 +814,7 @@ export default function ScannerPage() {
                         ? [{ value: "", label: "No counters defined" }]
                         : counters.map((c) => ({
                             value: c.id,
-                            label: `${c.isOpen ? "🔓" : "🔒"} ${c.name} ${c.isOpen ? "(OPEN)" : "(LOCKED)"}`,
+                            label: `${c.is_open ? "🔓" : "🔒"} ${c.name} ${c.is_open ? "(OPEN)" : "(LOCKED)"}`,
                           }))
                     }
                   />
@@ -768,7 +822,7 @@ export default function ScannerPage() {
                   {/* Active Counter Status Indicator */}
                   {selectedCounter && (
                     <div className="pt-1">
-                      {counters.find(c => c.id === selectedCounter)?.isOpen ? (
+                      {counters.find(c => c.id === selectedCounter)?.is_open ? (
                         <div className="flex items-center gap-2 text-xs font-bold" style={{ color: "#c8f135", fontFamily: '"JetBrains Mono", monospace' }}>
                           <span className="h-2 w-2 rounded-full bg-[#c8f135] animate-ping" />
                           <span>COUNTER OPEN — READY FOR SCANS</span>
