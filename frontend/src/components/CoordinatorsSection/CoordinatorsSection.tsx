@@ -87,7 +87,7 @@ const FACULTY_COORDINATORS: Coordinator[] = [
 const TEAM_COORDINATORS: Coordinator[] = [
   // Lead Organizers — the only role with a phone number / phone button
   { name: "Durgesh A P", imgPosition: "center 15%", role: "Lead Organizer", seed: "Durgesh", photo: "/team/DurgeshAP.webp", color: "#c8f135", github: "https://github.com/Durgesh3805", instagram: "https://www.instagram.com/_duxgexh_", linkedin: "https://www.linkedin.com/in/durgeshap/", phone: "+919353250245" },
-  { name: "Suyash Devadiga", imgPosition: "center 15%", role: "Lead Organizer", seed: "Suyash", photo: "/team/Suyash.webp", color: "#e63946", github: "https://github.com/SuyashD22", instagram: "https://www.instagram.com/suyashdevadiga_", linkedin: "https://www.linkedin.com/in/suyashdevadiga/", phone: "+917899288198" },
+  { name: "Suyash Devadiga", imgPosition: "center 15%", role: "Lead Organizer", seed: "Suyash", photo: "/team/Suyash.webp", color: "#e63946", github: "https://github.com/SuyashD22", instagram: "https://www.instagram.com/suyashdevadiga_", linkedin: "https://www.linkedin.com/in/suyashdevadiga/", phone: "+919187914582" },
   { name: "Neekshith", role: "Lead Organizer", seed: "Neekshith", photo: "/team/Neekshith .webp", color: "#4ecdc4", github: "https://github.com/Neekshith8296", linkedin: "https://www.linkedin.com/in/neekshith-s/", phone: "+918296303393" },
   { name: "Arjun R", role: "Lead Organizer", seed: "Arjun", photo: "/team/Arjun_R.webp", color: "#ffe66d", github: "https://github.com/Arjun-333", instagram: "https://www.instagram.com/arjun._.raj._?igsh=YzB0aTc5amxsZWc3", linkedin: "https://www.linkedin.com/in/arjun-r-44a336294", phone: "+919019934133" },
 
