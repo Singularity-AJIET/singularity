@@ -57,7 +57,7 @@ interface Coordinator {
 const getNameFontSize = (name: string): string | undefined => {
   const len = name.length;
   if (len > 20) return "clamp(1.8rem, 3.2vw, 3rem)";
-  if (len > 16) return "clamp(2.2rem, 3.8vw, 3.6rem)";
+  if (len > 14) return "clamp(2.2rem, 3.8vw, 3.6rem)";
   if (len > 12) return "clamp(2.6rem, 4.3vw, 4.2rem)";
   return undefined;
 };
@@ -131,6 +131,7 @@ const TEAM_COORDINATORS: Coordinator[] = [
   { name: "Adithya Unni", role: "Design Lead", seed: "Adithya", photo: "/team/Adithya _unni.webp", color: "#845ec2", github: "https://github.com/adithyaunni", instagram:"https://www.instagram.com/u_____n_____n_____i?igsh=Y3JzMDVleXNqbWhm",linkedin: "https://www.linkedin.com/in/adithya-unni-364b8232b" },
   { name: "Shramish", role: "Design Lead", seed: "Shramish", photo: "/team/shramish poojary.webp", color: "#ffe66d", github: "https://github.com/ShramishR", instagram: "https://www.instagram.com/shramish_poojary?igsh=djlzZm9pa2g0bGNv&igsi=djlzZm9pa2g0bGNv", linkedin: "https://www.linkedin.com/in/shramish-poojary-98b9502a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
   { name: "Shivani S Poojary", role: "Design Lead", seed: "Shivani", photo: "/team/Shivani S Poojary .webp", color: "#ff8ed4", github: "https://github.com/Shivani512005", instagram: "https://www.instagram.com/_iiamshivani_?igsh=MXNsMzkzNnN6cXRiYg==", linkedin: "https://www.linkedin.com/in/shivani-s-poojary-047a2a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
+  { name: "Mohammed Sharwan", role: "Design Lead", seed: "Sharwan", photo: "/team/Sharwan.webp", color: "#00c9a7", github: "https://github.com/S-Mohammed-Sharwan", linkedin: "https://www.linkedin.com/in/s-mohammedsharwan/" },
 ];
 
 const COORDINATORS = [...TEAM_COORDINATORS];
