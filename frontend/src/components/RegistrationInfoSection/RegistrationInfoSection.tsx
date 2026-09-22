@@ -28,9 +28,9 @@ const REGISTRATION_ITEMS = [
   {
     title: "Selection & Commencement",
     points: [
+      "A total of 36 teams will be shortlisted (12 teams per track).",
       "Shortlisted teams will be notified after the review process.",
       "The hack and program kickoff begins on 8th October 2026.",
-      "The process focuses on resume-based review and team fit.",
     ],
   },
 ];

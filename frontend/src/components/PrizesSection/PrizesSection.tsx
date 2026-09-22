@@ -21,7 +21,7 @@ type Prize = {
 const PRIZES: Prize[] = [
   {
     rank: "Grand Prize",
-    amount: "₹60,000+",
+    amount: "₹1,00,000+",
     color: "#c8f135",
     Icon: Trophy,
     perks: [
@@ -76,7 +76,7 @@ export default function PrizesSection() {
             <span className="text-lime">GET GLORY.</span>
           </h2>
          <p className={styles.sectionSub}>
-          Over <b>₹60K+</b> in cash prizes, along with custom domains, track-wise rewards,
+          Over <b>₹1,00,000+</b> in cash prizes, along with custom domains, track-wise rewards,
           internship opportunities, industry networking, exclusive goodies, and recognition.
           Compete across diverse tracks, showcase your skills, connect with mentors and
           industry professionals, and turn your ideas into solutions that go beyond the
