@@ -22,7 +22,7 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
     {
       name: "IEEE Mangalore Subsection",
       desc: "IEEE Mangalore Subsection is a regional IEEE community connecting students, professionals, and technology enthusiasts. It promotes technical learning, collaboration, innovation, and professional development through various activities.  ",
-      link: "https://ieeemangalore.org",
+      link: "https://ieee-mangalore.org/",
       buttonText: "Visit Website",
       logo: "/IMS.webp",
     },

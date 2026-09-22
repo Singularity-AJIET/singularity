@@ -10,6 +10,16 @@ export class NtpClient {
   constructor() {
     // Auto-sync as early as possible in browser environment
     if (typeof window !== "undefined") {
+      try {
+        const cached = sessionStorage.getItem("singularity_clock_offset");
+        if (cached !== null) {
+          const parsed = Number(cached);
+          if (!isNaN(parsed) && Math.abs(parsed) < 86400000) {
+            this._offset = parsed;
+          }
+        }
+      } catch {}
+
       this.sync().catch(() => {});
       // Re-sync on tab refocus to eliminate any sleep/wake drift
       window.addEventListener("visibilitychange", () => {
@@ -136,6 +146,9 @@ export class NtpClient {
       this._rtt = bestRtt;
       this._offset = bestServerTime - Date.now();
       this._synced = true;
+      try {
+        sessionStorage.setItem("singularity_clock_offset", String(this._offset));
+      } catch {}
       this._notifyListeners();
     }
   }
