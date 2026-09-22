@@ -8,7 +8,8 @@ import { ntpClient } from "@/lib/sync";
  *
  * Target is defined as a fixed ISO string with the IST offset so it is
  * timezone-agnostic — no matter where the server or browser runs, the
- * parsed epoch milliseconds are always the same absolute moment in time.
+ * parsed epoch milliseconds are always the same absolute moment in time:
+ * 1791430200000 ms (2026-10-08T03:30:00.000Z).
  */
 export const EVENT_TARGET_TIMESTAMP = new Date("2026-10-08T09:00:00+05:30").getTime();
 
@@ -22,15 +23,14 @@ export interface CountdownTime {
 }
 
 /**
- * Compute countdown using server-corrected "now".
+ * Compute countdown using server-corrected monotonic "now".
  *
- * ntpClient.isSynced is true once the one-time NTP round-trip has finished.
- * getServerTime() returns Date.now() + offset, where offset corrects the
- * client clock to match the backend clock.  Before sync completes we still
- * fall back to Date.now() so the display is never blank.
+ * ntpClient.getServerTime() is synchronized to the authoritative server clock
+ * and advances via performance.now() monotonically. It is completely independent
+ * of the user's local device clock, timezone, or manual time alterations.
  */
 export function computeEventCountdown(targetMs: number = EVENT_TARGET_TIMESTAMP): CountdownTime {
-  const now = ntpClient.isSynced ? ntpClient.getServerTime() : Date.now();
+  const now = ntpClient.getServerTime();
   const diff = Math.max(0, targetMs - now);
   const totalSeconds = Math.floor(diff / 1000);
   const seconds = totalSeconds % 60;
@@ -54,9 +54,6 @@ const listeners = new Set<Listener>();
 let globalTimerId: ReturnType<typeof setTimeout> | null = null;
 let currentTime: CountdownTime = computeEventCountdown();
 
-// Whether the one-time NTP sync has been kicked off already
-let ntpSyncStarted = false;
-
 function tick() {
   currentTime = computeEventCountdown();
   listeners.forEach((listener) => {
@@ -68,8 +65,8 @@ function tick() {
   });
 
   if (!currentTime.isComplete && listeners.size > 0) {
-    // Align to the next wall-clock second boundary to prevent sub-second drift
-    const delay = 1000 - (Date.now() % 1000);
+    const now = ntpClient.getServerTime();
+    const delay = Math.max(20, 1000 - (now % 1000));
     globalTimerId = setTimeout(tick, delay);
   } else {
     globalTimerId = null;
@@ -78,7 +75,8 @@ function tick() {
 
 function startGlobalTimerIfNeeded() {
   if (globalTimerId === null && listeners.size > 0) {
-    const delay = 1000 - (Date.now() % 1000);
+    const now = ntpClient.getServerTime();
+    const delay = Math.max(20, 1000 - (now % 1000));
     globalTimerId = setTimeout(tick, delay);
   }
 }
@@ -90,26 +88,25 @@ function stopGlobalTimerIfIdle() {
   }
 }
 
+// Force immediate re-tick whenever server clock sync completes
+if (typeof window !== "undefined") {
+  ntpClient.onSync(() => {
+    tick();
+  });
+}
+
 export function useEventCountdown() {
   const [time, setTime] = useState<CountdownTime>(() => computeEventCountdown());
 
   useEffect(() => {
-    // Kick off a one-time NTP sync (shared across all hook instances).
-    // Once it resolves the next tick() call will automatically use the
-    // corrected server time, so the displayed value self-corrects within
-    // at most ~1 second of the page loading.
-    if (!ntpSyncStarted) {
-      ntpSyncStarted = true;
-      ntpClient.sync(3).then(() => {
-        // Force an immediate re-tick so the corrected value appears right
-        // away rather than waiting for the next scheduled tick.
+    // Ensure NTP sync is performed as soon as component mounts
+    if (!ntpClient.isSynced) {
+      ntpClient.sync().then(() => {
         tick();
-      }).catch(() => {
-        // NTP failed — continue with client clock (graceful degradation)
-      });
+      }).catch(() => {});
     }
 
-    // Immediately show the latest computed value on mount
+    // Immediately update on mount
     setTime(computeEventCountdown());
 
     const listener: Listener = (updatedTime) => setTime(updatedTime);

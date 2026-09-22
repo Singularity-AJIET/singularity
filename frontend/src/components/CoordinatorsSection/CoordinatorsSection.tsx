@@ -86,7 +86,7 @@ const FACULTY_COORDINATORS: Coordinator[] = [
 // to that role — everyone else has no phone field at all.
 const TEAM_COORDINATORS: Coordinator[] = [
   // Lead Organizers — the only role with a phone number / phone button
-  { name: "Durgesh A P", imgPosition: "center 15%", role: "Lead Organizer", seed: "Durgesh", photo: "/team/DurgeshAP.webp", color: "#c8f135", github: "https://github.com/Durgesh3805", instagram: "https://www.instagram.com/_duxgexh_", linkedin: "https://www.linkedin.com/in/durgeshap/", phone: "+919353250245" },
+  { name: "Durgesh A P", imgPosition: "center 15%", role: "Lead Organizer", seed: "Durgesh", photo: "/team/Durgesh.webp", color: "#c8f135", github: "https://github.com/Durgesh3805", instagram: "https://www.instagram.com/_duxgexh_", linkedin: "https://www.linkedin.com/in/durgeshap/", phone: "+919353250245" },
   { name: "Suyash Devadiga", imgPosition: "center 15%", role: "Lead Organizer", seed: "Suyash", photo: "/team/Suyash.webp", color: "#e63946", github: "https://github.com/SuyashD22", instagram: "https://www.instagram.com/suyashdevadiga_", linkedin: "https://www.linkedin.com/in/suyashdevadiga/", phone: "+919187914582" },
   { name: "Neekshith", role: "Lead Organizer", seed: "Neekshith", photo: "/team/Neekshith .webp", color: "#4ecdc4", github: "https://github.com/Neekshith8296", linkedin: "https://www.linkedin.com/in/neekshith-s/", phone: "+918296303393" },
   { name: "Arjun R", role: "Lead Organizer", seed: "Arjun", photo: "/team/Arjun_R.webp", color: "#ffe66d", github: "https://github.com/Arjun-333", instagram: "https://www.instagram.com/arjun._.raj._?igsh=YzB0aTc5amxsZWc3", linkedin: "https://www.linkedin.com/in/arjun-r-44a336294", phone: "+919019934133" },
@@ -108,7 +108,6 @@ const TEAM_COORDINATORS: Coordinator[] = [
   { name: "Krithi", role: "Logistics & Accommodation Lead", seed: "Krithi", photo: "/team/Krithi.webp", color: "#ffb830", github: "https://github.com/Krithi-162", instagram: "https://www.instagram.com/kithu_kulal17", linkedin: "https://github.com/Krithi-162" },
 
   // Food & Refreshments Lead
-  { name: "Vaishnav", role: "Food & Refreshments Lead", seed: "Vaishnav", photo: "/team/Vaishnav.webp", color: "#ff2d6f", github: "https://github.com/vaish73", instagram: "https://www.instagram.com/vaiszzzzz/", linkedin: "https://www.linkedin.com/in/vaishnav-c00/" },
   { name: "Prathvish S Shetty", role: "Food & Refreshments Lead", seed: "Prathvish", photo: "/team/Prathvish_S_Shetty.webp", color: "#c8f135", github: "https://github.com/prathuu-23-08", instagram: "https://www.instagram.com/prathvish.shetty", linkedin: "https://www.linkedin.com/in/prathvish-shetty" },
 
   // Stage & Venue Lead
@@ -125,7 +124,6 @@ const TEAM_COORDINATORS: Coordinator[] = [
   { name: "Davana Hiremath H S", role: "Cultural Lead", seed: "Davana", photo: "/team/Davana.webp", color: "#ff2d6f", github: "https://github.com/Davanahs", instagram: "https://www.instagram.com/davana_h_s?igsh=Mmp4aHoxdzlmeHQ1", linkedin: "https://www.linkedin.com/in/davana-hiremath-h-s-440677321" },
   { name: "Varsha Hegde", role: "Cultural Lead", seed: "Varsha", photo: "/team/Varsha_Hegde.webp", color: "#4ecdc4", github: "https://github.com/Varsush", instagram: "https://www.instagram.com/varsush_?igsh=MWVxaHB0MzlmY2V4Nw%3D%3D&utm_source=qr", linkedin: "https://www.linkedin.com/in/varsha-hegde-072005s" },
   { name: "Shreyas Shettigar", imgPosition: "center 15%", role: "Cultural Lead", seed: "Shreyas", photo: "/team/Shreyas_shettigar.webp", color: "#c8f135", github: "https://github.com/Shreyas-hs-22", instagram: "https://www.instagram.com/shreyas_shettigar?igsh=MTZsMGVicDRobXI0YQ==", linkedin: "https://www.linkedin.com/in/shreyas-shettigar-2ba345356?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
-  { name: "Aishwarya  H C", role: "Cultural Lead", seed: "Aishwarya", photo: "/team/Aishwarya_HC.webp", color: "#c8f135", github: "https://github.com/Madeby-Aish", instagram: "https://www.instagram.com/tfaish_?igsh=ajVubGF3ZzhxMm94", linkedin: "https://www.linkedin.com/in/aishwaryahc5506/" },
 
   // Documentation & Design Lead
   { name: "Deeksha", role: "Design Lead", seed: "Deeksha", photo: "/team/deeksha.webp", color: "#ff2d6f", github: "https://github.com/Deeksha3227", linkedin: "https://www.linkedin.com/in/deeksha-g-458a672a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
@@ -133,6 +131,7 @@ const TEAM_COORDINATORS: Coordinator[] = [
   { name: "Shramish", role: "Design Lead", seed: "Shramish", photo: "/team/shramish poojary.webp", color: "#ffe66d", github: "https://github.com/ShramishR", instagram: "https://www.instagram.com/shramish_poojary?igsh=djlzZm9pa2g0bGNv&igsi=djlzZm9pa2g0bGNv", linkedin: "https://www.linkedin.com/in/shramish-poojary-98b9502a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
   { name: "Shivani S Poojary", role: "Design Lead", seed: "Shivani", photo: "/team/Shivani S Poojary .webp", color: "#ff8ed4", github: "https://github.com/Shivani512005", instagram: "https://www.instagram.com/_iiamshivani_?igsh=MXNsMzkzNnN6cXRiYg==", linkedin: "https://www.linkedin.com/in/shivani-s-poojary-047a2a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
   { name: "S Mohammed Sharwan", role: "Design Lead", seed: "Sharwan", photo: "/team/Sharwan.webp", color: "#00c9a7", github: "https://github.com/S-Mohammed-Sharwan", instagram: "https://www.instagram.com/_.sharuzz07._", linkedin: "https://www.linkedin.com/in/s-mohammedsharwan/" },
+  { name: "Aishwarya H C", role: "Design Lead", seed: "Aishwarya", photo: "/team/Aishwarya_HC.webp", color: "#c8f135", github: "https://github.com/Madeby-Aish", instagram: "https://www.instagram.com/tfaish_?igsh=ajVubGF3ZzhxMm94", linkedin: "https://www.linkedin.com/in/aishwaryahc5506/" },
 ];
 
 const COORDINATORS = [...TEAM_COORDINATORS];
