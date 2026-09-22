@@ -4,7 +4,7 @@ import styles from "./TracksSection.module.css";
 
 const THEME = {
   name: "COMPETITION TRACKS",
-  description: "Dive deep into the realm of Artificial Intelligence and explore its frontiers across three core tracks. Participants will be challenged to build innovative solutions that push the boundaries of modern technology. The exact problem statements for each track will be exclusively revealed on the day of the hackathon."
+  description: "Dive deep into the realm of Artificial Intelligence and explore its frontiers across three core tracks, featuring 36 selected teams (12 teams per track). Participants will be challenged to build innovative solutions that push the boundaries of modern technology. The exact problem statements for each track will be exclusively revealed on the day of the hackathon."
 };
 
 const TRACKS = [
@@ -67,6 +67,16 @@ export default function TracksSection() {
               <h3 className={styles.cardName}>{track.name}</h3>
               <p className={styles.cardDesc}>{track.description}</p>
               <div className={styles.tags}>
+                <span
+                  className={styles.tag}
+                  style={{
+                    borderColor: track.color,
+                    color: track.color,
+                    fontWeight: 800,
+                  }}
+                >
+                  12 Teams
+                </span>
                 {track.tags.map((t) => (
                   <span key={t} className={styles.tag}>{t}</span>
                 ))}

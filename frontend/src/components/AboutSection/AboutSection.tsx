@@ -50,7 +50,7 @@ const PILLARS = [
   {
     icon: <Trophy size={28} color="#c8f135" />,
     title: "Win Big",
-    desc: "Over ₹60k+ in prizes across multiple tracks.",
+    desc: "Over ₹1,00,000+ in prizes across multiple tracks.",
   },
 ];
 
@@ -133,7 +133,7 @@ export default function AboutSection() {
               <span className={styles.statLabel}>Hours of Hacking</span>
             </div>
             <div className={styles.statCard}>
-              <span className={styles.statNum}>₹<CountUp target={60} />k+</span>
+              <span className={styles.statNum}>₹<CountUp target={100} />k+</span>
               <span className={styles.statLabel}>Prize Pool</span>
             </div>
           </div>
