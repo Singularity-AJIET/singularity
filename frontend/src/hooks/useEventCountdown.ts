@@ -75,6 +75,7 @@ function tick() {
 
 function startGlobalTimerIfNeeded() {
   if (globalTimerId === null && listeners.size > 0) {
+    currentTime = computeEventCountdown();
     const now = ntpClient.getServerTime();
     const delay = Math.max(20, 1000 - (now % 1000));
     globalTimerId = setTimeout(tick, delay);
@@ -99,15 +100,16 @@ export function useEventCountdown() {
   const [time, setTime] = useState<CountdownTime>(() => computeEventCountdown());
 
   useEffect(() => {
+    // Immediately compute and apply fresh time on client mount
+    const fresh = computeEventCountdown();
+    setTime(fresh);
+
     // Ensure NTP sync is performed as soon as component mounts
     if (!ntpClient.isSynced) {
       ntpClient.sync().then(() => {
         tick();
       }).catch(() => {});
     }
-
-    // Immediately update on mount
-    setTime(computeEventCountdown());
 
     const listener: Listener = (updatedTime) => setTime(updatedTime);
     listeners.add(listener);

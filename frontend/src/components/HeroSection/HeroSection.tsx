@@ -21,9 +21,10 @@ function createRipple(e: React.MouseEvent<HTMLElement>) {
 }
 
 function BigUnit({ v, label }: { v: number; label: string }) {
+  const formatted = String(v).padStart(2, "0");
   return (
     <div className={styles.bigUnit}>
-      <span className={styles.bigNum} suppressHydrationWarning>{String(v).padStart(2, "0")}</span>
+      <span key={formatted} className={styles.bigNum} suppressHydrationWarning>{formatted}</span>
       <span className={styles.bigLabel}>{label}</span>
     </div>
   );

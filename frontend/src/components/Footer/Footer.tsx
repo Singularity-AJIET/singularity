@@ -47,13 +47,13 @@ export default function Footer() {
           <div className={styles.ctaLabel}>{"//"} ready to build?</div>
           <p className={styles.ctaTitle}>THE CLOCK IS</p>
           <div className={styles.countdown}>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(days)}</span><span className={styles.unitLabel}>DAYS</span></div>
+            <div className={styles.unit}><span key={pad(days)} className={styles.num} suppressHydrationWarning>{pad(days)}</span><span className={styles.unitLabel}>DAYS</span></div>
             <span className={styles.colon}>:</span>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(hours)}</span><span className={styles.unitLabel}>HRS</span></div>
+            <div className={styles.unit}><span key={pad(hours)} className={styles.num} suppressHydrationWarning>{pad(hours)}</span><span className={styles.unitLabel}>HRS</span></div>
             <span className={styles.colon}>:</span>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(minutes)}</span><span className={styles.unitLabel}>MIN</span></div>
+            <div className={styles.unit}><span key={pad(minutes)} className={styles.num} suppressHydrationWarning>{pad(minutes)}</span><span className={styles.unitLabel}>MIN</span></div>
             <span className={styles.colon}>:</span>
-            <div className={styles.unit}><span className={styles.num} suppressHydrationWarning>{pad(seconds)}</span><span className={styles.unitLabel}>SEC</span></div>
+            <div className={styles.unit}><span key={pad(seconds)} className={styles.num} suppressHydrationWarning>{pad(seconds)}</span><span className={styles.unitLabel}>SEC</span></div>
           </div>
           <p className={styles.ctaSub}>
             24 hours. 3 tracks. ₹60,000+ in prizes. No excuses.

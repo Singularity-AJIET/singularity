@@ -132,6 +132,7 @@ const TEAM_COORDINATORS: Coordinator[] = [
   { name: "Shivani S Poojary", role: "Design Lead", seed: "Shivani", photo: "/team/Shivani S Poojary .webp", color: "#ff8ed4", github: "https://github.com/Shivani512005", instagram: "https://www.instagram.com/_iiamshivani_?igsh=MXNsMzkzNnN6cXRiYg==", linkedin: "https://www.linkedin.com/in/shivani-s-poojary-047a2a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
   { name: "S Mohammed Sharwan", role: "Design Lead", seed: "Sharwan", photo: "/team/Sharwan.webp", color: "#00c9a7", github: "https://github.com/S-Mohammed-Sharwan", instagram: "https://www.instagram.com/_.sharuzz07._", linkedin: "https://www.linkedin.com/in/s-mohammedsharwan/" },
   { name: "Aishwarya H C", role: "Design Lead", seed: "Aishwarya", photo: "/team/Aishwarya_HC.webp", color: "#c8f135", github: "https://github.com/Madeby-Aish", instagram: "https://www.instagram.com/tfaish_?igsh=ajVubGF3ZzhxMm94", linkedin: "https://www.linkedin.com/in/aishwaryahc5506/" },
+  { name: "Daksh", imgPosition: "center 15%", role: "Design Lead", seed: "Daksh", photo: "/team/Daksh.webp", color: "#00b4d8" },
 ];
 
 const COORDINATORS = [...TEAM_COORDINATORS];
