@@ -75,9 +75,35 @@
 
 .statNum {
   font-family: var(--font-mono);
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
   font-weight: 900;
   color: var(--text);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.statNumStack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statPrefix {
+  font-family: var(--font-sans, var(--font-space-grotesk, sans-serif));
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1;
+  position: absolute;
+  top: -1.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .statLabel {

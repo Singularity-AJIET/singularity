@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./FAQSection.module.css";
+import { withRupee } from "../Rupee/Rupee";
 
 const FAQS = [
   { q: "Who can participate?", a: "The hackathon is open to all UG and PG students pursuing B.E./B.Tech, M.Tech, BCA, MCA, B.Sc. in Computer Science, and M.Sc. in Computer Science. Participants from colleges across India are welcome to take part." },
@@ -48,7 +49,7 @@ export default function FAQSection() {
                   <span className={`${styles.icon} ${open === i ? styles.iconOpen : ""}`}>+</span>
                 </button>
                 {open === i && (
-                  <div className={styles.answer}>{faq.a}</div>
+                  <div className={styles.answer}>{withRupee(faq.a)}</div>
                 )}
               </div>
             ))}

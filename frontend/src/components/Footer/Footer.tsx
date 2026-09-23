@@ -56,7 +56,7 @@ export default function Footer() {
             <div className={styles.unit}><span key={pad(seconds)} className={styles.num} suppressHydrationWarning>{pad(seconds)}</span><span className={styles.unitLabel}>SEC</span></div>
           </div>
           <p className={styles.ctaSub}>
-            24 hours. 3 tracks. 36 teams. ₹1,00,000+ in prizes. No excuses.
+            24 hours. 3 tracks. 36 teams. Up to <span className="rupee">₹</span>1,00,000 in prizes. No excuses.
           </p>
           <a href="https://unstop.com/o/6Y45JWH?lb=useYshOh&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Singuaji95983" target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.ctaBtn}`} aria-label="INIT_REGISTER - Register for Singularity 2026 hackathon on Unstop">
             INIT_REGISTER

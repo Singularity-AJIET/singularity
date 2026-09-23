@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./AboutSection.module.css";
 import { Rocket, Lightbulb, Handshake, Trophy } from "lucide-react";
 import SingularityCore from "./SingularityCore";
+import { withRupee } from "../Rupee/Rupee";
 
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -50,7 +51,7 @@ const PILLARS = [
   {
     icon: <Trophy size={28} color="#c8f135" />,
     title: "Win Big",
-    desc: "Over ₹1,00,000+ in prizes across multiple tracks.",
+    desc: "Up to ₹1,00,000 in prizes across multiple tracks.",
   },
 ];
 
@@ -121,7 +122,7 @@ export default function AboutSection() {
           {/* Stats */}
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
-              <span className={styles.statNum}><CountUp target={120} suffix="+" /></span>
+              <span className={styles.statNum}><CountUp target={140} suffix="+" /></span>
               <span className={styles.statLabel}>Participants</span>
             </div>
             <div className={styles.statCard}>
@@ -133,7 +134,13 @@ export default function AboutSection() {
               <span className={styles.statLabel}>Hours of Hacking</span>
             </div>
             <div className={styles.statCard}>
-              <span className={styles.statNum}>₹<CountUp target={100} />k+</span>
+              <div className={styles.statNumStack}>
+                <span className={styles.statPrefix}>UPTO</span>
+                <span className={styles.statNum}>
+                  <span className="rupee">₹</span>
+                  <CountUp target={100} />k
+                </span>
+              </div>
               <span className={styles.statLabel}>Prize Pool</span>
             </div>
           </div>
@@ -144,7 +151,7 @@ export default function AboutSection() {
               <div key={p.title} className={`card ${styles.pillar}`}>
                 <span className={styles.icon}>{p.icon}</span>
                 <h3 className={styles.pillarTitle}>{p.title}</h3>
-                <p className={styles.pillarDesc}>{p.desc}</p>
+                <p className={styles.pillarDesc}>{withRupee(p.desc)}</p>
               </div>
             ))}
           </div>
