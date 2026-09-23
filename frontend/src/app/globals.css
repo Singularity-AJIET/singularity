@@ -144,6 +144,14 @@ video {
   line-height: 1.7;
 }
 
+/* ─── Currency Symbol ─────────────────────────────────────────── */
+.rupee {
+  display: inline-block;
+  font-size: 0.65em;
+  vertical-align: 0.22em;
+  line-height: 1;
+}
+
 /* ─── Divider ─────────────────────────────────────────────────── */
 .divider {
   width: 100%;

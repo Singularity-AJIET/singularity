@@ -9,6 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import styles from "./PrizesSection.module.css";
+import { withRupee } from "../Rupee/Rupee";
 
 type Prize = {
   rank: string;
@@ -21,7 +22,7 @@ type Prize = {
 const PRIZES: Prize[] = [
   {
     rank: "Grand Prize",
-    amount: "₹1,00,000+",
+    amount: "Upto ₹1,00,000",
     color: "#c8f135",
     Icon: Trophy,
     perks: [
@@ -36,7 +37,10 @@ const PRIZES: Prize[] = [
     amount: "₹20k+",
     color: "#ffb830",
     Icon: Award,
-    perks: ["Recognition and rewards for the best project in each track"],
+    perks: [
+      "Recognition and rewards for the best project in each track",
+      "First Runner-Up receives a cash prize of ₹10,000",
+    ],
   },
   {
     rank: "Network",
@@ -76,7 +80,7 @@ export default function PrizesSection() {
             <span className="text-lime">GET GLORY.</span>
           </h2>
          <p className={styles.sectionSub}>
-          Over <b>₹1,00,000+</b> in cash prizes, along with custom domains, track-wise rewards,
+          Up to <b>{withRupee("₹1,00,000")}</b> in cash prizes, along with custom domains, track-wise rewards,
           internship opportunities, industry networking, exclusive goodies, and recognition.
           Compete across diverse tracks, showcase your skills, connect with mentors and
           industry professionals, and turn your ideas into solutions that go beyond the
@@ -92,11 +96,22 @@ export default function PrizesSection() {
             </span>
 
             <div>
-              <div className="section-label" style={{ marginBottom: 8 }}>
+              <div className={styles.grandRank}>
                 {grandPrize.rank}
               </div>
 
-              <div className={styles.grandAmount}>{grandPrize.amount}</div>
+              <div className={styles.grandAmountWrap}>
+                {grandPrize.amount.startsWith("Upto ") && (
+                  <span className={styles.amountPrefix}>UPTO</span>
+                )}
+                <div className={styles.grandAmount}>
+                  {withRupee(
+                    grandPrize.amount.startsWith("Upto ")
+                      ? grandPrize.amount.replace("Upto ", "")
+                      : grandPrize.amount
+                  )}
+                </div>
+              </div>
 
               <p className={styles.grandNote}>+ Trophy + Exciting Swags + 1-1 Mentorship</p>
             </div>
@@ -108,7 +123,7 @@ export default function PrizesSection() {
                 <span className={styles.check} aria-hidden="true">
                   ✓
                 </span>
-                {perk}
+                <span>{withRupee(perk)}</span>
               </li>
             ))}
           </ul>
@@ -127,7 +142,7 @@ export default function PrizesSection() {
 
               <h3 className={styles.cardRank}>{p.rank}</h3>
 
-              <div className={styles.cardAmount}>{p.amount}</div>
+              <div className={styles.cardAmount}>{withRupee(p.amount)}</div>
 
               <ul className={styles.perks}>
                 {p.perks.map((perk) => (
@@ -137,7 +152,7 @@ export default function PrizesSection() {
                       style={{ background: p.color }}
                       aria-hidden="true"
                     />
-                    {perk}
+                    <span>{withRupee(perk)}</span>
                   </li>
                 ))}
               </ul>

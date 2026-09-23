@@ -34,11 +34,41 @@
   line-height: 1;
 }
 
+.grandAmountWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .grandAmount {
   font-family: var(--font-mono);
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 900;
   color: var(--text);
+  line-height: 1;
+}
+
+.grandAmount :global(.rupee) {
+  vertical-align: 0.05em;
+}
+
+.grandRank {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-lime);
+  margin-bottom: 4px;
+}
+
+.amountPrefix {
+  font-family: var(--font-sans, var(--font-space-grotesk, sans-serif));
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   line-height: 1;
 }
 
