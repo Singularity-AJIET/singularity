@@ -8,6 +8,7 @@ interface Sponsor {
   link: string; // full URL or bare domain, e.g. "https://unstop.com/" or "techcorp.in"
   buttonText: string; // text shown on the button, e.g. "Visit Website"
   logo: string; // e.g. "/sponsors/techcorp.png" — leave "" to show upload placeholder
+  smallLogo?: boolean; // if true, renders the logo box slightly smaller
 }
 
 const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
@@ -20,11 +21,20 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
       logo: "/GOE.webp",
     },
     {
+      name: "Bravynex",
+      desc: "Bravynex Engineering LLP is a production-first engineering and technology company based in Mangalore. They combine commercial product development with technical training and career support across software, embedded systems, VLSI design, cybersecurity, SAP consulting, and DevOps. They bridge real-world industry projects with education, offering internships and placement support to empower the next generation of engineers.",
+      link: "https://www.bravynex.com",
+      buttonText: "Visit Website",
+      logo: "/Bravynex.webp",
+      smallLogo: true,
+    },
+    {
       name: "IEEE Mangalore Subsection",
       desc: "IEEE Mangalore Subsection is a regional IEEE community connecting students, professionals, and technology enthusiasts. It promotes technical learning, collaboration, innovation, and professional development through various activities.  ",
       link: "https://ieee-mangalore.org/",
       buttonText: "Visit Website",
       logo: "/IMS.webp",
+      smallLogo: true,
     },
     {
       name: "IEEE Computer Society",
@@ -32,6 +42,7 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
       link: "https://www.computer.org",
       buttonText: "Visit Website",
       logo: "/ICS.webp",
+      smallLogo: true,
     },
     
   ],
@@ -42,6 +53,7 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
       link: "https://gen.xyz/",
       buttonText: "Visit Website",
       logo: "/xyzLogo.webp",
+      smallLogo: true,
     },
     {
       name: "Unstop",
@@ -49,22 +61,24 @@ const SPONSORS: { sponsors: Sponsor[]; inKind: Sponsor[] } = {
       link: "https://unstop.com/",
       buttonText: "Visit Website",
       logo: "/Unstop.webp",
+      smallLogo: true,
     },
     
   ],
 };
 
-function SponsorLogo({ name, logo }: { name: string; logo: string }) {
+function SponsorLogo({ name, logo, small }: { name: string; logo: string; small?: boolean }) {
+  const wrapClass = `${styles.logoWrap}${small ? ` ${styles.logoWrapSmall}` : ''}`;
   if (logo) {
     return (
-      <div className={styles.logoWrap}>
+      <div className={wrapClass}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={logo} alt={`${name} logo`} className={styles.logoImg} width={250} height={100} style={{ objectFit: 'contain' }} />
       </div>
     );
   }
   return (
-    <div className={styles.logoWrap}>
+    <div className={wrapClass}>
       <div className={styles.logoPlaceholder}>
         <ImageUp size={22} />
         <span>Upload logo</span>
@@ -82,7 +96,7 @@ function SponsorCard({ sponsor, variant }: { sponsor: Sponsor; variant: "sponsor
       className={`${styles.card} ${styles[variant]}`}
       aria-label={`${sponsor.name} - Visit Website`}
     >
-      <SponsorLogo name={sponsor.name} logo={sponsor.logo} />
+      <SponsorLogo name={sponsor.name} logo={sponsor.logo} small={sponsor.smallLogo} />
       <span className={styles.sName}>{sponsor.name}</span>
       <p className={styles.sDesc}>{sponsor.desc}</p>
     </a>

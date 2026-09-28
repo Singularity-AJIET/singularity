@@ -35,7 +35,7 @@
 }
 
 .gridSponsors {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .gridInKind {
@@ -75,6 +75,11 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+/* Slightly smaller logo box for all sponsors except Gears of Excel */
+.logoWrapSmall {
+  max-width: 155px;
 }
 
 .logoPlaceholder {
@@ -148,11 +153,8 @@
 }
 .inKind:hover .sLink { color: var(--surface); background: #a78bfa; border-color: #a78bfa; }
 
-@media (max-width: 1000px) {
-  .gridSponsors {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+
+
 
 @media (max-width: 600px) {
   .gridSponsors, .gridInKind {
@@ -165,6 +167,9 @@
     max-width: 145px;
     padding: 6px;
     margin-bottom: 12px;
+  }
+  .logoWrapSmall {
+    max-width: 110px;
   }
   .sName {
     font-size: 1.2rem;
