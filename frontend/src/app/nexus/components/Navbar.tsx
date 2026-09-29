@@ -47,6 +47,7 @@ export default function Navbar() {
     { label: "Scanner", href: "/nexus/scanner" },
     { label: "Claims", href: "/nexus/claims" },
     ...(!isVolunteer ? [
+      { label: "TrackSys", href: "/nexus/trackSys" },
       { label: "Countdown", href: "/nexus/countdown" },
       { label: "Settings", href: "/nexus/settings" },
     ] : []),
@@ -96,7 +97,7 @@ export default function Navbar() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 40px",
+            padding: "0 24px",
             height: "70px",
             maxWidth: "1400px",
             margin: "0 auto",
@@ -111,7 +112,7 @@ export default function Navbar() {
               gap: "8px",
               cursor: "pointer",
               userSelect: "none",
-              flex: 1,
+              flexShrink: 0,
             }}
           >
             <Image
@@ -125,11 +126,12 @@ export default function Navbar() {
             <span
               style={{
                 fontFamily: 'var(--font-jetbrains), "JetBrains Mono", monospace',
-                fontSize: "1.1rem",
+                fontSize: "1.05rem",
                 fontWeight: 900,
-                letterSpacing: "0.05em",
+                letterSpacing: "0.06em",
                 color: "#F0EDE8",
                 textTransform: "uppercase",
+                whiteSpace: "nowrap",
               }}
             >
               SINGULARITY
@@ -140,10 +142,11 @@ export default function Navbar() {
           <nav
             className="hidden lg:flex items-center"
             style={{
-              gap: "32px",
+              gap: "14px",
               listStyle: "none",
-              flex: 2,
+              flex: "1 1 auto",
               justifyContent: "center",
+              padding: "0 16px",
             }}
           >
             {navLinks.map((item) => {
@@ -161,7 +164,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right Actions: Admin Info & Polygon Sign Out Button */}
-          <div style={{ display: "flex", alignItems: "center", gap: "24px", flex: 1, justifyContent: "flex-end" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px", flexShrink: 0, justifyContent: "flex-end" }}>
             {admin && (
               <div className="hidden sm:block" style={{ textAlign: "right" }}>
                 <p

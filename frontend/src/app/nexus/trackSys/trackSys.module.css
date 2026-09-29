@@ -1,0 +1,655 @@
+/* TrackSys Admin Module CSS for Nexus */
+
+.container {
+  min-height: calc(100vh - 70px);
+  background-color: #111010;
+  color: #ededed;
+  font-family: var(--font-heading, "Space Grotesk", sans-serif);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Header Section */
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-bottom: 1px solid #2E2C2B;
+  padding-bottom: 1.25rem;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.headerBadgeRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.systemTag {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #c8f135;
+  background: rgba(200, 241, 53, 0.1);
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid rgba(200, 241, 53, 0.3);
+  text-transform: uppercase;
+}
+
+.subTag {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.7rem;
+  color: #888580;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #F0EDE8;
+  margin: 0;
+}
+
+.pageSub {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.82rem;
+  color: #888580;
+}
+
+/* Tab Navigation */
+.tabsNav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid #2E2C2B;
+  padding-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  background: transparent;
+  color: #888580;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.tabBtn:hover {
+  color: #F0EDE8;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tabBtnActive {
+  color: #c8f135;
+  background: rgba(200, 241, 53, 0.08);
+  border-color: rgba(200, 241, 53, 0.35);
+}
+
+.tabCountBadge {
+  font-size: 0.68rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #F0EDE8;
+}
+
+.tabBtnActive .tabCountBadge {
+  background: rgba(200, 241, 53, 0.25);
+  color: #c8f135;
+}
+
+/* Feedback Alert */
+.feedbackAlert {
+  padding: 0.85rem 1.25rem;
+  border-radius: 4px;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.feedbackSuccess {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #4ade80;
+}
+
+.feedbackError {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.closeFeedbackBtn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Section Header */
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid #2E2C2B;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.sectionTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sectionTag {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #c8f135;
+  letter-spacing: 0.12em;
+}
+
+.sectionTitle {
+  font-size: 1.35rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: #F0EDE8;
+  margin: 0;
+}
+
+.sectionSub {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.8rem;
+  color: #888580;
+  margin: 0;
+}
+
+/* 3-Track Grid */
+.tracksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.trackContainer {
+  background: #171616;
+  border: 2px solid var(--track-color, #c8f135);
+  border-radius: 6px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  position: relative;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.trackContainerLocked {
+  border-color: #ef4444;
+  background: #181213;
+}
+
+.containerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.containerTrackInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.containerNumber {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--track-color, #c8f135);
+  letter-spacing: 0.1em;
+}
+
+.containerName {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.statusBadge {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.statusOpen {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.statusLocked {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.statusFull {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+/* Stats inside container */
+.containerStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.statsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.82rem;
+}
+
+.statsLabel {
+  color: #888580;
+}
+
+.statsValue {
+  font-weight: 800;
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.progressBarTrack {
+  width: 100%;
+  height: 8px;
+  background: #232225;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: var(--track-color, #c8f135);
+  transition: width 0.4s ease;
+}
+
+.progressBarFillFull {
+  background: #ef4444;
+}
+
+/* Manual Lock Button */
+.manualToggleBtn {
+  width: 100%;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.btnLock {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.btnLock:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btnUnlock {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.btnUnlock:hover {
+  background: #22c55e;
+  color: #050505;
+}
+
+/* Excel Container */
+.excelContainer {
+  background: #171616;
+  border: 1px solid #2E2C2B;
+  border-radius: 6px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.excelCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.excelInfoTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+}
+
+.excelColumnsList {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.8rem;
+  color: #aaa;
+  background: #1c1b1c;
+  border: 1px solid #2E2C2B;
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.excelColumnItem {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.excelColNum {
+  color: #c8f135;
+  font-weight: 800;
+}
+
+.excelActions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.uploadZone {
+  border: 2px dashed #403e42;
+  border-radius: 6px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #1a191a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.uploadZone:hover {
+  border-color: #c8f135;
+  background: #201f20;
+}
+
+.uploadZoneText {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.82rem;
+  color: #aaa;
+}
+
+.downloadExcelBtn {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.25rem;
+  background: #1e1d23;
+  color: #c8f135;
+  border: 1px solid #c8f135;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.downloadExcelBtn:hover {
+  background: #c8f135;
+  color: #050505;
+}
+
+.syncBtn {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.25rem;
+  background: #c8f135;
+  color: #050505;
+  border: 1px solid #c8f135;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.syncBtn:hover:not(:disabled) {
+  background: #d4ff50;
+  box-shadow: 0 0 20px rgba(200, 241, 53, 0.35);
+}
+
+.syncBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Registrations Live Table */
+.tableContainer {
+  background: #171616;
+  border: 1px solid #2E2C2B;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.tableToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #2E2C2B;
+  background: #1c1b1c;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  flex: 1;
+  min-width: 260px;
+  max-width: 420px;
+  background: #111010;
+  border: 1px solid #2E2C2B;
+  color: #fff;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.85rem;
+  padding: 0.65rem 1rem;
+  border-radius: 4px;
+  outline: none;
+}
+
+.searchBox:focus {
+  border-color: #c8f135;
+}
+
+.refreshBtn {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #888580;
+  background: transparent;
+  border: 1px solid #2E2C2B;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.refreshBtn:hover {
+  color: #fff;
+  border-color: #c8f135;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.dataTable th {
+  background: #141314;
+  color: #888580;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid #2E2C2B;
+}
+
+.dataTable td {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #ddd;
+}
+
+.dataTable tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.trackBadge {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: 1px solid #3E3B3A;
+  color: #888580;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.deleteBtn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.emptyState {
+  padding: 3rem;
+  text-align: center;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .tracksGrid {
+    grid-template-columns: 1fr;
+  }
+  .excelContainer {
+    grid-template-columns: 1fr;
+  }
+}

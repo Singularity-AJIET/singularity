@@ -36,17 +36,18 @@
 
 .nx-nav-link {
   font-family: var(--nx-font-mono) !important;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #F0EDE8;
   background: transparent;
   border: none;
-  padding: 4px 8px;
+  padding: 4px 6px;
   position: relative;
   cursor: pointer;
   display: inline-block;
+  white-space: nowrap;
   transition: color 0.35s ease, transform 0.35s ease;
 }
 
