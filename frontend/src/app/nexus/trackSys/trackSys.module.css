@@ -653,3 +653,280 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── Mode Toggle Button & Banner ─── */
+.modeBtnActive {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+}
+
+.modeBtnActive:hover {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #f59e0b;
+}
+
+.modeBtnStrict {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: rgba(200, 241, 53, 0.06);
+  color: #c8f135;
+  border: 1px solid rgba(200, 241, 53, 0.35);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.modeBtnStrict:hover {
+  background: rgba(200, 241, 53, 0.15);
+  border-color: #c8f135;
+}
+
+.modeBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.75rem 0;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+  flex-wrap: wrap;
+}
+
+.modeBannerTest {
+  background: transparent;
+  border: none;
+}
+
+.modeBannerStrict {
+  background: transparent;
+  border: none;
+}
+
+.bannerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.displayBtnActive {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: #00d2ff;
+  color: #050e14;
+  border: 1px solid #00d2ff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
+}
+
+.displayBtnActive:hover {
+  background: #38bdf8;
+  border-color: #38bdf8;
+}
+
+.displayBtnInactive {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: transparent;
+  color: #888580;
+  border: 1px solid #3a3836;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.displayBtnInactive:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: #666;
+  color: #f0ede8;
+}
+
+.displayBtnHeaderActive {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: #00d2ff;
+  color: #050e14;
+  border: 1px solid #00d2ff;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.25);
+}
+
+.displayBtnHeaderActive:hover {
+  background: #38bdf8;
+}
+
+.displayBtnHeaderInactive {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: transparent;
+  color: #888580;
+  border: 1px solid #3a3836;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.displayBtnHeaderInactive:hover {
+  border-color: #666;
+  color: #f0ede8;
+}
+
+.modeBannerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.modeIndicatorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.modeBannerTest .modeIndicatorDot {
+  background: #f59e0b;
+  box-shadow: 0 0 10px #f59e0b;
+}
+
+.modeBannerStrict .modeIndicatorDot {
+  background: #c8f135;
+  box-shadow: 0 0 10px #c8f135;
+}
+
+.modeBannerTitle {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.modeBannerTest .modeBannerTitle {
+  color: #f59e0b;
+}
+
+.modeBannerStrict .modeBannerTitle {
+  color: #c8f135;
+}
+
+.modeBannerDesc {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.74rem;
+  color: #888580;
+  line-height: 1.35;
+}
+
+.modeToggleBtnActive {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: #f59e0b;
+  color: #111010;
+  border: 1px solid #f59e0b;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.modeToggleBtnActive:hover {
+  background: #d97706;
+  border-color: #d97706;
+}
+
+.modeToggleBtnStrict {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: transparent;
+  color: #c8f135;
+  border: 1px solid rgba(200, 241, 53, 0.4);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.modeToggleBtnStrict:hover {
+  background: rgba(200, 241, 53, 0.1);
+  border-color: #c8f135;
+}
+
+@media (max-width: 640px) {
+  .modeBanner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .modeToggleBtnActive,
+  .modeToggleBtnStrict {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

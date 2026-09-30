@@ -1,0 +1,97 @@
+/* Floating Action Button — Track Selection */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px 0 14px;
+  height: 46px;
+  background: #0d0d0d;
+  border: 1.5px solid #c8f135;
+  border-radius: 100px;
+  color: #c8f135;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 0 20px rgba(200, 241, 53, 0.15), 4px 4px 0 rgba(200, 241, 53, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  animation: fabSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.fab:hover {
+  background: rgba(200, 241, 53, 0.1);
+  box-shadow: 0 0 32px rgba(200, 241, 53, 0.3), 4px 4px 0 rgba(200, 241, 53, 0.5);
+  transform: translate(-2px, -2px);
+}
+
+.fab:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 rgba(200, 241, 53, 0.3);
+}
+
+/* "Already registered" state — softer green */
+.fabDone {
+  border-color: rgba(200, 241, 53, 0.4);
+  color: rgba(200, 241, 53, 0.55);
+  box-shadow: none;
+}
+
+.fabDone:hover {
+  background: rgba(200, 241, 53, 0.05);
+  box-shadow: 0 0 16px rgba(200, 241, 53, 0.1);
+  transform: translate(-1px, -1px);
+}
+
+.fabLabel {
+  line-height: 1;
+}
+
+/* Pulsing live indicator dot */
+.fabPulse {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 11px;
+  height: 11px;
+  background: #c8f135;
+  border-radius: 50%;
+  border: 2px solid #0d0d0d;
+  animation: pulse 2s infinite;
+}
+
+/* Entry animation */
+@keyframes fabSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 241, 53, 0.7); }
+  50%       { box-shadow: 0 0 0 6px rgba(200, 241, 53, 0); }
+}
+
+/* Mobile — keep it fully visible & tappable */
+@media (max-width: 640px) {
+  .fab {
+    bottom: 18px;
+    right: 16px;
+    height: 42px;
+    padding: 0 14px 0 11px;
+    font-size: 0.68rem;
+    gap: 7px;
+  }
+}

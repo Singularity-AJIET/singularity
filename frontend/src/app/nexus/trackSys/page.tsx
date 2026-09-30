@@ -16,6 +16,8 @@ import {
   X,
   Sliders,
   Users,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 interface TrackMeta {
@@ -77,6 +79,14 @@ export default function TrackSysAdminPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
+  // Selection mode: false = single selection (strict), true = multiple selections allowed (testing)
+  const [allowMultipleSelections, setAllowMultipleSelections] = useState(false);
+  const [togglingMode, setTogglingMode] = useState(false);
+
+  // Portal Display mode: true = /trackSelection is visible to participants, false = hidden/standby
+  const [displayTrackSelection, setDisplayTrackSelection] = useState(false);
+  const [togglingDisplay, setTogglingDisplay] = useState(false);
+
   // Search in table
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -104,6 +114,12 @@ export default function TrackSysAdminPage() {
         if (data.counts) setCounts(data.counts);
         if (data.lockedTracks) setLockedTracks(data.lockedTracks);
         if (data.records) setRecords(data.records);
+        if (typeof data.allowMultipleSelections === "boolean") {
+          setAllowMultipleSelections(data.allowMultipleSelections);
+        }
+        if (typeof data.displayTrackSelection === "boolean") {
+          setDisplayTrackSelection(data.displayTrackSelection);
+        }
       }
     } catch {
       showFeedback("error", "Unable to sync with track management API.");
@@ -111,6 +127,70 @@ export default function TrackSysAdminPage() {
       setLoading(false);
     }
   }, []);
+
+  // Toggle selection mode: Unlimited (Test Mode) vs Single Selection (Strict Mode)
+  const handleToggleSelectionMode = async () => {
+    const nextVal = !allowMultipleSelections;
+    setTogglingMode(true);
+    try {
+      const res = await fetch("/api/admin/tracks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ allowMultipleSelections: nextVal }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showFeedback("error", data.error || "Failed to update selection mode.");
+      } else {
+        setAllowMultipleSelections(data.allowMultipleSelections);
+        // Clear local storage for quick testing in this browser
+        try {
+          localStorage.removeItem("singularity_track_registered");
+        } catch {
+          // ignore
+        }
+        showFeedback(
+          "success",
+          nextVal
+            ? "⚡ TEST MODE ENABLED: Users can now select tracks any number of times."
+            : "🔒 STRICT MODE ENABLED: Users can only select 1 track (all tracks lock after selection)."
+        );
+      }
+    } catch {
+      showFeedback("error", "Network error toggling selection mode.");
+    } finally {
+      setTogglingMode(false);
+    }
+  };
+
+  // Toggle portal display: Visible to participants vs Hidden (standby)
+  const handleToggleDisplay = async () => {
+    const nextVal = !displayTrackSelection;
+    setTogglingDisplay(true);
+    try {
+      const res = await fetch("/api/admin/tracks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ displayTrackSelection: nextVal }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showFeedback("error", data.error || "Failed to update track selection display state.");
+      } else {
+        setDisplayTrackSelection(data.displayTrackSelection);
+        showFeedback(
+          "success",
+          nextVal
+            ? "👁 DISPLAY ENABLED: /trackSelection is now LIVE and visible to all participants."
+            : "🔒 DISPLAY DISABLED: /trackSelection is now HIDDEN from participants (Standby Mode)."
+        );
+      }
+    } catch {
+      showFeedback("error", "Network error toggling track selection display.");
+    } finally {
+      setTogglingDisplay(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -210,7 +290,59 @@ export default function TrackSysAdminPage() {
               <h1 className={styles.pageTitle}>TRACK SELECTION SYSTEM</h1>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+              {/* DISPLAY Button */}
+              <button
+                type="button"
+                className={displayTrackSelection ? styles.displayBtnHeaderActive : styles.displayBtnHeaderInactive}
+                onClick={handleToggleDisplay}
+                disabled={togglingDisplay}
+                title={
+                  displayTrackSelection
+                    ? "Portal is VISIBLE at /trackSelection. Click to hide."
+                    : "Portal is HIDDEN from participants. Click to display."
+                }
+              >
+                {togglingDisplay ? (
+                  <RefreshCw size={13} className={styles.spin} />
+                ) : displayTrackSelection ? (
+                  <Eye size={13} />
+                ) : (
+                  <EyeOff size={13} />
+                )}
+                <span>DISPLAY: {displayTrackSelection ? "ON" : "OFF"}</span>
+              </button>
+
+              {/* Button: Allow user to select any number of times vs strictly once */}
+              <button
+                type="button"
+                className={allowMultipleSelections ? styles.modeBtnActive : styles.modeBtnStrict}
+                onClick={handleToggleSelectionMode}
+                disabled={togglingMode}
+                title={
+                  allowMultipleSelections
+                    ? "Currently in Test Mode (Unlimited Selections). Click to enforce 1 selection only."
+                    : "Currently in Strict Mode (1 Selection Only). Click to allow unlimited selections for testing."
+                }
+              >
+                {togglingMode ? (
+                  <>
+                    <RefreshCw size={13} className={styles.spin} />
+                    <span>UPDATING...</span>
+                  </>
+                ) : allowMultipleSelections ? (
+                  <>
+                    <Unlock size={14} />
+                    <span>SELECTION: UNLIMITED [TEST]</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock size={14} />
+                    <span>SELECTION: 1 ONLY [STRICT]</span>
+                  </>
+                )}
+              </button>
+
               <button
                 type="button"
                 className={styles.refreshBtn}
@@ -232,6 +364,66 @@ export default function TrackSysAdminPage() {
           <p className={styles.pageSub}>
             Real-time track capacity management, team allocations, manual track locking, and Excel database synchronization.
           </p>
+        </div>
+
+        {/* Global Selection Mode Bar */}
+        <div className={styles.modeBanner}>
+          <div className={styles.bannerActions}>
+            {/* Display Button */}
+            <button
+              type="button"
+              className={displayTrackSelection ? styles.displayBtnActive : styles.displayBtnInactive}
+              onClick={handleToggleDisplay}
+              disabled={togglingDisplay}
+              title={
+                displayTrackSelection
+                  ? "Track Selection portal is currently VISIBLE to participants at /trackSelection. Click to hide."
+                  : "Track Selection portal is currently HIDDEN from participants. Click to display and make visible to participants."
+              }
+            >
+              {togglingDisplay ? (
+                <>
+                  <RefreshCw size={13} className={styles.spin} />
+                  <span>UPDATING...</span>
+                </>
+              ) : displayTrackSelection ? (
+                <>
+                  <Eye size={13} />
+                  <span>DISPLAY [VISIBLE]</span>
+                </>
+              ) : (
+                <>
+                  <EyeOff size={13} />
+                  <span>DISPLAY [HIDDEN]</span>
+                </>
+              )}
+            </button>
+
+            {/* Switch to Selection Mode Button */}
+            <button
+              type="button"
+              className={allowMultipleSelections ? styles.modeToggleBtnActive : styles.modeToggleBtnStrict}
+              onClick={handleToggleSelectionMode}
+              disabled={togglingMode}
+            >
+              {togglingMode ? (
+                <>
+                  <RefreshCw size={13} className={styles.spin} />
+                  <span>SAVING...</span>
+                </>
+              ) : allowMultipleSelections ? (
+                <>
+                  <Lock size={13} />
+                  <span>SWITCH TO: 1 SELECTION ONLY</span>
+                </>
+              ) : (
+                <>
+                  <Unlock size={13} />
+                  <span>SWITCH TO: UNLIMITED SELECTIONS</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Tab Navigation */}
