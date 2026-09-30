@@ -292,56 +292,7 @@ export default function TrackSysAdminPage() {
 
             <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
               {/* DISPLAY Button */}
-              <button
-                type="button"
-                className={displayTrackSelection ? styles.displayBtnHeaderActive : styles.displayBtnHeaderInactive}
-                onClick={handleToggleDisplay}
-                disabled={togglingDisplay}
-                title={
-                  displayTrackSelection
-                    ? "Portal is VISIBLE at /trackSelection. Click to hide."
-                    : "Portal is HIDDEN from participants. Click to display."
-                }
-              >
-                {togglingDisplay ? (
-                  <RefreshCw size={13} className={styles.spin} />
-                ) : displayTrackSelection ? (
-                  <Eye size={13} />
-                ) : (
-                  <EyeOff size={13} />
-                )}
-                <span>DISPLAY: {displayTrackSelection ? "ON" : "OFF"}</span>
-              </button>
 
-              {/* Button: Allow user to select any number of times vs strictly once */}
-              <button
-                type="button"
-                className={allowMultipleSelections ? styles.modeBtnActive : styles.modeBtnStrict}
-                onClick={handleToggleSelectionMode}
-                disabled={togglingMode}
-                title={
-                  allowMultipleSelections
-                    ? "Currently in Test Mode (Unlimited Selections). Click to enforce 1 selection only."
-                    : "Currently in Strict Mode (1 Selection Only). Click to allow unlimited selections for testing."
-                }
-              >
-                {togglingMode ? (
-                  <>
-                    <RefreshCw size={13} className={styles.spin} />
-                    <span>UPDATING...</span>
-                  </>
-                ) : allowMultipleSelections ? (
-                  <>
-                    <Unlock size={14} />
-                    <span>SELECTION: UNLIMITED [TEST]</span>
-                  </>
-                ) : (
-                  <>
-                    <Lock size={14} />
-                    <span>SELECTION: 1 ONLY [STRICT]</span>
-                  </>
-                )}
-              </button>
 
               <button
                 type="button"
