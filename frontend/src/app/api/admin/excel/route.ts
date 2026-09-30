@@ -1,31 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import ExcelJS from "exceljs";
 import {
   globalMutex,
-  EXCEL_FILE_PATH,
-  getOrCreateWorkbook,
-  getTrackCounts,
-  getRegistrationRecords,
+  generateExcelBuffer,
+  syncFromExcelBuffer,
 } from "@/lib/trackRegistrations";
 
 export const dynamic = "force-dynamic";
 
 /**
  * GET /api/admin/excel
- * Download the current registrations.xlsx file
+ * Dynamically generates and downloads the registrations .xlsx file from Turso Cloud in-memory.
+ * Zero hard drive writes — 100% cloud & serverless compatible!
  */
 export async function GET() {
   try {
-    await getOrCreateWorkbook();
+    const fileBuffer = await generateExcelBuffer();
 
-    if (!fs.existsSync(EXCEL_FILE_PATH)) {
-      return NextResponse.json({ error: "Excel file not found" }, { status: 404 });
-    }
-
-    const fileBuffer = fs.readFileSync(EXCEL_FILE_PATH);
-
-    return new NextResponse(fileBuffer, {
+    return new NextResponse(new Uint8Array(fileBuffer), {
       status: 200,
       headers: {
         "Content-Type":
@@ -34,6 +25,7 @@ export async function GET() {
           'attachment; filename="singularity_track_registrations.xlsx"',
       },
     });
+
   } catch (error) {
     console.error("Excel download error:", error);
     return NextResponse.json(
@@ -45,7 +37,7 @@ export async function GET() {
 
 /**
  * POST /api/admin/excel
- * Upload a new .xlsx file to replace/sync registrations
+ * Upload a new .xlsx file to replace/sync registrations directly into Turso Cloud.
  */
 export async function POST(req: NextRequest) {
   return await globalMutex.runExclusive(async () => {
@@ -63,24 +55,7 @@ export async function POST(req: NextRequest) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
-      // Verify valid workbook
-      const incomingWorkbook = new ExcelJS.Workbook();
-      await incomingWorkbook.xlsx.load(buffer as any);
-
-      if (incomingWorkbook.worksheets.length === 0) {
-        return NextResponse.json(
-          { error: "Uploaded workbook contains no worksheets." },
-          { status: 400 }
-        );
-      }
-
-      // Save directly to EXCEL_FILE_PATH
-      fs.writeFileSync(EXCEL_FILE_PATH, buffer);
-
-      // Read back to verify and return updated records
-      const { worksheet } = await getOrCreateWorkbook();
-      const counts = getTrackCounts(worksheet);
-      const records = getRegistrationRecords(worksheet);
+      const { counts, records } = await syncFromExcelBuffer(buffer);
 
       return NextResponse.json({
         success: true,
@@ -91,7 +66,10 @@ export async function POST(req: NextRequest) {
     } catch (error) {
       console.error("Excel upload error:", error);
       return NextResponse.json(
-        { error: "Failed to process uploaded Excel file. Please ensure it is a valid .xlsx file." },
+        {
+          error:
+            "Failed to process uploaded Excel file. Please ensure it is a valid .xlsx file.",
+        },
         { status: 500 }
       );
     }

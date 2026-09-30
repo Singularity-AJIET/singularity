@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "async-mutex": "^0.5.0",
     "axios": "^1.19.0",
     "d3-geo": "^3.1.1",

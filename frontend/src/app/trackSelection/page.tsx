@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, useCallback, useRef } from "react";
 import styles from "./page.module.css";
 import {
@@ -11,6 +12,8 @@ import {
   X,
   RefreshCw,
   ChevronDown,
+  Lock,
+  ArrowLeft,
 } from "lucide-react";
 
 interface TrackConfig {
@@ -58,6 +61,8 @@ const TRACKS_CONFIG: TrackConfig[] = [
 
 const MAX_SLOTS = 12;
 
+const LS_KEY = "singularity_track_registered";
+
 export default function TrackSelectionPage() {
   const [counts, setCounts] = useState<Record<string, number>>({
     "Coastal Intelligence": 0,
@@ -69,6 +74,21 @@ export default function TrackSelectionPage() {
     "Supply Chain Intelligence": false,
     "Industrial Intelligence": false,
   });
+
+  // Track selection mode: true = test mode (unlimited selections), false = strict (1 selection per user)
+  const [allowMultipleSelections, setAllowMultipleSelections] = useState<boolean>(false);
+
+  // Track selection display: true = visible/live, false = hidden/standby
+  const [displayTrackSelection, setDisplayTrackSelection] = useState<boolean>(false);
+  const [initialLoading, setInitialLoading] = useState<boolean>(true);
+
+  // Per-user one-track restriction — stored in localStorage
+  const [hasUserRegistered, setHasUserRegistered] = useState(false);
+  const [userRegistration, setUserRegistration] = useState<{
+    teamName: string;
+    leaderName: string;
+    track: string;
+  } | null>(null);
 
   const [clickedTrack, setClickedTrack] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -88,6 +108,20 @@ export default function TrackSelectionPage() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // On mount: check if this browser has already registered
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(LS_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setHasUserRegistered(true);
+        setUserRegistration(parsed);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -99,7 +133,7 @@ export default function TrackSelectionPage() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Fetch live counts from the server
+  // Fetch live counts, mode, and display status from the server
   const fetchCounts = useCallback(async () => {
     try {
       const res = await fetch("/api/register", { cache: "no-store" });
@@ -107,9 +141,17 @@ export default function TrackSelectionPage() {
         const data = await res.json();
         if (data.counts) setCounts(data.counts);
         if (data.lockedTracks) setLockedTracks(data.lockedTracks);
+        if (typeof data.allowMultipleSelections === "boolean") {
+          setAllowMultipleSelections(data.allowMultipleSelections);
+        }
+        if (typeof data.displayTrackSelection === "boolean") {
+          setDisplayTrackSelection(data.displayTrackSelection);
+        }
       }
     } catch (err) {
       console.error("Failed to fetch track counts:", err);
+    } finally {
+      setInitialLoading(false);
     }
   }, []);
 
@@ -235,7 +277,12 @@ export default function TrackSelectionPage() {
         if (data.counts) setCounts(data.counts);
         await fetchCounts();
       } else {
-        setRegisteredData({ teamName: cleanTeam, leaderName: cleanLeader, track: cleanTrack });
+        const regPayload = { teamName: cleanTeam, leaderName: cleanLeader, track: cleanTrack };
+        setRegisteredData(regPayload);
+        // Lock all tracks for this browser — one-track rule
+        try { localStorage.setItem(LS_KEY, JSON.stringify(regPayload)); } catch { /* ignore */ }
+        setHasUserRegistered(true);
+        setUserRegistration(regPayload);
         if (data.counts) setCounts(data.counts);
         else await fetchCounts();
       }
@@ -247,13 +294,78 @@ export default function TrackSelectionPage() {
   };
 
   const handleCardClick = (track: TrackConfig, isLocked: boolean) => {
-    if (isLocked) return;
+    const isUserBlocked = !allowMultipleSelections && hasUserRegistered;
+    if (isLocked || isUserBlocked) return;
     setClickedTrack(track.id);
     setTimeout(() => { handleOpenModal(track.name, track.color); }, 120);
     setTimeout(() => { setClickedTrack(null); }, 800);
   };
 
   const selectedTrackConfig = TRACKS_CONFIG.find((t) => t.name === selectedTrack);
+
+  if (initialLoading) {
+    return (
+      <div className={styles.main}>
+        <nav className={styles.topNav}>
+          <div className={styles.navInner}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.webp" alt="Singularity" className={styles.navLogo} />
+            <span className={styles.navTitle}>SINGULARITY</span>
+          </div>
+        </nav>
+        <main className={styles.content} style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "65vh" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", color: "#888580", fontFamily: "var(--font-mono, monospace)" }}>
+            <RefreshCw size={24} className={styles.spin} style={{ color: "#c8f135" }} />
+            <span style={{ fontSize: "0.82rem", letterSpacing: "0.12em" }}>SYNCHRONIZING TRACK SYSTEM...</span>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!displayTrackSelection) {
+    return (
+      <div className={styles.main}>
+        <nav className={styles.topNav}>
+          <div className={styles.navInner}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.webp" alt="Singularity" className={styles.navLogo} />
+            <span className={styles.navTitle}>SINGULARITY</span>
+          </div>
+        </nav>
+        <main className={styles.content}>
+          <div className={styles.standbyContainer}>
+            <div className={styles.standbyCard}>
+              <div className={styles.standbyTag}>// TRACK SELECTION // STANDBY MODE</div>
+              <div className={styles.standbyIconWrap}>
+                <Lock size={28} />
+              </div>
+              <h1 className={styles.standbyTitle}>TRACK SELECTION NOT OPENED YET</h1>
+              <p className={styles.standbyDesc}>
+                Track selection is currently not open for participant registrations.
+                The event coordinators will activate this portal in the Singularity Nexus when track selection begins.
+              </p>
+              <div className={styles.standbyActions}>
+                <Link href="/" className={styles.returnHomeBtn}>
+                  <ArrowLeft size={15} />
+                  <span>RETURN TO HOME</span>
+                </Link>
+                <button
+                  type="button"
+                  className={styles.standbyCheckBtn}
+                  onClick={fetchCounts}
+                  title="Check if track selection has opened"
+                >
+                  <RefreshCw size={14} />
+                  <span>REFRESH STATUS</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.main}>
@@ -265,6 +377,19 @@ export default function TrackSelectionPage() {
           <span className={styles.navTitle}>SINGULARITY</span>
         </div>
       </nav>
+
+      {/* ─── Already Registered Banner (Strict Mode) ─── */}
+      {!allowMultipleSelections && hasUserRegistered && userRegistration && (
+        <div className={styles.alreadyRegisteredBanner}>
+          <CheckCircle2 size={18} />
+          <span>
+            You have already registered —{" "}
+            <strong style={{ color: "#c8f135" }}>{userRegistration.teamName}</strong>
+            {" "}selected{" "}
+            <strong style={{ color: "#c8f135" }}>{userRegistration.track}</strong>
+          </span>
+        </div>
+      )}
 
       {/* Track Selection Content */}
       <main className={styles.content}>
@@ -286,7 +411,10 @@ export default function TrackSelectionPage() {
             const remaining = Math.max(0, MAX_SLOTS - count);
             const isFull = count >= MAX_SLOTS;
             const isManuallyLocked = !!lockedTracks[track.name];
-            const isLocked = isFull || isManuallyLocked;
+            // If strict mode and user already registered, lock ALL tracks for them
+            const isUserLocked = !allowMultipleSelections && hasUserRegistered;
+            const isLocked = isFull || isManuallyLocked || isUserLocked;
+            const isUsersChosenTrack = !allowMultipleSelections && hasUserRegistered && userRegistration?.track === track.name;
             const Icon = track.icon;
             const isClicked = clickedTrack === track.id;
 
@@ -295,8 +423,8 @@ export default function TrackSelectionPage() {
                 key={track.id}
                 role="button"
                 tabIndex={isLocked ? -1 : 0}
-                aria-label={`Select track ${track.name} - ${isManuallyLocked ? "Locked by admin" : isFull ? "12 teams selected (Track full)" : remaining + " slots remaining"}`}
-                className={`${styles.trackCard} ${isLocked ? styles.cardFull : ""} ${isClicked ? styles.cardClicked : ""}`}
+                aria-label={`Select track ${track.name} - ${isUserLocked ? "Already registered" : isManuallyLocked ? "Locked by admin" : isFull ? "12 teams selected (Track full)" : remaining + " slots remaining"}`}
+                className={`${styles.trackCard} ${isLocked ? styles.cardFull : ""} ${isUsersChosenTrack ? styles.cardChosen : ""} ${isClicked ? styles.cardClicked : ""}`}
                 style={{ "--track-color": track.color } as React.CSSProperties}
                 onClick={() => handleCardClick(track, isLocked)}
                 onKeyDown={(e) => {
@@ -326,11 +454,17 @@ export default function TrackSelectionPage() {
                   {track.tags.map((tag) => (
                     <span key={tag} className={styles.tag}>{tag}</span>
                   ))}
-                  {isManuallyLocked && (
+                  {isUsersChosenTrack && (
+                    <span className={`${styles.tag} ${styles.tagChosen}`}>✓ YOUR TRACK</span>
+                  )}
+                  {!isUsersChosenTrack && isManuallyLocked && (
                     <span className={`${styles.tag} ${styles.tagFull}`}>LOCKED BY ADMIN</span>
                   )}
-                  {!isManuallyLocked && isFull && (
+                  {!isUsersChosenTrack && !isManuallyLocked && isFull && (
                     <span className={`${styles.tag} ${styles.tagFull}`}>12/12 FULL</span>
+                  )}
+                  {!isUsersChosenTrack && isUserLocked && !isManuallyLocked && !isFull && (
+                    <span className={`${styles.tag} ${styles.tagFull}`}>REGISTRATION CLOSED</span>
                   )}
                 </div>
 
@@ -341,7 +475,11 @@ export default function TrackSelectionPage() {
                   disabled={isLocked}
                   onClick={(e) => { e.stopPropagation(); handleCardClick(track, isLocked); }}
                 >
-                  {isManuallyLocked
+                  {isUsersChosenTrack
+                    ? "✓ REGISTERED"
+                    : isUserLocked
+                    ? "REGISTRATION CLOSED FOR YOU"
+                    : isManuallyLocked
                     ? "LOCKED BY ADMIN"
                     : isFull
                     ? "12 TEAMS SELECTED // LOCKED"
@@ -352,6 +490,7 @@ export default function TrackSelectionPage() {
           })}
         </section>
       </main>
+
 
       {/* Registration Modal Overlay */}
       {isModalOpen && (

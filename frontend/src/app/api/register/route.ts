@@ -2,32 +2,35 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   VALID_TRACKS,
   ValidTrack,
-  TRACK_NUMBERS,
   MAX_SLOTS_PER_TRACK,
   globalMutex,
-  getOrCreateWorkbook,
   getTrackCounts,
   getTrackLocks,
-  EXCEL_FILE_PATH,
+  getAllowMultipleSelections,
+  getDisplayTrackSelection,
+  registerTeam,
 } from "@/lib/trackRegistrations";
 
 export const dynamic = "force-dynamic";
 
 /**
  * GET /api/register
- * Returns current counts, 12-slot capacity, and manual lock states
+ * Returns current counts, 12-slot capacity, and manual lock states from Turso Cloud
  */
 export async function GET() {
   try {
-    const { worksheet } = await getOrCreateWorkbook();
-    const counts = getTrackCounts(worksheet);
-    const lockedTracks = getTrackLocks();
+    const counts = await getTrackCounts();
+    const lockedTracks = await getTrackLocks();
+    const allowMultipleSelections = await getAllowMultipleSelections();
+    const displayTrackSelection = await getDisplayTrackSelection();
 
     return NextResponse.json({
       success: true,
       counts,
       maxSlots: MAX_SLOTS_PER_TRACK,
       lockedTracks,
+      allowMultipleSelections,
+      displayTrackSelection,
       "Coastal Intelligence": counts["Coastal Intelligence"],
       "Supply Chain Intelligence": counts["Supply Chain Intelligence"],
       "Industrial Intelligence": counts["Industrial Intelligence"],
@@ -44,7 +47,7 @@ export async function GET() {
 /**
  * POST /api/register
  * Body: { teamName: string, leaderName: string, track: string }
- * Concurrency-safe registration write wrapped in Mutex
+ * Concurrency-safe registration write to Turso Cloud
  */
 export async function POST(req: NextRequest) {
   let body: unknown;
@@ -90,79 +93,40 @@ export async function POST(req: NextRequest) {
   const cleanLeaderName = leaderName.trim();
   const cleanTrack = track.trim() as ValidTrack;
 
+  const displayTrackSelection = await getDisplayTrackSelection();
+  if (!displayTrackSelection) {
+    return NextResponse.json(
+      { error: "Track selection portal is currently closed by administrators." },
+      { status: 403 }
+    );
+  }
+
   return await globalMutex.runExclusive(async () => {
     try {
-      // 1. Check manual admin lock first
-      const locks = getTrackLocks();
-      if (locks[cleanTrack]) {
+      const result = await registerTeam(cleanTeamName, cleanLeaderName, cleanTrack);
+
+      if (!result.success) {
         return NextResponse.json(
           {
-            error: `Registration Unavailable: Track "${cleanTrack}" has been locked by the administrator. Please select an alternative track.`,
-            trackLocked: true,
+            error: result.error,
+            trackLocked: result.trackLocked,
+            trackFull: result.trackFull,
+            counts: result.counts,
           },
           { status: 409 }
         );
       }
-
-      // 2. Check 12-slot capacity
-      const { workbook, worksheet } = await getOrCreateWorkbook();
-      const counts = getTrackCounts(worksheet);
-      const currentTrackCount = counts[cleanTrack] || 0;
-
-      if (currentTrackCount >= MAX_SLOTS_PER_TRACK) {
-        return NextResponse.json(
-          {
-            error: `Capacity Reached: Track "${cleanTrack}" has reached its maximum capacity of ${MAX_SLOTS_PER_TRACK} teams. Please select an alternative track to complete your registration.`,
-            trackFull: true,
-            counts,
-          },
-          { status: 409 }
-        );
-      }
-
-      // 3. Determine auto-assigned sequential Team No
-      let maxTeamNo = 0;
-      worksheet.eachRow((row, rowNumber) => {
-        if (rowNumber === 1) return;
-        const val = Number(row.getCell(2).value);
-        if (!isNaN(val) && val > maxTeamNo) {
-          maxTeamNo = val;
-        }
-      });
-      const teamNo = maxTeamNo > 0 ? maxTeamNo + 1 : Math.max(1, worksheet.rowCount);
-
-      // 4. Append row: [Track Number, Team No, Team Name, Track Name, Leader Name]
-      const trackNumber = TRACK_NUMBERS[cleanTrack];
-      const newRow = worksheet.addRow([
-        trackNumber,
-        teamNo,
-        cleanTeamName,
-        cleanTrack,
-        cleanLeaderName,
-      ]);
-
-      // Styling and alignment
-      newRow.getCell(1).alignment = { horizontal: "center" };
-      newRow.getCell(2).alignment = { horizontal: "center" };
-
-      // Persist to Excel file
-      await workbook.xlsx.writeFile(EXCEL_FILE_PATH);
-
-      const updatedCounts = {
-        ...counts,
-        [cleanTrack]: currentTrackCount + 1,
-      };
 
       return NextResponse.json(
         {
           success: true,
           message: `Team "${cleanTeamName}" successfully selected ${cleanTrack}!`,
           teamName: cleanTeamName,
-          teamNo,
-          trackNumber,
+          teamNo: result.teamNo,
+          trackNumber: result.trackNumber,
           track: cleanTrack,
           leaderName: cleanLeaderName,
-          counts: updatedCounts,
+          counts: result.counts,
         },
         { status: 200 }
       );
