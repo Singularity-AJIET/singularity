@@ -16,7 +16,6 @@ import AdvisorsSection from "@/components/AdvisorsSection/AdvisorsSection";
 import Footer from "@/components/Footer/Footer";
 import TickerTape from "@/components/TickerTape/TickerTape";
 import SplashWrapper from "@/components/SplashWrapper";
-import TrackSelectFab from "@/components/trackSelection/TrackSelectFab";
 import { getSiteUrl } from "@/lib/site";
 // import CountDown from "@/components/CountDown/CountDown";
 const siteUrl = getSiteUrl();
@@ -182,7 +181,6 @@ export default function Home() {
         </main>
         <Footer />
       </SplashWrapper>
-      <TrackSelectFab />
     </>
   );
 }
