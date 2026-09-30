@@ -343,7 +343,7 @@ export default function TrackSelectionPage() {
               <h1 className={styles.standbyTitle}>TRACK SELECTION NOT OPENED YET</h1>
               <p className={styles.standbyDesc}>
                 Track selection is currently not open for participant registrations.
-                The event coordinators will activate this portal in the Singularity Nexus when track selection begins.
+                The event coordinators will activate this portal when track selection begins.
               </p>
               <div className={styles.standbyActions}>
                 <Link href="/" className={styles.returnHomeBtn}>
