@@ -26,8 +26,10 @@ export default function Navbar() {
       } catch (e) {
         console.error("Failed to parse admin profile", e);
       }
+    } else {
+      setAdmin(null);
     }
-  }, []);
+  }, [pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
