@@ -126,6 +126,7 @@ export async function POST(req: NextRequest) {
           trackNumber: result.trackNumber,
           track: cleanTrack,
           leaderName: cleanLeaderName,
+          trackAndTeamNumber: result.trackAndTeamNumber,
           counts: result.counts,
         },
         { status: 200 }

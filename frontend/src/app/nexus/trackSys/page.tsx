@@ -61,6 +61,7 @@ interface RegistrationRecord {
   teamName: string;
   trackName: string;
   leaderName: string;
+  trackAndTeamNumber?: string;
 }
 
 export default function TrackSysAdminPage() {
@@ -269,6 +270,7 @@ export default function TrackSysAdminPage() {
       (r.teamName && r.teamName.toLowerCase().includes(q)) ||
       (r.trackName && r.trackName.toLowerCase().includes(q)) ||
       (r.leaderName && r.leaderName.toLowerCase().includes(q)) ||
+      (r.trackAndTeamNumber && r.trackAndTeamNumber.toLowerCase().includes(q)) ||
       (r.trackNumber && r.trackNumber.includes(q)) ||
       (r.teamNo && String(r.teamNo).includes(q))
     );
@@ -579,13 +581,14 @@ export default function TrackSysAdminPage() {
                       <th>TEAM NAME (COL 3)</th>
                       <th>TRACK NAME (COL 4)</th>
                       <th>LEADER NAME (COL 5)</th>
+                      <th>TRACK & TEAM (COL 6)</th>
                       <th>ACTION</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredRecords.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className={styles.emptyState}>
+                        <td colSpan={8} className={styles.emptyState}>
                           {searchQuery
                             ? "No teams matching query."
                             : "No teams registered yet."}
@@ -638,6 +641,7 @@ export default function TrackSysAdminPage() {
                               </span>
                             </td>
                             <td style={{ color: "#aaa" }}>{r.leaderName}</td>
+                            <td style={{ fontFamily: "var(--font-mono)", color: meta?.color || "#c8f135", fontWeight: 800 }}>{r.trackAndTeamNumber}</td>
                             <td>
                               <button
                                 type="button"

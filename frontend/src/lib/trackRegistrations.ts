@@ -28,6 +28,7 @@ export interface RegistrationRecord {
   teamName: string;
   trackName: string;
   leaderName: string;
+  trackAndTeamNumber: string;
 }
 
 export type TrackLocks = Record<ValidTrack, boolean>;
@@ -74,11 +75,13 @@ export async function ensureTablesExist(): Promise<void> {
       "Team Name" TEXT NOT NULL,
       "Track Name" TEXT NOT NULL,
       "Leader Name" TEXT NOT NULL,
+      "Track_and_Team_Number" TEXT,
       track_number TEXT,
       team_no INTEGER,
       team_name TEXT,
       track_name TEXT,
       leader_name TEXT,
+      track_and_team_number TEXT,
       created_at TEXT DEFAULT (datetime('now'))
     );
   `);
@@ -114,6 +117,10 @@ export async function ensureTablesExist(): Promise<void> {
       args: [track],
     });
   }
+
+  try {
+    await client.execute('ALTER TABLE track_registrations ADD COLUMN Track_and_Team_Number TEXT');
+  } catch { /* already exists */ }
 
   tablesInitialized = true;
 }
@@ -294,13 +301,20 @@ export async function getRegistrationRecords(): Promise<RegistrationRecord[]> {
         COALESCE(team_no, "Team No") as teamNo,
         COALESCE(team_name, "Team Name") as teamName,
         COALESCE(track_name, "Track Name") as trackName,
-        COALESCE(leader_name, "Leader Name") as leaderName
+        COALESCE(leader_name, "Leader Name") as leaderName,
+        COALESCE(Track_and_Team_Number, track_and_team_number) as trackAndTeamNumber
       FROM track_registrations
       ORDER BY COALESCE(team_no, "Team No", id) ASC
     `);
 
+    const trackCounts: Record<string, number> = {};
     return res.rows.map((row, index) => {
       const teamNo = row.teamNo !== null && row.teamNo !== undefined ? Number(row.teamNo) : index + 1;
+      const tName = String(row.trackName || "");
+      trackCounts[tName] = (trackCounts[tName] || 0) + 1;
+      const tCfgNum = parseInt(TRACK_NUMBERS[tName as ValidTrack] || "1", 10);
+      const computedIdentifier = `TRACK${tCfgNum}@team${trackCounts[tName]}`;
+      const trackAndTeamNumber = (String(row.trackAndTeamNumber || "").trim() || computedIdentifier).replace("_", "@");
       return {
         rowNumber: teamNo, // Used by UI as row identifier
         trackNumber: String(row.trackNumber || TRACK_NUMBERS[row.trackName as ValidTrack] || ""),
@@ -308,6 +322,7 @@ export async function getRegistrationRecords(): Promise<RegistrationRecord[]> {
         teamName: String(row.teamName || ""),
         trackName: String(row.trackName || ""),
         leaderName: String(row.leaderName || ""),
+        trackAndTeamNumber,
       };
     });
   } catch (err) {
@@ -323,6 +338,7 @@ export interface RegisterResult {
   trackFull?: boolean;
   teamNo?: number;
   trackNumber?: string;
+  trackAndTeamNumber?: string;
   counts?: Record<ValidTrack, number>;
 }
 
@@ -367,14 +383,17 @@ export async function registerTeam(
   const maxTeamNo = Number(maxRes.rows[0]?.max_team_no || 0);
   const nextTeamNo = maxTeamNo + 1;
   const trackNumber = TRACK_NUMBERS[cleanTrack];
+  const trackNum = parseInt(trackNumber, 10);
+  const trackTeamNo = currentCount + 1;
+  const trackAndTeamNumber = `TRACK${trackNum}@team${trackTeamNo}`;
 
   // 4. Insert row with both standard and quoted column names for full compatibility
   await client.execute({
     sql: `
       INSERT INTO track_registrations (
-        "Track Number", "Team No", "Team Name", "Track Name", "Leader Name",
-        track_number, team_no, team_name, track_name, leader_name
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        "Track Number", "Team No", "Team Name", "Track Name", "Leader Name", "Track_and_Team_Number",
+        track_number, team_no, team_name, track_name, leader_name, track_and_team_number
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
     args: [
       trackNumber,
@@ -382,11 +401,13 @@ export async function registerTeam(
       cleanTeamName,
       cleanTrack,
       cleanLeaderName,
+      trackAndTeamNumber,
       trackNumber,
       nextTeamNo,
       cleanTeamName,
       cleanTrack,
       cleanLeaderName,
+      trackAndTeamNumber,
     ],
   });
 
@@ -399,6 +420,7 @@ export async function registerTeam(
     success: true,
     teamNo: nextTeamNo,
     trackNumber,
+    trackAndTeamNumber,
     counts: updatedCounts,
   };
 }
@@ -464,6 +486,7 @@ export async function generateExcelBuffer(): Promise<Buffer> {
     "Team Name",
     "Track Name",
     "Leader Name",
+    "Track_and_Team_Number",
   ]);
   applyHeaderStyle(headerRow);
 
@@ -473,6 +496,7 @@ export async function generateExcelBuffer(): Promise<Buffer> {
     { key: "teamName", width: 32 },
     { key: "trackName", width: 36 },
     { key: "leaderName", width: 30 },
+    { key: "trackAndTeamNumber", width: 28 },
   ];
 
   for (const rec of records) {
@@ -482,9 +506,11 @@ export async function generateExcelBuffer(): Promise<Buffer> {
       rec.teamName,
       rec.trackName,
       rec.leaderName,
+      rec.trackAndTeamNumber,
     ]);
     row.getCell(1).alignment = { horizontal: "center" };
     row.getCell(2).alignment = { horizontal: "center" };
+    row.getCell(6).alignment = { horizontal: "center" };
   }
 
   // Produce binary buffer purely in RAM
@@ -515,6 +541,7 @@ export async function syncFromExcelBuffer(
     teamName: string;
     trackName: string;
     leaderName: string;
+    trackAndTeamNumber: string;
   }> = [];
 
   const col2Header = String(worksheet.getRow(1).getCell(2).value || "").trim().toLowerCase();
@@ -530,6 +557,7 @@ export async function syncFromExcelBuffer(
       const c3 = String(row.getCell(3).value || "").trim();
       const c4 = String(row.getCell(4).value || "").trim();
       const c5 = String(row.getCell(5).value || "").trim();
+      const c6 = String(row.getCell(6).value || "").trim();
       if (c1 || c3 || c4) {
         newRecords.push({
           trackNumber: c1 || "01",
@@ -537,6 +565,7 @@ export async function syncFromExcelBuffer(
           teamName: c3,
           trackName: c4,
           leaderName: c5,
+          trackAndTeamNumber: c6 || `TRACK${parseInt(c1 || "1", 10)}@team${seq}`,
         });
       }
     } else {
@@ -551,6 +580,7 @@ export async function syncFromExcelBuffer(
           teamName: c2,
           trackName: c3,
           leaderName: c4,
+          trackAndTeamNumber: `TRACK${parseInt(c1 || "1", 10)}@team${seq}`,
         });
       }
     }
@@ -563,9 +593,9 @@ export async function syncFromExcelBuffer(
     await client.execute({
       sql: `
         INSERT INTO track_registrations (
-          "Track Number", "Team No", "Team Name", "Track Name", "Leader Name",
-          track_number, team_no, team_name, track_name, leader_name
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          "Track Number", "Team No", "Team Name", "Track Name", "Leader Name", "Track_and_Team_Number",
+          track_number, team_no, team_name, track_name, leader_name, track_and_team_number
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
         rec.trackNumber,
@@ -573,11 +603,13 @@ export async function syncFromExcelBuffer(
         rec.teamName,
         rec.trackName,
         rec.leaderName,
+        rec.trackAndTeamNumber,
         rec.trackNumber,
         rec.teamNo,
         rec.teamName,
         rec.trackName,
         rec.leaderName,
+        rec.trackAndTeamNumber,
       ],
     });
   }
