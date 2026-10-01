@@ -28,12 +28,17 @@ const nextConfig: NextConfig = {
     ];
   },
   async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://127.0.0.1:3001/api/:path*",
-      }
-    ];
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001";
+    const normalizedUrl = backendUrl.endsWith("/") ? backendUrl.slice(0, -1) : backendUrl;
+    
+    return {
+      fallback: [
+        {
+          source: "/api/:path*",
+          destination: `${normalizedUrl}/api/:path*`,
+        }
+      ]
+    };
   },
   async headers() {
     return [
