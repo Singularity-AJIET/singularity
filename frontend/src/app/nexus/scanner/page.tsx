@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getApiBaseUrl } from "@/lib/api";
-import { Html5Qrcode } from "html5-qrcode";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import NexusSelect from "../components/NexusSelect";
 
 interface CounterSession {
@@ -212,7 +212,13 @@ export default function ScannerPage() {
 
     try {
       if (!scannerRef.current) {
-        scannerRef.current = new Html5Qrcode("reader");
+        scannerRef.current = new Html5Qrcode("reader", {
+          verbose: false,
+          formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true, // Use hardware acceleration if available
+          },
+        });
       }
 
       const cameraConfig = activeCameraId
@@ -225,6 +231,7 @@ export default function ScannerPage() {
           fps: 15,
           qrbox: { width: 250, height: 250 },
           aspectRatio: 1.0,
+          disableFlip: false, // Don't try to scan the mirrored image (saves 50% CPU)
         },
         onScanSuccess,
         onScanError
@@ -356,6 +363,9 @@ export default function ScannerPage() {
           vibrate("warning");
           triggerFlash("warning");
           setScanStatus("warning");
+          
+          alert(`DOUBLE CLAIM DETECTED!\n\nThe QR pass for ${data.participantName || "this participant"} has already been used at this counter.`);
+          
           setScanResult({
             name: data.participantName,
             email: data.email,
