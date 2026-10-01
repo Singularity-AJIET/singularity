@@ -212,7 +212,13 @@ export default function ScannerPage() {
 
     try {
       if (!scannerRef.current) {
-        scannerRef.current = new Html5Qrcode("reader");
+        scannerRef.current = new Html5Qrcode("reader", {
+          verbose: false,
+          formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true, // Use hardware acceleration if available
+          },
+        });
       }
 
       const cameraConfig = activeCameraId
@@ -225,11 +231,7 @@ export default function ScannerPage() {
           fps: 15,
           qrbox: { width: 250, height: 250 },
           aspectRatio: 1.0,
-          formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
           disableFlip: false, // Don't try to scan the mirrored image (saves 50% CPU)
-          experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true, // Use hardware acceleration if available
-          },
         },
         onScanSuccess,
         onScanError
