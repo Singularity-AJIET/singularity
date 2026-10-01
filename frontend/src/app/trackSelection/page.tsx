@@ -88,6 +88,7 @@ export default function TrackSelectionPage() {
     teamName: string;
     leaderName: string;
     track: string;
+    trackAndTeamNumber?: string;
   } | null>(null);
 
   const [clickedTrack, setClickedTrack] = useState<string | null>(null);
@@ -102,6 +103,7 @@ export default function TrackSelectionPage() {
     teamName: string;
     leaderName: string;
     track: string;
+    trackAndTeamNumber?: string;
   } | null>(null);
 
   // Custom dropdown state
@@ -277,7 +279,12 @@ export default function TrackSelectionPage() {
         if (data.counts) setCounts(data.counts);
         await fetchCounts();
       } else {
-        const regPayload = { teamName: cleanTeam, leaderName: cleanLeader, track: cleanTrack };
+        const regPayload = {
+          teamName: cleanTeam,
+          leaderName: cleanLeader,
+          track: cleanTrack,
+          trackAndTeamNumber: data.trackAndTeamNumber,
+        };
         setRegisteredData(regPayload);
         // Lock all tracks for this browser — one-track rule
         try { localStorage.setItem(LS_KEY, JSON.stringify(regPayload)); } catch { /* ignore */ }
@@ -528,6 +535,30 @@ export default function TrackSelectionPage() {
                   </p>
 
                   <div className={styles.successSummaryBox}>
+                    {/* Track Number Identifier - Colored text without outside container */}
+                    {(() => {
+                      const trackCfg = TRACKS_CONFIG.find(t => t.name === registeredData.track);
+                      const trackNum = trackCfg ? parseInt(trackCfg.number, 10) : 0;
+                      const teamNum = counts[registeredData.track] || 1;
+                      const identifier =
+                        (registeredData.trackAndTeamNumber
+                          ? registeredData.trackAndTeamNumber.replace("_", "@")
+                          : `TRACK${trackNum}@team${teamNum}`);
+                      return (
+                        <div className={styles.summaryRow}>
+                          <span className={styles.summaryLabel}>// TEAM NUMBER:</span>
+                          <span
+                            className={styles.summaryValHighlight}
+                            style={{
+                              color: trackCfg?.color || "var(--accent-lime)",
+                              letterSpacing: "0.06em",
+                            }}
+                          >
+                            {identifier}
+                          </span>
+                        </div>
+                      );
+                    })()}
                     <div className={styles.summaryRow}>
                       <span className={styles.summaryLabel}>// TEAM NAME:</span>
                       <span className={styles.summaryVal}>{registeredData.teamName}</span>
