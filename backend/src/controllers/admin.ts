@@ -28,7 +28,7 @@ export async function registerAdmin(req: Request, res: Response, next: NextFunct
       ? String(role).toLowerCase()
       : 'admin';
 
-    const trimmedUsername = String(username).trim().toLowerCase();
+    const trimmedUsername = String(username).trim();
 
     const existing = await prisma.admin.findUnique({ where: { username: trimmedUsername } });
     if (existing) {
@@ -74,7 +74,7 @@ export async function loginAdmin(req: Request, res: Response, next: NextFunction
       return;
     }
 
-    const trimmedUsername = String(username).trim().toLowerCase();
+    const trimmedUsername = String(username).trim();
 
     const admin = await prisma.admin.findUnique({ where: { username: trimmedUsername } });
     if (!admin) {

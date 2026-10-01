@@ -8,20 +8,19 @@ import axios from "axios";
  *  3. Fallback to http://localhost:3001
  */
 export function getApiBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    // On the client, use relative paths so Next.js proxies to backend via rewrites
+    return "";
+  }
   let url = process.env.NEXT_PUBLIC_API_URL;
   if (url) {
     url = url.replace(/\/$/, "");
-    // If NEXT_PUBLIC_API_URL is configured with https://localhost or https://127.0.0.1,
-    // normalize to http:// since local Node.js backend listens on plain HTTP
     if (/^https:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(url)) {
       url = url.replace(/^https:/i, "http:");
     }
     return url;
   }
-  if (typeof window !== "undefined" && window.location.hostname) {
-    return `${window.location.protocol}//${window.location.hostname}:3001`;
-  }
-  return "http://localhost:3001";
+  return "http://127.0.0.1:3001";
 }
 
 /** Returns the stored admin role ('superadmin' | 'admin' | 'volunteer') or null if not logged in. */
@@ -36,8 +35,11 @@ export function getAdminRole(): string | null {
   }
 }
 
-const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-const normalizedBaseUrl = /^https:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(rawBaseUrl.replace(/\/$/, ""))
+const rawBaseUrl = typeof window !== "undefined" 
+  ? "" 
+  : (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001");
+
+const normalizedBaseUrl = rawBaseUrl && /^https:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(rawBaseUrl.replace(/\/$/, ""))
   ? rawBaseUrl.replace(/\/$/, "").replace(/^https:/i, "http:")
   : rawBaseUrl;
 

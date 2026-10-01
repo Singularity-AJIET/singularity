@@ -171,7 +171,11 @@ export default function ScannerPage() {
 
   // Visibility changes (Pause camera when app goes to background)
   useEffect(() => {
-    const handlePause = () => stopScanner();
+    const handlePause = () => {
+      // Prevent pausing during alerts or when displaying results to keep the camera alive
+      if (scanResult || scanInProgress.current) return;
+      stopScanner();
+    };
     const handleResume = () => {
       if (!document.hidden && isSelectedCounterOpen && !scanResult) {
         startScanner();
@@ -228,10 +232,10 @@ export default function ScannerPage() {
       await scannerRef.current.start(
         cameraConfig,
         {
-          fps: 15,
+          fps: 30,
           qrbox: { width: 250, height: 250 },
           aspectRatio: 1.0,
-          disableFlip: false, // Don't try to scan the mirrored image (saves 50% CPU)
+          disableFlip: true, // Don't try to scan the mirrored image (saves 50% CPU)
         },
         onScanSuccess,
         onScanError
@@ -251,7 +255,7 @@ export default function ScannerPage() {
     }
 
     const scanner = scannerRef.current;
-    scannerRef.current = null;
+    // We intentionally don't set scannerRef.current to null so we can reuse it!
     isScanningActive.current = false;
 
     try {
@@ -294,6 +298,7 @@ export default function ScannerPage() {
     setScanFlash(null);
     if (isSelectedCounterOpen) {
       setScanStatus("scanning");
+      startScanner();
     }
     lastScannedToken.current = "";
     scanInProgress.current = false;

@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     "172.*",           // 172.x.x.x private range
     "localhost",
     "*.loca.lt",
-    "192.168.137.221"
+    "10.222.34.158"
   ],
   images: {
     formats: ["image/avif", "image/webp"],
@@ -25,6 +25,14 @@ const nextConfig: NextConfig = {
         destination: "/launch-countdown",
         permanent: false,
       },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://127.0.0.1:3001/api/:path*",
+      }
     ];
   },
   async headers() {
