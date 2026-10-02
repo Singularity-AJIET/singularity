@@ -134,7 +134,7 @@ export default function ScannerPage() {
   const isSelectedCounterOpen = counters.find((c) => c.id === selectedCounter)?.is_open ?? false;
 
   useEffect(() => {
-    if (!selectedCounter) return;
+    if (!selectedCounter || !activeCameraId) return;
 
     if (!isSelectedCounterOpen) {
       setScanStatus("closed");
@@ -146,14 +146,16 @@ export default function ScannerPage() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCounter, isSelectedCounterOpen]);
+  }, [selectedCounter, isSelectedCounterOpen, activeCameraId]);
 
   // Enumerate cameras on mount
   useEffect(() => {
     const requestPermissionAndEnumerate = async () => {
       try {
         // Explicitly request camera permission first to trigger the browser prompt
-        await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        // Immediately stop the tracks so Html5Qrcode can use the hardware
+        stream.getTracks().forEach(track => track.stop());
         
         const devices = await Html5Qrcode.getCameras();
         if (devices && devices.length > 0) {
