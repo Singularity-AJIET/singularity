@@ -176,7 +176,7 @@ export default function SettingsPage() {
       formData.append("file", file);
 
       const API_BASE = getApiBaseUrl();
-      const response = await fetch(`${API_BASE}/api/upload/csv`, {
+      const response = await fetch(`${API_BASE}/api/participants/import`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`
@@ -212,8 +212,8 @@ export default function SettingsPage() {
 
     try {
       const API_BASE = getApiBaseUrl();
-      const response = await fetch(`${API_BASE}/api/upload/clear`, {
-        method: "DELETE",
+      const response = await fetch(`${API_BASE}/api/participants/clear`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`
         }

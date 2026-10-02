@@ -308,7 +308,7 @@ export async function getRegistrationRecords(): Promise<RegistrationRecord[]> {
     `);
 
     const trackCounts: Record<string, number> = {};
-    return res.rows.map((row, index) => {
+    return res.rows.map((row: any, index: number) => {
       const teamNo = row.teamNo !== null && row.teamNo !== undefined ? Number(row.teamNo) : index + 1;
       const tName = String(row.trackName || "");
       trackCounts[tName] = (trackCounts[tName] || 0) + 1;
@@ -548,7 +548,7 @@ export async function syncFromExcelBuffer(
   const hasTeamNoCol = col2Header.includes("team no") || col2Header === "team no";
 
   let seq = 1;
-  worksheet.eachRow((row, rowNumber) => {
+  worksheet.eachRow((row: any, rowNumber: number) => {
     if (rowNumber === 1) return;
 
     if (hasTeamNoCol) {

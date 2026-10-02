@@ -150,8 +150,12 @@ export default function ScannerPage() {
 
   // Enumerate cameras on mount
   useEffect(() => {
-    Html5Qrcode.getCameras()
-      .then((devices) => {
+    const requestPermissionAndEnumerate = async () => {
+      try {
+        // Explicitly request camera permission first to trigger the browser prompt
+        await navigator.mediaDevices.getUserMedia({ video: true });
+        
+        const devices = await Html5Qrcode.getCameras();
         if (devices && devices.length > 0) {
           setCameras(devices);
           const backCamera = devices.find((d) =>
@@ -160,13 +164,16 @@ export default function ScannerPage() {
             d.label.toLowerCase().includes("rear")
           );
           setActiveCameraId(backCamera ? backCamera.id : devices[0].id);
+          setIsCameraSupported(true);
         } else {
           setIsCameraSupported(false);
         }
-      })
-      .catch(() => {
+      } catch (err) {
         setIsCameraSupported(false);
-      });
+      }
+    };
+
+    requestPermissionAndEnumerate();
   }, []);
 
   // Visibility changes (Pause camera when app goes to background)
