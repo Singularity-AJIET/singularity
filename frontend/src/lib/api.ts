@@ -83,11 +83,26 @@ export interface CountdownState {
   serverTime?: string;
 }
 
+const DEFAULT_COUNTDOWN_STATE: CountdownState = {
+  isDisplayed: false,
+  isStarted: false,
+  startedAt: null,
+  updatedAt: new Date().toISOString(),
+};
+
 export const fetchCountdownState = async (): Promise<CountdownState> => {
-  const API_BASE = getApiBaseUrl();
-  const res = await fetch(`${API_BASE}/api/countdown`, { cache: 'no-store' });
-  if (!res.ok) throw new Error("Failed to fetch countdown state");
-  return res.json();
+  try {
+    const API_BASE = getApiBaseUrl();
+    const res = await fetch(`${API_BASE}/api/countdown`, { cache: 'no-store' });
+    if (!res.ok) {
+      console.warn(`[countdown] Backend returned ${res.status} — using default state.`);
+      return DEFAULT_COUNTDOWN_STATE;
+    }
+    return res.json();
+  } catch {
+    console.warn("[countdown] Backend unreachable — using default state.");
+    return DEFAULT_COUNTDOWN_STATE;
+  }
 };
 
 export const toggleCountdownDisplay = async (token: string) => {
