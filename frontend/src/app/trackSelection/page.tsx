@@ -142,6 +142,10 @@ export default function TrackSelectionPage() {
         const parsed = JSON.parse(stored);
         setHasUserRegistered(true);
         setUserRegistration(parsed);
+        // Open confirmation interface for registered device
+        setRegisteredData(parsed);
+        setSelectedTrack(parsed.track);
+        setIsModalOpen(true);
       }
     } catch {
       // ignore
@@ -325,6 +329,13 @@ export default function TrackSelectionPage() {
   };
 
   const handleCardClick = (track: TrackConfig, isLocked: boolean) => {
+    // If user already registered and clicked their chosen track, show their confirmation interface
+    if (userRegistration && userRegistration.track === track.name) {
+      setRegisteredData(userRegistration);
+      setSelectedTrack(track.name);
+      setIsModalOpen(true);
+      return;
+    }
     const isUserBlocked = !allowMultipleSelections && hasUserRegistered;
     if (isLocked || isUserBlocked) return;
     setClickedTrack(track.id);
@@ -367,7 +378,6 @@ export default function TrackSelectionPage() {
         <main className={styles.content}>
           <div className={styles.standbyContainer}>
             <div className={styles.standbyCard}>
-              <div className={styles.standbyTag}>// TRACK SELECTION // STANDBY MODE</div>
               <div className={styles.standbyIconWrap}>
                 <Lock size={28} />
               </div>
@@ -412,13 +422,33 @@ export default function TrackSelectionPage() {
 
       {/* ─── Already Registered Banner (Strict Mode) ─── */}
       {!allowMultipleSelections && hasUserRegistered && userRegistration && (
-        <div className={styles.alreadyRegisteredBanner}>
+        <div
+          className={styles.alreadyRegisteredBanner}
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setRegisteredData(userRegistration);
+            setSelectedTrack(userRegistration.track);
+            setIsModalOpen(true);
+          }}
+          title="Click to view registration details"
+        >
           <CheckCircle2 size={18} />
           <span>
             You have already registered —{" "}
             <strong style={{ color: "#c8f135" }}>{userRegistration.teamName}</strong>
             {" "}selected{" "}
             <strong style={{ color: "#c8f135" }}>{userRegistration.track}</strong>
+            {userRegistration.trackAndTeamNumber && (
+              <>
+                {" "}(<strong style={{ color: "#c8f135", fontSize: "1.05rem" }}>
+                  {(() => {
+                    const m = userRegistration.trackAndTeamNumber.match(/track\s*(\d+)[@_]team\s*(\d+)/i);
+                    return m ? `T${m[1]}@${m[2]}` : userRegistration.trackAndTeamNumber.replace("_", "@");
+                  })()}
+                </strong>)
+              </>
+            )}
+            {" "}— <span style={{ textDecoration: "underline", color: "#c8f135" }}>View Details</span>
           </span>
         </div>
       )}
@@ -427,7 +457,6 @@ export default function TrackSelectionPage() {
       <main className={styles.content}>
         {/* Hero Section */}
         <section className={styles.hero}>
-          <div className={styles.systemTag}>// SINGULARITY 2026 // TRACK SELECTION</div>
           <h1 className={styles.heroTitle}>SELECT YOUR TRACK</h1>
           <p className={styles.heroSubtitle}>
             Dive deep into the frontiers of Artificial Intelligence across three core
@@ -504,11 +533,20 @@ export default function TrackSelectionPage() {
                 <button
                   type="button"
                   className={styles.cardSelectBtn}
-                  disabled={isLocked}
-                  onClick={(e) => { e.stopPropagation(); handleCardClick(track, isLocked); }}
+                  disabled={isLocked && !isUsersChosenTrack}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isUsersChosenTrack && userRegistration) {
+                      setRegisteredData(userRegistration);
+                      setSelectedTrack(userRegistration.track);
+                      setIsModalOpen(true);
+                    } else {
+                      handleCardClick(track, isLocked);
+                    }
+                  }}
                 >
                   {isUsersChosenTrack
-                    ? "✓ REGISTERED"
+                    ? "✓ VIEW REGISTRATION"
                     : isUserLocked
                     ? "REGISTRATION CLOSED FOR YOU"
                     : isManuallyLocked
@@ -535,7 +573,7 @@ export default function TrackSelectionPage() {
             style={{ "--modal-color": selectedTrackConfig?.color || modalColor } as React.CSSProperties}
           >
             <div className={styles.modalHeader}>
-              <span className={styles.modalHeaderTitle}>// TEAM REGISTRATION</span>
+              <span className={styles.modalHeaderTitle}>TEAM REGISTRATION</span>
               <button
                 type="button"
                 className={styles.modalCloseBtn}
@@ -560,23 +598,41 @@ export default function TrackSelectionPage() {
                   </p>
 
                   <div className={styles.successSummaryBox}>
-                    {/* Track Number Identifier - Colored text without outside container */}
+                    {/* Track Number Identifier - Formatted as T2@1, slightly bigger font */}
                     {(() => {
                       const trackCfg = TRACKS_CONFIG.find(t => t.name === registeredData.track);
                       const trackNum = trackCfg ? parseInt(trackCfg.number, 10) : 0;
                       const teamNum = counts[registeredData.track] || 1;
-                      const identifier =
-                        (registeredData.trackAndTeamNumber
-                          ? registeredData.trackAndTeamNumber.replace("_", "@")
-                          : `TRACK${trackNum}@team${teamNum}`);
+                      const rawId = registeredData.trackAndTeamNumber;
+                      const identifier = (() => {
+                        if (rawId) {
+                          const m = rawId.match(/track\s*(\d+)[@_]team\s*(\d+)/i);
+                          if (m) return `T${m[1]}@${m[2]}`;
+                          if (/^T\d+[@_]\d+$/i.test(rawId)) return rawId.toUpperCase().replace("_", "@");
+                          return rawId.replace("_", "@");
+                        }
+                        return `T${trackNum}@${teamNum}`;
+                      })();
+
                       return (
-                        <div className={styles.summaryRow}>
-                          <span className={styles.summaryLabel}>// TEAM NUMBER:</span>
+                        <div
+                          className={styles.summaryRow}
+                          style={{
+                            background: "#252423",
+                            border: "1px solid #4a4744",
+                            borderRadius: "4px",
+                            padding: "0.55rem 0.85rem",
+                            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                          }}
+                        >
+                          <span className={styles.summaryLabel}>TEAM NUMBER:</span>
                           <span
                             className={styles.summaryValHighlight}
                             style={{
                               color: trackCfg?.color || "var(--accent-lime)",
-                              letterSpacing: "0.06em",
+                              letterSpacing: "0.08em",
+                              fontSize: "1.35rem",
+                              fontWeight: 900,
                             }}
                           >
                             {identifier}
@@ -585,26 +641,18 @@ export default function TrackSelectionPage() {
                       );
                     })()}
                     <div className={styles.summaryRow}>
-                      <span className={styles.summaryLabel}>// TEAM NAME:</span>
+                      <span className={styles.summaryLabel}>TEAM NAME:</span>
                       <span className={styles.summaryVal}>{registeredData.teamName}</span>
                     </div>
                     <div className={styles.summaryRow}>
-                      <span className={styles.summaryLabel}>// LEADER:</span>
+                      <span className={styles.summaryLabel}>LEADER:</span>
                       <span className={styles.summaryVal}>{registeredData.leaderName}</span>
                     </div>
                     <div className={styles.summaryRow}>
-                      <span className={styles.summaryLabel}>// TRACK:</span>
+                      <span className={styles.summaryLabel}>TRACK:</span>
                       <span className={styles.summaryValHighlight}>{registeredData.track}</span>
                     </div>
                   </div>
-
-                  <button
-                    type="button"
-                    className={styles.closeSuccessBtn}
-                    onClick={handleCloseModal}
-                  >
-                    [ DONE / CLOSE ]
-                  </button>
                 </div>
               ) : (
                 /* Registration Form */
@@ -612,7 +660,7 @@ export default function TrackSelectionPage() {
                   {/* Field 1: Team Name */}
                   <div className={styles.formGroup}>
                     <label htmlFor="ts-teamName" className={styles.label}>
-                      <span className={styles.labelPrefix}>//</span> 1. TEAM NAME
+                      1. TEAM NAME
                     </label>
                     <input
                       id="ts-teamName"
@@ -629,7 +677,7 @@ export default function TrackSelectionPage() {
                   {/* Field 2: Leader Name */}
                   <div className={styles.formGroup}>
                     <label htmlFor="ts-leaderName" className={styles.label}>
-                      <span className={styles.labelPrefix}>//</span> 2. LEADER NAME
+                      2. LEADER NAME
                     </label>
                     <input
                       id="ts-leaderName"
@@ -645,7 +693,7 @@ export default function TrackSelectionPage() {
                   {/* Field 3: Custom Track Dropdown */}
                   <div className={styles.formGroup}>
                     <label className={styles.label}>
-                      <span className={styles.labelPrefix}>//</span> 3. TRACK
+                      3. TRACK
                     </label>
                     <div className={styles.customDropdown} ref={dropdownRef}>
                       <button

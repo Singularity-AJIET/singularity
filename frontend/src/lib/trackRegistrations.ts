@@ -313,8 +313,12 @@ export async function getRegistrationRecords(): Promise<RegistrationRecord[]> {
       const tName = String(row.trackName || "");
       trackCounts[tName] = (trackCounts[tName] || 0) + 1;
       const tCfgNum = parseInt(TRACK_NUMBERS[tName as ValidTrack] || "1", 10);
-      const computedIdentifier = `TRACK${tCfgNum}@team${trackCounts[tName]}`;
-      const trackAndTeamNumber = (String(row.trackAndTeamNumber || "").trim() || computedIdentifier).replace("_", "@");
+      const computedIdentifier = `T${tCfgNum}@${trackCounts[tName]}`;
+      const rawId = String(row.trackAndTeamNumber || "").trim();
+      const m = rawId.match(/track\s*(\d+)[@_]team\s*(\d+)/i);
+      const trackAndTeamNumber = m
+        ? `T${m[1]}@${m[2]}`
+        : (rawId || computedIdentifier).replace("_", "@");
       return {
         rowNumber: teamNo, // Used by UI as row identifier
         trackNumber: String(row.trackNumber || TRACK_NUMBERS[row.trackName as ValidTrack] || ""),
@@ -385,7 +389,7 @@ export async function registerTeam(
   const trackNumber = TRACK_NUMBERS[cleanTrack];
   const trackNum = parseInt(trackNumber, 10);
   const trackTeamNo = currentCount + 1;
-  const trackAndTeamNumber = `TRACK${trackNum}@team${trackTeamNo}`;
+  const trackAndTeamNumber = `T${trackNum}@${trackTeamNo}`;
 
   // 4. Insert row with both standard and quoted column names for full compatibility
   await client.execute({
@@ -565,7 +569,11 @@ export async function syncFromExcelBuffer(
           teamName: c3,
           trackName: c4,
           leaderName: c5,
-          trackAndTeamNumber: c6 || `TRACK${parseInt(c1 || "1", 10)}@team${seq}`,
+          trackAndTeamNumber: c6
+            ? (c6.match(/track\s*(\d+)[@_]team\s*(\d+)/i)
+                ? `T${c6.match(/track\s*(\d+)[@_]team\s*(\d+)/i)![1]}@${c6.match(/track\s*(\d+)[@_]team\s*(\d+)/i)![2]}`
+                : c6.replace("_", "@"))
+            : `T${parseInt(c1 || "1", 10)}@${seq}`,
         });
       }
     } else {
@@ -580,7 +588,7 @@ export async function syncFromExcelBuffer(
           teamName: c2,
           trackName: c3,
           leaderName: c4,
-          trackAndTeamNumber: `TRACK${parseInt(c1 || "1", 10)}@team${seq}`,
+          trackAndTeamNumber: `T${parseInt(c1 || "1", 10)}@${seq}`,
         });
       }
     }
