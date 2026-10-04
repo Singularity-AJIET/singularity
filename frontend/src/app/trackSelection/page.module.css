@@ -888,7 +888,7 @@
 /* Footer & Marquee */
 .tsFooter {
   background: var(--accent-lime, #c8f135);
-  padding: 6px 0;
+  padding: 8px 0;
   overflow: hidden;
   border-top: 1px solid rgba(17, 16, 16, 0.3);
   border-bottom: 1px solid rgba(17, 16, 16, 0.3);
@@ -896,20 +896,26 @@
   align-items: center;
   width: 100%;
   margin-top: auto;
+  position: relative;
+  z-index: 10;
 }
 
 .marqueeContainer {
   display: flex;
   white-space: nowrap;
-  width: max-content;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
 }
 
 .marqueeContent {
   display: flex;
   align-items: center;
-  animation: scrollMarquee 22s linear infinite;
-  gap: 24px;
-  padding-right: 24px;
+  flex-shrink: 0;
+  gap: 28px;
+  padding-right: 28px;
+  animation: scrollMarquee 35s linear infinite;
+  will-change: transform;
 }
 
 .marqueeContainer span {
@@ -920,6 +926,7 @@
   text-transform: uppercase;
   line-height: 1;
   letter-spacing: 0.02em;
+  flex-shrink: 0;
 }
 
 .marqueeOutline {
@@ -928,8 +935,12 @@
 }
 
 @keyframes scrollMarquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
 }
 
 @media (max-width: 640px) {

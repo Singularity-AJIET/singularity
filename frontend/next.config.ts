@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
     const normalizedUrl = backendUrl.endsWith("/") ? backendUrl.slice(0, -1) : backendUrl;
     
     return {
-      fallback: [
+      afterFiles: [
         {
           source: "/api/:path*",
           destination: `${normalizedUrl}/api/:path*`,

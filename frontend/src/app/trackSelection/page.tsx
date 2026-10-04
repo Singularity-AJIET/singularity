@@ -63,6 +63,30 @@ const MAX_SLOTS = 12;
 
 const LS_KEY = "singularity_track_registered";
 
+function MarqueeFooter() {
+  const items = Array.from({ length: 16 });
+  return (
+    <footer className={styles.tsFooter}>
+      <div className={styles.marqueeContainer}>
+        <div className={styles.marqueeContent}>
+          {items.map((_, i) => (
+            <span key={i} className={i % 2 === 1 ? styles.marqueeOutline : undefined}>
+              SINGULARITY
+            </span>
+          ))}
+        </div>
+        <div className={styles.marqueeContent} aria-hidden="true">
+          {items.map((_, i) => (
+            <span key={`dup-${i}`} className={i % 2 === 1 ? styles.marqueeOutline : undefined}>
+              SINGULARITY
+            </span>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 export default function TrackSelectionPage() {
   const [counts, setCounts] = useState<Record<string, number>>({
     "Coastal Intelligence": 0,
@@ -370,6 +394,7 @@ export default function TrackSelectionPage() {
             </div>
           </div>
         </main>
+        <MarqueeFooter />
       </div>
     );
   }
@@ -737,26 +762,7 @@ export default function TrackSelectionPage() {
       )}
 
       {/* Singularity Slim Marquee Footer */}
-      <footer className={styles.tsFooter}>
-        <div className={styles.marqueeContainer}>
-          <div className={styles.marqueeContent}>
-            <span>SINGULARITY</span>
-            <span className={styles.marqueeOutline}>SINGULARITY</span>
-            <span>SINGULARITY</span>
-            <span className={styles.marqueeOutline}>SINGULARITY</span>
-            <span>SINGULARITY</span>
-            <span className={styles.marqueeOutline}>SINGULARITY</span>
-          </div>
-          <div className={styles.marqueeContent} aria-hidden>
-            <span>SINGULARITY</span>
-            <span className={styles.marqueeOutline}>SINGULARITY</span>
-            <span>SINGULARITY</span>
-            <span className={styles.marqueeOutline}>SINGULARITY</span>
-            <span>SINGULARITY</span>
-            <span className={styles.marqueeOutline}>SINGULARITY</span>
-          </div>
-        </div>
-      </footer>
+      <MarqueeFooter />
     </div>
   );
 }

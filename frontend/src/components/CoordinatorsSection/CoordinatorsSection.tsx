@@ -99,9 +99,9 @@ const TEAM_COORDINATORS: Coordinator[] = [
 
   // Media & Publicity Lead
   { name: "R Krithi Mallika", imgPosition: "center 15%", role: "Press & Media Lead", seed: "KrithiRaj", photo: "/team/R_krithimallika.webp", color: "#c8f135", github: "https://github.com/Kri252005", instagram: "https://www.instagram.com/kri3_raj?igsh=MTEzZGt1MnM5Z3Q0ZQ==&igsi=MTEzZGt1MnM5Z3Q0ZQ==", linkedin: "https://www.linkedin.com/in/r-krithi-mallika-90294a299?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
-  { name: "Chirag", role: "Press & Media Lead", seed: "Chirag", photo: "/team/chirag.webp", color: "#ff6b6b", github: "https://github.com/chiragushetty", instagram: "https://www.instagram.com/chirag_shetty19", linkedin: "https://www.linkedin.com/in/chirag-shetty-6110b5309" },
   { name: "Rohit G Shet", role: "Press & Media Lead", seed: "Rohit", photo: "/team/Rohit G Shet 4JK24CI090.webp", color: "#4ecdc4", github: "https://github.com/rohitgshet", instagram: "https://instagram.com/rohitgshet", linkedin: "https://linkedin.com/in/rohitgshet" },
   { name: "Arjith Kumar", role: "Press & Media Lead", seed: "Arjith", photo: "/team/Arjith Kumar.webp", color: "#ff8ed4", github: "https://github.com/arjithkumar021", instagram: "https://www.instagram.com/arjith01.__", linkedin: "https://www.linkedin.com/in/arjith-kumar01" },
+  { name: "Shreyas Acharya", role: "Press & Media Lead", seed: "ShreyasAcharya", photo: "/team/Shreyas_Acharya.webp", color: "#ffe66d", instagram: "https://www.instagram.com/s_r_a_s_acharya?stkn=azk1bDRteXh6ZzNv&utm_source=qr", linkedin: "https://www.linkedin.com/in/shreyas-acharya-3b3839436?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
 
   // Logistics & Accommodation Lead
   { name: "Ashray K", role: "Logistics & Accommodation Lead", seed: "Ashray", photo: "/team/Ashray_K.webp", color: "#845ec2", github: "https://github.com/Ashray156", instagram: "https://www.instagram.com/ashra__y", linkedin: "https://www.linkedin.com/in/ashray-k-950a332a1?utm_source=share_via&utm_content=profile&utm_medium=member_android" },
