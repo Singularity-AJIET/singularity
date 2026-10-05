@@ -253,7 +253,7 @@ export default function ScannerPage() {
             width: { ideal: 640 },
             height: { ideal: 480 },
             advanced: [{ focusMode: "continuous" }]
-          } as MediaTrackConstraints,
+          } as unknown as MediaTrackConstraints,
           disableFlip: true, // Don't try to scan the mirrored image (saves 50% CPU)
         },
         onScanSuccess,
