@@ -170,7 +170,7 @@ export default function ScannerPage() {
         } else {
           setIsCameraSupported(false);
         }
-      } catch (err) {
+      } catch {
         setIsCameraSupported(false);
       }
     };
@@ -241,9 +241,19 @@ export default function ScannerPage() {
       await scannerRef.current.start(
         cameraConfig,
         {
-          fps: 30,
-          qrbox: { width: 250, height: 250 },
-          aspectRatio: 1.0,
+          fps: 60, // Increased FPS for faster scanning
+          qrbox: function(viewfinderWidth, viewfinderHeight) {
+            const minEdgePercentage = 0.7; // 70% of the smallest edge
+            const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+            const qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+            return { width: qrboxSize, height: qrboxSize };
+          },
+          videoConstraints: {
+            ...cameraConfig,
+            width: { ideal: 640 },
+            height: { ideal: 480 },
+            advanced: [{ focusMode: "continuous" }]
+          } as MediaTrackConstraints,
           disableFlip: true, // Don't try to scan the mirrored image (saves 50% CPU)
         },
         onScanSuccess,
