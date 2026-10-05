@@ -124,7 +124,7 @@ export default function CountDown({
       return Date.now() - localStartedAtRef.current;
     }
     return 0;
-  }, [startedAt, ntpSynced]);
+  }, [startedAt]);
 
   const beepsScheduledRef = useRef(false);
   const [isUnlocked, setIsUnlocked] = useState(false);

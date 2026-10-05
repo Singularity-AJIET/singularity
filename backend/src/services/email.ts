@@ -49,7 +49,7 @@ export async function sendEmailPass(email: string, name: string, token: string):
           
           <!-- Centered Logo / Header -->
           <div style="text-align: center; margin-bottom: 30px;">
-             <img src="cid:logo" alt="Singularity" style="width: 50px; height: 50px; margin-bottom: 12px; display: inline-block;" />
+             <img src="cid:logo" alt="Singularity" style="width: 50px; height: 50px; margin-bottom: 12px; display: inline-block; background: #0A0A0A; border-radius: 50%; padding: 4px;" />
              <div style="color: #c8f135; font-weight: 900; font-size: 26px; letter-spacing: 0.1em; text-transform: uppercase;">
                 SINGULARITY
              </div>
@@ -70,7 +70,7 @@ export async function sendEmailPass(email: string, name: string, token: string):
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="220" height="220" background="cid:qrcode" style="background-image: url('cid:qrcode'); background-size: cover; width: 220px; height: 220px;">
                     <tr>
                       <td align="center" valign="middle">
-                        <img src="cid:logo" alt="Logo" width="48" height="48" style="display: block; border-radius: 50%; background: #FFFFFF; padding: 4px; border: 2px solid #000000;" />
+                        <img src="cid:logo" alt="Logo" width="48" height="48" style="display: block; border-radius: 50%; background: #0A0A0A; padding: 4px; border: 2px solid #c8f135;" />
                       </td>
                     </tr>
                   </table>

@@ -33,7 +33,7 @@ class HapticsManager {
     // after any interaction anyway.
   }
 
-  public async playBeep(freq = 800, durationMs = 150): Promise<boolean> {
+  public async playBeep(durationMs = 150): Promise<boolean> {
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(durationMs);
     }

@@ -315,7 +315,7 @@ export default function TrackSysAdminPage() {
             <div>
               <div className={styles.headerBadgeRow}>
                 <span className={styles.systemTag}>TRACK SYS ADMIN</span>
-                <span className={styles.subTag}>// NEXUS CONTROL PANEL</span>
+                <span className={styles.subTag}>{"// NEXUS CONTROL PANEL"}</span>
               </div>
               <h1 className={styles.pageTitle}>TRACK SELECTION SYSTEM</h1>
             </div>
@@ -458,7 +458,7 @@ export default function TrackSysAdminPage() {
           <section>
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionTag}>// 01. CAPACITY & MANUAL LOCK CONTROLS</span>
+                <span className={styles.sectionTag}>{"// 01. CAPACITY & MANUAL LOCK CONTROLS"}</span>
                 <h2 className={styles.sectionTitle}>TRACK ALLOCATION OVERVIEW</h2>
                 <p className={styles.sectionSub}>
                   Each track is capped at 12 teams. Lock a track manually at any time to block new participant selections regardless of slots.
@@ -560,7 +560,7 @@ export default function TrackSysAdminPage() {
           <section>
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionTag}>// 02. LIVE ROSTER</span>
+                <span className={styles.sectionTag}>{"// 02. LIVE ROSTER"}</span>
                 <h2 className={styles.sectionTitle}>REGISTERED TEAMS ROSTER</h2>
                 <p className={styles.sectionSub}>
                   {records.length} registered teams across 3 tracks (12 teams cap per track).
