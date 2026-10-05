@@ -9,6 +9,7 @@ import {
   setTrackLock,
   getRegistrationRecords,
   deleteRegistrationRecord,
+  deleteAllRegistrationRecords,
   getAllowMultipleSelections,
   setAllowMultipleSelections,
   getDisplayTrackSelection,
@@ -121,12 +122,24 @@ export async function DELETE(req: NextRequest) {
   return await globalMutex.runExclusive(async () => {
     try {
       const { searchParams } = new URL(req.url);
+      const deleteAll = searchParams.get("all") === "true";
+
+      if (deleteAll) {
+        const { counts, records } = await deleteAllRegistrationRecords();
+        return NextResponse.json({
+          success: true,
+          message: "All registration records deleted successfully.",
+          counts,
+          records,
+        });
+      }
+
       const rowNumberStr = searchParams.get("rowNumber");
       const rowNumber = rowNumberStr ? parseInt(rowNumberStr, 10) : NaN;
 
       if (isNaN(rowNumber)) {
         return NextResponse.json(
-          { error: "Valid rowNumber is required." },
+          { error: "Valid rowNumber or all=true is required." },
           { status: 400 }
         );
       }

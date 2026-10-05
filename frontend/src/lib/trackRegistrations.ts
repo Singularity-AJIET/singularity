@@ -464,6 +464,29 @@ export async function deleteRegistrationRecord(
   return { counts, records };
 }
 
+/**
+ * Remove all registrations from Turso and reset slot counts.
+ */
+export async function deleteAllRegistrationRecords(): Promise<{
+  counts: Record<ValidTrack, number>;
+  records: RegistrationRecord[];
+}> {
+  await ensureTablesExist();
+  const client = getDbClient();
+
+  await client.execute(`DELETE FROM track_registrations`);
+  try {
+    await client.execute(`DELETE FROM sqlite_sequence WHERE name = 'track_registrations'`);
+  } catch {
+    // sqlite_sequence might not exist or error, safe to ignore
+  }
+
+  const counts = await getTrackCounts();
+  const records = await getRegistrationRecords();
+  return { counts, records };
+}
+
+
 function applyHeaderStyle(headerRow: ExcelJS.Row) {
   headerRow.font = { bold: true, color: { argb: "FFFFFFFF" }, size: 11 };
   headerRow.fill = {
