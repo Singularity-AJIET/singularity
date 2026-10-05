@@ -50,14 +50,6 @@
 
 @media (max-width: 768px) {
   .tickerWrapper {
-    padding: 10px 0;
-  }
-  .tickerItem {
-    font-size: 0.95rem;
-    gap: 32px;
-  }
-  .tickerContent {
-    gap: 32px;
-    padding-right: 32px;
+    display: none;
   }
 }

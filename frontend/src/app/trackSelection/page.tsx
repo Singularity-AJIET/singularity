@@ -61,6 +61,32 @@ const TRACKS_CONFIG: TrackConfig[] = [
 
 const MAX_SLOTS = 12;
 
+function getAvailableTrackColor(
+  excludeTrackName?: string,
+  currentCounts: Record<string, number> = {},
+  currentLocks: Record<string, boolean> = {}
+): string {
+  // First attempt: find an available track that is NOT the excluded (full/locked) track
+  const otherAvailable = TRACKS_CONFIG.find(
+    (t) =>
+      t.name !== excludeTrackName &&
+      (currentCounts[t.name] || 0) < MAX_SLOTS &&
+      !currentLocks[t.name]
+  );
+  if (otherAvailable) return otherAvailable.color;
+
+  // Fallback: any track that still has open capacity
+  const anyAvailable = TRACKS_CONFIG.find(
+    (t) =>
+      (currentCounts[t.name] || 0) < MAX_SLOTS &&
+      !currentLocks[t.name]
+  );
+  if (anyAvailable) return anyAvailable.color;
+
+  // Fallback if all tracks are full
+  return "#ef4444";
+}
+
 const LS_KEY = "singularity_track_registered";
 
 function MarqueeFooter() {
@@ -145,6 +171,8 @@ export default function TrackSelectionPage() {
         // Open confirmation interface for registered device
         setRegisteredData(parsed);
         setSelectedTrack(parsed.track);
+        const trk = TRACKS_CONFIG.find((t) => t.name === parsed.track);
+        if (trk) setModalColor(trk.color);
         setIsModalOpen(true);
       }
     } catch {
@@ -187,9 +215,11 @@ export default function TrackSelectionPage() {
 
   useEffect(() => {
     fetchCounts();
-    const interval = setInterval(fetchCounts, 6000);
+    // Poll more frequently (every 2s) when modal is open so slot updates reflect in near real-time
+    const intervalTime = isModalOpen ? 2000 : 6000;
+    const interval = setInterval(fetchCounts, intervalTime);
     return () => clearInterval(interval);
-  }, [fetchCounts]);
+  }, [fetchCounts, isModalOpen]);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -201,23 +231,54 @@ export default function TrackSelectionPage() {
     return () => { document.body.style.overflow = ""; };
   }, [isModalOpen]);
 
-  // Real-time capacity check: If selected track gets filled (or locked) while the modal is open
+  // Real-time capacity check: If selected track gets filled (or locked) while the modal is open,
+  // or if the container color currently matches a track that just became full (e.g. 12th member registered)
   useEffect(() => {
+    // If user has already successfully registered and is viewing their confirmed registration,
+    // their container MUST stay in their registered track's color (even if they were the 12th team)!
+    if (registeredData) {
+      const userTrack = TRACKS_CONFIG.find((t) => t.name === registeredData.track);
+      if (userTrack && modalColor.toLowerCase() !== userTrack.color.toLowerCase()) {
+        setModalColor(userTrack.color);
+      }
+      return;
+    }
+
+    // 1. If currently selected track gets filled or locked (for a user actively filling the form)
     if (selectedTrack) {
       const count = counts[selectedTrack] || 0;
       const isFull = count >= MAX_SLOTS;
       const isManuallyLocked = !!lockedTracks[selectedTrack];
       if (isFull || isManuallyLocked) {
+        const fullTrackName = selectedTrack;
+        const newColor = getAvailableTrackColor(fullTrackName, counts, lockedTracks);
         setSelectedTrack("");
+        setModalColor(newColor);
         setDropdownOpen(true);
         setFormError(
           isManuallyLocked
-            ? `Registration Unavailable: Track "${selectedTrack}" has been locked by the administrator. Please select an alternative track to complete your registration.`
-            : `Capacity Reached: Track "${selectedTrack}" has reached its maximum quota of ${MAX_SLOTS} teams. Please select an alternative track to complete your registration.`
+            ? `Registration Unavailable: Track "${fullTrackName}" has been locked by administrator. Container color switched to an available track.`
+            : `Capacity Reached: Track "${fullTrackName}" has reached its maximum quota of ${MAX_SLOTS} teams. Container color changed to an available track. Please select an open track.`
         );
       }
+    } else {
+      // 2. If no track is actively selected, but modalColor corresponds to a track that is now full or locked
+      const trackOfModalColor = TRACKS_CONFIG.find(
+        (t) => t.color.toLowerCase() === modalColor.toLowerCase()
+      );
+      if (trackOfModalColor) {
+        const count = counts[trackOfModalColor.name] || 0;
+        const isFull = count >= MAX_SLOTS;
+        const isManuallyLocked = !!lockedTracks[trackOfModalColor.name];
+        if (isFull || isManuallyLocked) {
+          const newColor = getAvailableTrackColor(trackOfModalColor.name, counts, lockedTracks);
+          if (newColor.toLowerCase() !== modalColor.toLowerCase()) {
+            setModalColor(newColor);
+          }
+        }
+      }
     }
-  }, [counts, lockedTracks, selectedTrack]);
+  }, [counts, lockedTracks, selectedTrack, modalColor, registeredData]);
 
   const handleOpenModal = (trackName?: string, trackColor?: string) => {
     fetchCounts();
@@ -225,22 +286,34 @@ export default function TrackSelectionPage() {
     setRegisteredData(null);
     setDropdownOpen(false);
 
-    if (trackColor) setModalColor(trackColor);
-
     if (trackName) {
       const currentCount = counts[trackName] || 0;
       const isLocked = currentCount >= MAX_SLOTS || !!lockedTracks[trackName];
       if (!isLocked) {
         setSelectedTrack(trackName);
+        if (trackColor) setModalColor(trackColor);
       } else {
+        // Track is already full/locked: automatically switch container color to an available track
+        const newColor = getAvailableTrackColor(trackName, counts, lockedTracks);
         setSelectedTrack("");
+        setModalColor(newColor);
+        setDropdownOpen(true);
+        setFormError(
+          lockedTracks[trackName]
+            ? `Registration Unavailable: Track "${trackName}" has been locked by the administrator. Container color changed to an available track.`
+            : `Capacity Reached: Track "${trackName}" has reached its maximum quota of ${MAX_SLOTS} teams. Container color changed to an available track. Please select an open track.`
+        );
       }
     } else {
       const firstAvailable = TRACKS_CONFIG.find(
         (t) => (counts[t.name] || 0) < MAX_SLOTS && !lockedTracks[t.name]
       );
       setSelectedTrack(firstAvailable ? firstAvailable.name : "");
-      if (firstAvailable) setModalColor(firstAvailable.color);
+      if (firstAvailable) {
+        setModalColor(firstAvailable.color);
+      } else {
+        setModalColor(getAvailableTrackColor(undefined, counts, lockedTracks));
+      }
     }
 
     setIsModalOpen(true);
@@ -254,6 +327,31 @@ export default function TrackSelectionPage() {
     setFormError(null);
     setRegisteredData(null);
     setDropdownOpen(false);
+    if (allowMultipleSelections) {
+      try {
+        localStorage.removeItem(LS_KEY);
+      } catch {
+        // ignore
+      }
+      setHasUserRegistered(false);
+      setUserRegistration(null);
+    }
+  };
+
+  const handleDone = () => {
+    try {
+      localStorage.removeItem(LS_KEY);
+    } catch {
+      // ignore
+    }
+    setHasUserRegistered(false);
+    setUserRegistration(null);
+    setRegisteredData(null);
+    setSelectedTrack("");
+    setTeamName("");
+    setLeaderName("");
+    setFormError(null);
+    setIsModalOpen(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -269,7 +367,9 @@ export default function TrackSelectionPage() {
     if (!cleanTrack) { setFormError("Please select a track."); return; }
 
     if (lockedTracks[cleanTrack]) {
-      setFormError(`Registration Unavailable: Track "${cleanTrack}" has been locked by the administrator. Please select an alternative track.`);
+      const newColor = getAvailableTrackColor(cleanTrack, counts, lockedTracks);
+      setModalColor(newColor);
+      setFormError(`Registration Unavailable: Track "${cleanTrack}" has been locked by administrator. Container color switched to an available track.`);
       setSelectedTrack("");
       setDropdownOpen(true);
       return;
@@ -277,7 +377,9 @@ export default function TrackSelectionPage() {
 
     const currentCount = counts[cleanTrack] || 0;
     if (currentCount >= MAX_SLOTS) {
-      setFormError(`Capacity Reached: Track "${cleanTrack}" has reached its maximum quota of ${MAX_SLOTS} teams. Please select an alternative track to complete your registration.`);
+      const newColor = getAvailableTrackColor(cleanTrack, counts, lockedTracks);
+      setModalColor(newColor);
+      setFormError(`Capacity Reached: Track "${cleanTrack}" has reached its maximum quota of ${MAX_SLOTS} teams. Container color changed to an available track. Please select an open track.`);
       setSelectedTrack("");
       setDropdownOpen(true);
       return;
@@ -295,15 +397,18 @@ export default function TrackSelectionPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setFormError(
-          data.error ||
-            `Capacity Reached: Track "${cleanTrack}" has reached its maximum quota of ${MAX_SLOTS} teams. Please select an alternative track to complete your registration.`
-        );
         // If track was filled by another team in the same moment
         if (res.status === 409 || data.trackFull || data.trackLocked) {
+          const freshCounts = data.counts || counts;
+          const newColor = getAvailableTrackColor(cleanTrack, freshCounts, lockedTracks);
+          setModalColor(newColor);
           setSelectedTrack("");
           setDropdownOpen(true);
         }
+        setFormError(
+          data.error ||
+            `Capacity Reached: Track "${cleanTrack}" has reached its maximum quota of ${MAX_SLOTS} teams. Container color changed to an available track. Please select an alternative track to complete your registration.`
+        );
         if (data.counts) setCounts(data.counts);
         await fetchCounts();
       } else {
@@ -313,11 +418,17 @@ export default function TrackSelectionPage() {
           track: cleanTrack,
           trackAndTeamNumber: data.trackAndTeamNumber,
         };
+        const confirmedTrack = TRACKS_CONFIG.find((t) => t.name === cleanTrack);
+        if (confirmedTrack) {
+          setModalColor(confirmedTrack.color);
+        }
         setRegisteredData(regPayload);
-        // Lock all tracks for this browser — one-track rule
-        try { localStorage.setItem(LS_KEY, JSON.stringify(regPayload)); } catch { /* ignore */ }
-        setHasUserRegistered(true);
-        setUserRegistration(regPayload);
+        // Lock all tracks for this browser — one-track rule only in single-selection mode
+        if (!allowMultipleSelections) {
+          try { localStorage.setItem(LS_KEY, JSON.stringify(regPayload)); } catch { /* ignore */ }
+          setHasUserRegistered(true);
+          setUserRegistration(regPayload);
+        }
         if (data.counts) setCounts(data.counts);
         else await fetchCounts();
       }
@@ -329,10 +440,11 @@ export default function TrackSelectionPage() {
   };
 
   const handleCardClick = (track: TrackConfig, isLocked: boolean) => {
-    // If user already registered and clicked their chosen track, show their confirmation interface
-    if (userRegistration && userRegistration.track === track.name) {
+    // If user already registered and clicked their chosen track, show their confirmation interface (only in single-selection mode)
+    if (!allowMultipleSelections && userRegistration && userRegistration.track === track.name) {
       setRegisteredData(userRegistration);
       setSelectedTrack(track.name);
+      setModalColor(track.color);
       setIsModalOpen(true);
       return;
     }
@@ -344,6 +456,23 @@ export default function TrackSelectionPage() {
   };
 
   const selectedTrackConfig = TRACKS_CONFIG.find((t) => t.name === selectedTrack);
+
+  // If viewing confirmed registration, ALWAYS use the confirmed team's track color!
+  const registeredTrackConfig = registeredData
+    ? TRACKS_CONFIG.find((t) => t.name === registeredData.track)
+    : null;
+
+  // If selected track is full or locked, always use modalColor (which is maintained as an available track)
+  const isSelectedTrackAvailable =
+    Boolean(selectedTrack) &&
+    (counts[selectedTrack] || 0) < MAX_SLOTS &&
+    !lockedTracks[selectedTrack];
+
+  const activeModalColor = registeredTrackConfig
+    ? registeredTrackConfig.color
+    : isSelectedTrackAvailable
+    ? (selectedTrackConfig?.color || modalColor)
+    : modalColor;
 
   if (initialLoading) {
     return (
@@ -419,39 +548,6 @@ export default function TrackSelectionPage() {
           <span className={styles.navTitle}>SINGULARITY</span>
         </div>
       </nav>
-
-      {/* ─── Already Registered Banner (Strict Mode) ─── */}
-      {!allowMultipleSelections && hasUserRegistered && userRegistration && (
-        <div
-          className={styles.alreadyRegisteredBanner}
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            setRegisteredData(userRegistration);
-            setSelectedTrack(userRegistration.track);
-            setIsModalOpen(true);
-          }}
-          title="Click to view registration details"
-        >
-          <CheckCircle2 size={18} />
-          <span>
-            You have already registered —{" "}
-            <strong style={{ color: "#c8f135" }}>{userRegistration.teamName}</strong>
-            {" "}selected{" "}
-            <strong style={{ color: "#c8f135" }}>{userRegistration.track}</strong>
-            {userRegistration.trackAndTeamNumber && (
-              <>
-                {" "}(<strong style={{ color: "#c8f135", fontSize: "1.05rem" }}>
-                  {(() => {
-                    const m = userRegistration.trackAndTeamNumber.match(/track\s*(\d+)[@_]team\s*(\d+)/i);
-                    return m ? `T${m[1]}@${m[2]}` : userRegistration.trackAndTeamNumber.replace("_", "@");
-                  })()}
-                </strong>)
-              </>
-            )}
-            {" "}— <span style={{ textDecoration: "underline", color: "#c8f135" }}>View Details</span>
-          </span>
-        </div>
-      )}
 
       {/* Track Selection Content */}
       <main className={styles.content}>
@@ -570,7 +666,7 @@ export default function TrackSelectionPage() {
         >
           <div
             className={styles.modalContent}
-            style={{ "--modal-color": selectedTrackConfig?.color || modalColor } as React.CSSProperties}
+            style={{ "--modal-color": activeModalColor } as React.CSSProperties}
           >
             <div className={styles.modalHeader}>
               <span className={styles.modalHeaderTitle}>TEAM REGISTRATION</span>
@@ -588,7 +684,14 @@ export default function TrackSelectionPage() {
               {registeredData ? (
                 /* Success View */
                 <div className={styles.successView}>
-                  <div className={styles.successIconBadge}>
+                  <div
+                    className={styles.successIconBadge}
+                    style={{
+                      borderColor: registeredTrackConfig?.color || "var(--modal-color)",
+                      color: registeredTrackConfig?.color || "var(--modal-color)",
+                      background: registeredTrackConfig ? `${registeredTrackConfig.color}1a` : undefined,
+                    }}
+                  >
                     <CheckCircle2 size={28} />
                   </div>
                   <h3 className={styles.successTitle}>REGISTRATION CONFIRMED</h3>
@@ -650,9 +753,29 @@ export default function TrackSelectionPage() {
                     </div>
                     <div className={styles.summaryRow}>
                       <span className={styles.summaryLabel}>TRACK:</span>
-                      <span className={styles.summaryValHighlight}>{registeredData.track}</span>
+                      <span
+                        className={styles.summaryValHighlight}
+                        style={{ color: registeredTrackConfig?.color || "var(--accent-lime)" }}
+                      >
+                        {registeredData.track}
+                      </span>
                     </div>
                   </div>
+
+                  {allowMultipleSelections && (
+                    <button
+                      type="button"
+                      className={styles.closeSuccessBtn}
+                      onClick={handleDone}
+                      style={{
+                        borderColor: registeredTrackConfig?.color || "var(--accent-lime)",
+                        color: registeredTrackConfig?.color || "var(--accent-lime)",
+                        marginTop: "1.25rem",
+                      }}
+                    >
+                      DONE
+                    </button>
+                  )}
                 </div>
               ) : (
                 /* Registration Form */
@@ -738,10 +861,19 @@ export default function TrackSelectionPage() {
                                   style={{
                                     "--opt-color": t.color,
                                     cursor: isLocked ? "not-allowed" : "pointer",
-                                    pointerEvents: isLocked ? "none" : "auto",
                                   } as React.CSSProperties}
                                   onClick={() => {
-                                    if (isLocked) return;
+                                    if (isLocked) {
+                                      // If the user attempts to select this full track, change container color to an available track
+                                      const newColor = getAvailableTrackColor(t.name, counts, lockedTracks);
+                                      setModalColor(newColor);
+                                      setFormError(
+                                        isManuallyLocked
+                                          ? `Track "${t.name}" is locked by admin. Switched container color to an available track.`
+                                          : `Track "${t.name}" has reached full capacity (${MAX_SLOTS}/${MAX_SLOTS}). Container color automatically changed to an available track.`
+                                      );
+                                      return;
+                                    }
                                     setSelectedTrack(t.name);
                                     setModalColor(t.color);
                                     setFormError(null);

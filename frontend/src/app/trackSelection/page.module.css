@@ -291,7 +291,7 @@
   position: relative;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
   animation: modalEnter 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  transition: border-color 0.25s ease;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 @keyframes modalEnter {
@@ -693,6 +693,7 @@
   overflow: hidden;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.9);
   animation: dropdownSlide 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.35s ease;
 }
 
 .dropdownFooter {
@@ -721,7 +722,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  transition: background 0.35s ease, opacity 0.15s ease, transform 0.1s ease;
 }
 
 .dropdownSelectBtn:hover:not(:disabled) {
@@ -765,7 +766,7 @@
 .dropdownOptionDisabled {
   opacity: 0.35 !important;
   cursor: not-allowed !important;
-  pointer-events: none !important;
+  pointer-events: auto !important;
   user-select: none !important;
   background: rgba(255, 255, 255, 0.02) !important;
 }
@@ -977,32 +978,7 @@
   background: rgba(200, 241, 53, 0.08);
 }
 
-/* Already Registered Banner */
-.alreadyRegisteredBanner {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  background: rgba(200, 241, 53, 0.07);
-  border-bottom: 1px solid rgba(200, 241, 53, 0.25);
-  color: rgba(200, 241, 53, 0.85);
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
 
-@media (max-width: 640px) {
-  .alreadyRegisteredBanner {
-    font-size: 0.72rem;
-    padding: 10px 16px;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-}
 
 /* Standby / Hidden Mode Styles */
 .standbyContainer {

@@ -91,6 +91,10 @@ export default function TrackSysAdminPage() {
   // Search in table
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Delete all warning modal state
+  const [showDeleteAllModal, setShowDeleteAllModal] = useState<boolean>(false);
+  const [isDeletingAll, setIsDeletingAll] = useState<boolean>(false);
+
   // Alert/Message banner
   const [feedback, setFeedback] = useState<{
     type: "success" | "error";
@@ -254,6 +258,30 @@ export default function TrackSysAdminPage() {
       }
     } catch {
       showFeedback("error", "Network error trying to delete registration.");
+    }
+  };
+
+  // Delete ALL registrations
+  const handleConfirmDeleteAll = async () => {
+    setIsDeletingAll(true);
+    try {
+      const res = await fetch("/api/admin/tracks?all=true", {
+        method: "DELETE",
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showFeedback("error", data.error || "Failed to delete all registrations.");
+      } else {
+        showFeedback("success", "All registration records have been cleared and track slots reset.");
+        if (data.counts) setCounts(data.counts);
+        if (data.records) setRecords(data.records);
+        setShowDeleteAllModal(false);
+      }
+    } catch {
+      showFeedback("error", "Network error trying to clear all registrations.");
+    } finally {
+      setIsDeletingAll(false);
     }
   };
 
@@ -560,15 +588,28 @@ export default function TrackSysAdminPage() {
                   />
                 </div>
 
-                <button
-                  type="button"
-                  className={styles.refreshBtn}
-                  onClick={fetchData}
-                  disabled={loading}
-                >
-                  <RefreshCw size={13} className={loading ? styles.spin : ""} />
-                  REFRESH
-                </button>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <button
+                    type="button"
+                    className={styles.clearAllBtn}
+                    onClick={() => setShowDeleteAllModal(true)}
+                    disabled={loading || records.length === 0}
+                    title="Delete all registrations at once"
+                  >
+                    <Trash2 size={13} />
+                    DELETE ALL ({records.length})
+                  </button>
+
+                  <button
+                    type="button"
+                    className={styles.refreshBtn}
+                    onClick={fetchData}
+                    disabled={loading}
+                  >
+                    <RefreshCw size={13} className={loading ? styles.spin : ""} />
+                    REFRESH
+                  </button>
+                </div>
               </div>
 
               <div className={styles.tableWrapper}>
@@ -665,6 +706,55 @@ export default function TrackSysAdminPage() {
           </section>
         )}
       </div>
+
+      {/* Delete All Warning Confirmation Modal */}
+      {showDeleteAllModal && (
+        <div
+          className={styles.warningModalOverlay}
+          onClick={() => !isDeletingAll && setShowDeleteAllModal(false)}
+        >
+          <div className={styles.warningModalBox} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.warningIconBadge}>
+              <AlertTriangle size={30} />
+            </div>
+            <h3 className={styles.warningModalTitle}>WARNING: DELETE ALL REGISTRATIONS</h3>
+            <p className={styles.warningModalDesc}>
+              Are you sure you want to permanently delete <strong>ALL ({records.length})</strong> registered teams?
+              This will reset all track slot counters back to 0 across the entire platform.
+              <br /><br />
+              <span style={{ color: "#ef4444", fontWeight: 700 }}>⚠️ This action is irreversible!</span>
+            </p>
+            <div className={styles.warningModalActions}>
+              <button
+                type="button"
+                className={styles.warningCancelBtn}
+                onClick={() => setShowDeleteAllModal(false)}
+                disabled={isDeletingAll}
+              >
+                CANCEL
+              </button>
+              <button
+                type="button"
+                className={styles.warningConfirmBtn}
+                onClick={handleConfirmDeleteAll}
+                disabled={isDeletingAll}
+              >
+                {isDeletingAll ? (
+                  <>
+                    <RefreshCw size={14} className={styles.spin} />
+                    DELETING...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={14} />
+                    YES, DELETE ALL
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
