@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     "172.*",           // 172.x.x.x private range
     "localhost",
     "*.loca.lt",
-    "10.74.43.8"
+    "10.198.134.158"
   ],
   images: {
     formats: ["image/avif", "image/webp"],

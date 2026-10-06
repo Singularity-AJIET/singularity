@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getApiBaseUrl } from "@/lib/api";
-import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
+import jsQR from "jsqr";
 import NexusSelect from "../components/NexusSelect";
 
 interface CounterSession {
@@ -28,6 +28,18 @@ interface ScanLog {
 interface CameraDevice {
   id: string;
   label: string;
+}
+
+// Global BarcodeDetector types
+interface BarcodeDetectorInstance {
+  detect(image: HTMLVideoElement): Promise<Array<{ rawValue: string }>>;
+}
+
+declare global {
+  var BarcodeDetector: {
+    new (options?: { formats: string[] }): BarcodeDetectorInstance;
+    getSupportedFormats(): Promise<string[]>;
+  };
 }
 
 export default function ScannerPage() {
@@ -60,10 +72,15 @@ export default function ScannerPage() {
   const [isCameraSupported, setIsCameraSupported] = useState(true);
 
   // References
-  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const animationFrameId = useRef<number | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const detectorRef = useRef<BarcodeDetectorInstance | null>(null);
   const isScanningActive = useRef(false);
   const scanInProgress = useRef(false);
   const lastScannedToken = useRef<string>("");
+  const autoResetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Haptic Vibration feedback for mobile scanning
   const vibrate = (type: "success" | "warning" | "error") => {
@@ -148,24 +165,37 @@ export default function ScannerPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCounter, isSelectedCounterOpen, activeCameraId]);
 
-  // Enumerate cameras on mount
+  // Initialize BarcodeDetector and enumerate cameras
   useEffect(() => {
-    const requestPermissionAndEnumerate = async () => {
+    const initScanner = async () => {
+      // Check for native BarcodeDetector
+      if ("BarcodeDetector" in window) {
+        try {
+          detectorRef.current = new window.BarcodeDetector({ formats: ["qr_code"] });
+        } catch {
+          detectorRef.current = null;
+        }
+      }
+
       try {
         // Explicitly request camera permission first to trigger the browser prompt
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        // Immediately stop the tracks so Html5Qrcode can use the hardware
+        // Immediately stop the tracks
         stream.getTracks().forEach(track => track.stop());
         
-        const devices = await Html5Qrcode.getCameras();
-        if (devices && devices.length > 0) {
-          setCameras(devices);
-          const backCamera = devices.find((d) =>
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices
+          .filter(d => d.kind === "videoinput")
+          .map(d => ({ id: d.deviceId, label: d.label || `Camera ${d.deviceId.slice(0,5)}` }));
+          
+        if (videoDevices.length > 0) {
+          setCameras(videoDevices);
+          const backCamera = videoDevices.find((d) =>
             d.label.toLowerCase().includes("back") ||
             d.label.toLowerCase().includes("environment") ||
             d.label.toLowerCase().includes("rear")
           );
-          setActiveCameraId(backCamera ? backCamera.id : devices[0].id);
+          setActiveCameraId(backCamera ? backCamera.id : videoDevices[0].id);
           setIsCameraSupported(true);
         } else {
           setIsCameraSupported(false);
@@ -175,7 +205,7 @@ export default function ScannerPage() {
       }
     };
 
-    requestPermissionAndEnumerate();
+    initScanner();
   }, []);
 
   // Visibility changes (Pause camera when app goes to background)
@@ -224,86 +254,97 @@ export default function ScannerPage() {
     if (isScanningActive.current) return;
 
     try {
-      if (!scannerRef.current) {
-        scannerRef.current = new Html5Qrcode("reader", {
-          verbose: false,
-          formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
-          experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true, // Use hardware acceleration if available
-          },
-        });
+      const constraints = {
+        video: activeCameraId 
+          ? { deviceId: { exact: activeCameraId }, width: { ideal: 640 }, height: { ideal: 480 }, advanced: [{ focusMode: "continuous" }] }
+          : { facingMode: "environment", width: { ideal: 640 }, height: { ideal: 480 }, advanced: [{ focusMode: "continuous" }] }
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints as MediaStreamConstraints);
+      streamRef.current = stream;
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play().catch(() => {});
       }
-
-      const cameraConfig = activeCameraId
-        ? { deviceId: { exact: activeCameraId } }
-        : { facingMode: "environment" };
-
-      await scannerRef.current.start(
-        cameraConfig,
-        {
-          fps: 60, // Increased FPS for faster scanning
-          qrbox: function(viewfinderWidth, viewfinderHeight) {
-            const minEdgePercentage = 0.7; // 70% of the smallest edge
-            const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
-            const qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
-            return { width: qrboxSize, height: qrboxSize };
-          },
-          videoConstraints: {
-            ...cameraConfig,
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-            advanced: [{ focusMode: "continuous" }]
-          } as unknown as MediaTrackConstraints,
-          disableFlip: true, // Don't try to scan the mirrored image (saves 50% CPU)
-        },
-        onScanSuccess,
-        onScanError
-      );
 
       isScanningActive.current = true;
       setScanStatus("scanning");
+      
+      const scanLoop = async () => {
+        if (!isScanningActive.current || !videoRef.current || videoRef.current.readyState !== videoRef.current.HAVE_ENOUGH_DATA) {
+          if (isScanningActive.current) {
+            animationFrameId.current = requestAnimationFrame(scanLoop);
+          }
+          return;
+        }
+
+        if (scanInProgress.current || scanResult) {
+           animationFrameId.current = requestAnimationFrame(scanLoop);
+           return;
+        }
+
+        const video = videoRef.current;
+        let detectedCode = null;
+
+        // Try Native ML Kit first
+        if (detectorRef.current) {
+          try {
+            const barcodes = await detectorRef.current.detect(video);
+            if (barcodes.length > 0) {
+              detectedCode = barcodes[0].rawValue;
+            }
+          } catch {
+            // Fallback to jsQR if ML kit fails
+          }
+        }
+
+        // Fallback to jsQR (Software WASM/JS scanner)
+        if (!detectedCode && canvasRef.current) {
+          const canvas = canvasRef.current;
+          const context = canvas.getContext("2d", { willReadFrequently: true });
+          if (context) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height, {
+              inversionAttempts: "dontInvert",
+            });
+            if (code) {
+              detectedCode = code.data;
+            }
+          }
+        }
+
+        if (detectedCode) {
+          onScanSuccess(detectedCode);
+        }
+        animationFrameId.current = requestAnimationFrame(scanLoop);
+      };
+
+      animationFrameId.current = requestAnimationFrame(scanLoop);
+      
     } catch {
       setIsCameraSupported(false);
     }
   };
 
   const stopScanner = async () => {
-    if (!scannerRef.current) {
-      isScanningActive.current = false;
-      return;
-    }
-
-    const scanner = scannerRef.current;
-    // We intentionally don't set scannerRef.current to null so we can reuse it!
     isScanningActive.current = false;
-
-    try {
-      const state = (scanner as unknown as { getState?: () => number }).getState?.() ?? null;
-      if (state === 2 || state === 3) {
-        await scanner.stop();
-      }
-    } catch {
-      // Ignored
-    }
     
-    try {
-      scanner.clear(); // Nuke the DOM elements created by html5-qrcode unconditionally
-    } catch {
-      // Ignored
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
+      animationFrameId.current = null;
     }
 
-    // Bulletproof fallback: forcefully kill ANY video tracks on the page globally
-    // This runs after graceful shutdown to catch any ghost tracks without triggering onabort()
-    try {
-      document.querySelectorAll("video").forEach((videoEl) => {
-        if (videoEl.srcObject) {
-          const stream = videoEl.srcObject as MediaStream;
-          stream.getTracks().forEach((track) => track.stop());
-          videoEl.srcObject = null;
-        }
-      });
-    } catch {
-      // Ignored
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
     }
   };
 
@@ -313,6 +354,10 @@ export default function ScannerPage() {
   };
 
   const handleNextScan = () => {
+    if (autoResetTimeoutRef.current) {
+      clearTimeout(autoResetTimeoutRef.current);
+      autoResetTimeoutRef.current = null;
+    }
     setScanResult(null);
     setScanFlash(null);
     if (isSelectedCounterOpen) {
@@ -443,9 +488,7 @@ export default function ScannerPage() {
     }
   };
 
-  const onScanError = () => {
-    // Expected during continuous video scanning
-  };
+
 
   const addScanLog = (
     name: string,
@@ -579,8 +622,9 @@ export default function ScannerPage() {
                     : "none",
                 }}
               >
-                {/* HTML5 Qrcode Render Target */}
-                <div id="reader" style={{ width: '100%', height: '100%' }} />
+                {/* Custom Native + jsQR Render Target */}
+                <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />
+                <canvas ref={canvasRef} className="hidden" />
 
                 {/* Scanner Viewfinder Targets Overlay */}
                 {scanStatus !== "closed" && (
